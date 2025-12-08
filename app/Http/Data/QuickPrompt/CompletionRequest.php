@@ -2,7 +2,9 @@
 
 namespace App\Http\Data\QuickPrompt;
 
-class CompletionRequest
+use Spatie\LaravelData\Data;
+
+class CompletionRequest extends Data
 {
     public function __construct(
         public string $model,
