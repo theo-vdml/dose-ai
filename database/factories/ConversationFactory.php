@@ -1,0 +1,27 @@
+<?php
+
+namespace Database\Factories;
+
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Conversation>
+ */
+class ConversationFactory extends Factory
+{
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
+    public function definition(): array
+    {
+        return [
+            'user_id' => \App\Models\User::factory(),
+            'title' => fake()->sentence(3),
+            'model_id' => null,
+            'forked_from_conversation_id' => null,
+            'last_message_at' => null,
+        ];
+    }
+}
