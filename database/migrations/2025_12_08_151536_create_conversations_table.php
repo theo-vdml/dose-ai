@@ -16,6 +16,7 @@ return new class extends Migration
             $table->timestamps();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('title')->nullable();
+            $table->string('model_id')->nullable();
             $table->foreignId('forked_from_conversation_id')->nullable()->constrained('conversations')->onDelete('set null');
             $table->timestamp('last_message_at')->nullable();
         });

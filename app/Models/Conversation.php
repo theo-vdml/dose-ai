@@ -2,13 +2,17 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Conversation extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'user_id',
         'title',
+        'model_id',
         'forked_from_conversation_id',
         'last_message_at',
     ];

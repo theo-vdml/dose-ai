@@ -1,28 +1,28 @@
 <script setup lang="ts">
-import { completion } from '@/actions/App/Http/Controllers/QuickPromptController';
-import MarkdownProse from '@/components/MarkdownProse.vue';
-import PromptForm from '@/components/PromptForm.vue';
-import AppLayout from '@/layouts/AppLayout.vue';
-import { ModelsResponse } from '@/types/generated';
-import { Form, useForm } from '@inertiajs/vue3';
+    import { completion } from '@/actions/App/Http/Controllers/QuickPromptController';
+    import MarkdownProse from '@/components/MarkdownProse.vue';
+    import PromptForm from '@/components/PromptForm.vue';
+    import AppLayout from '@/layouts/AppLayout.vue';
+    import { ModelsResponse } from '@/types/generated';
+    import { Form, useForm } from '@inertiajs/vue3';
 
-const props = defineProps<{
-    models: ModelsResponse;
-    selectedModel: string;
-    message?: string;
-    response?: string;
-    error?: string;
-}>();
+    const props = defineProps<{
+        models: ModelsResponse;
+        selectedModel: string;
+        message?: string;
+        response?: string;
+        error?: string;
+    }>();
 
-const form = useForm({
-    model: props.selectedModel,
-    message: props.message ?? '',
-});
+    const form = useForm({
+        model: props.selectedModel,
+        message: props.message ?? '',
+    });
 
-const submit = () => {
-    console.log('Debug mode: Submitting form with data:', form.data());
-    form.post(completion().url);
-};
+    const submit = () => {
+        form.post(completion().url);
+    };
+
 </script>
 
 <template>
@@ -78,6 +78,7 @@ const submit = () => {
                         <PromptForm :available-models="props.models" v-model:selectedModel="form.model"
                             v-model:message="form.message" :error="props.error" />
                     </Form>
+
                 </div>
             </div>
         </template>
