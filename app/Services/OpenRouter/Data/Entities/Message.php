@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\OpenRouter\Data;
+namespace App\Services\OpenRouter\Data\Entities;
 
 use Spatie\LaravelData\Data;
 
@@ -13,16 +13,16 @@ class Message extends Data
 
     public static function user(string $content): self
     {
-        return new self(role: 'user', content: $content);
+        return new self('user', $content);
     }
 
     public static function assistant(string $content): self
     {
-        return new self(role: 'assistant', content: $content);
+        return new self('assistant', $content);
     }
 
     public static function system(string $content): self
     {
-        return new self(role: 'system', content: $content);
+        return new self('system', $content);
     }
 }

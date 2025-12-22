@@ -24,6 +24,9 @@ export type AppPageProps<
     quote: { message: string; author: string };
     auth: Auth;
     sidebarOpen: boolean;
+    flash: {
+        initialMessage?: string;
+    };
 };
 
 export interface User {

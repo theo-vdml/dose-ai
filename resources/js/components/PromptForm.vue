@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { ModelsResponse } from '@/types/generated';
+    import { Models } from '@/types/generated';
     import { useVModel } from '@vueuse/core';
     import { ArrowUp } from 'lucide-vue-next';
     import ModelSelector from './ModelSelector.vue';
@@ -14,14 +14,16 @@
 
     const props = withDefaults(
         defineProps<{
-            availableModels: ModelsResponse;
-            selectedModel: string;
+            availableModels?: Models;
+            selectedModel?: string;
             message?: string;
             error?: string;
             options?: PromptFormOptions;
             class?: string;
         }>(),
         {
+            availableModels: () => ({ data: [] } as Models),
+            selectedModel: '',
             class: '',
         },
     );

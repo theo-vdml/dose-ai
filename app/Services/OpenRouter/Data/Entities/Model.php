@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\OpenRouter\Data;
+namespace App\Services\OpenRouter\Data\Entities;
 
 use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;

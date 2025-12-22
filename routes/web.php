@@ -22,6 +22,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('conversations', [\App\Http\Controllers\ConversationController::class, 'index'])->name('conversations.index');
     Route::get('conversations/new', [\App\Http\Controllers\ConversationController::class, 'create'])->name('conversations.new');
     Route::post('conversations/new', [\App\Http\Controllers\ConversationController::class, 'store'])->name('conversations.store');
+    Route::get('conversations/{conversation}', [\App\Http\Controllers\ConversationController::class, 'show'])->name('conversations.show');
+    Route::get('conversations/{conversation}/alt', [\App\Http\Controllers\ConversationController::class, 'showAlt'])->name('conversations.show.alt');
+    Route::post('conversations/{conversation}/stream', [\App\Http\Controllers\ConversationController::class, 'stream'])->name('conversations.stream');
 });
 
 require __DIR__ . '/settings.php';
