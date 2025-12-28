@@ -2,11 +2,11 @@
     import PromptForm from '@/components/PromptForm.vue';
     import AppLayout from '@/layouts/AppLayout.vue';
     import conversations from '@/routes/conversations';
-    import { ModelsResponse } from '@/types/generated';
+    import { Models } from '@/types/generated';
     import { Form, useForm } from '@inertiajs/vue3';
 
     const props = defineProps<{
-        models: ModelsResponse;
+        models: Models;
         selectedModel?: string;
         message?: string;
         error?: string;

@@ -9,6 +9,7 @@ class Message extends Data
     public function __construct(
         public string $role,
         public string $content,
+        public ?string $reasoning = null,
     ) {}
 
     public static function user(string $content): self

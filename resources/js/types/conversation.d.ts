@@ -6,6 +6,7 @@ type Message = {
     parent_message_id?: number;
     role: 'user' | 'assistant' | 'system';
     content: string;
+    reasoning?: string | null;
 };
 
 type Conversation = {

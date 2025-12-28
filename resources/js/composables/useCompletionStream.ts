@@ -60,7 +60,7 @@ interface useCompletionStreamReturn {
     /** Error object if the stream encounters an error */
     error: Readonly<Ref<Error | null>>;
     /** Send a message to start streaming a completion */
-    send: (message: string, model?: string) => void;
+    send: (message: string) => void;
     /** Cancel the active stream */
     cancel: () => void;
     /** Reset all stream state to initial values */
@@ -198,6 +198,7 @@ export function useCompletionStream(
      * Should be called before starting a new stream.
      */
     const reset = () => {
+        console.log('Resetting completion stream state');
         contentBuffer.value = '';
         reasoningBuffer.value = '';
         isReasoning.value = false;
@@ -229,6 +230,7 @@ export function useCompletionStream(
                     usage: usage.value,
                 });
             }
+            reset();
         },
         // Handle stream errors
         onError: (e) => {
@@ -243,12 +245,9 @@ export function useCompletionStream(
      * Sends a message to start a new completion stream.
      * Automatically resets state before sending.
      */
-    const send = (message: string, model?: string) => {
+    const send = (message: string) => {
         reset();
-        rawSend({
-            message,
-            model,
-        });
+        rawSend({ message });
     };
 
     // Return reactive state and control methods

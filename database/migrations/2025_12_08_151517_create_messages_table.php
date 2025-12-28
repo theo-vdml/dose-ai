@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('parent_message_id')->nullable()->constrained('messages')->onDelete('cascade');
             $table->enum('role', ['user', 'assistant', 'system']);
             $table->text('content');
+            $table->text('reasoning')->nullable();
         });
     }
 

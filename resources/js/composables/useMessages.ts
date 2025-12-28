@@ -5,6 +5,7 @@ type MessageFactoryData = Partial<Message> & Pick<Message, 'id' | 'content'>;
 export default function useMessages(
     conversation: Conversation,
     streamingContent?: Ref<string>,
+    streamingReasoning?: Ref<string>,
 ) {
     const messages = ref<Message[]>(conversation.messages);
 
@@ -15,6 +16,7 @@ export default function useMessages(
             parent_message_id: data.parent_message_id || undefined,
             role: data.role || 'user',
             content: data.content,
+            reasoning: data.reasoning || undefined,
             created_at: data.created_at || new Date().toISOString(),
             updated_at: data.updated_at || new Date().toISOString(),
         };
@@ -25,10 +27,11 @@ export default function useMessages(
         messages.value.push(messageFactory(data));
     };
 
-    const addOptimisticMessage = (content: string) => {
+    const addOptimisticMessage = (content: string, reasoning?: string) => {
         addMessage({
             id: -1,
             content,
+            reasoning,
         });
     };
 
@@ -50,14 +53,15 @@ export default function useMessages(
     };
 
     const messagesWithStreaming = computed(() => {
-        if (!streamingContent?.value) {
+        if (!streamingContent?.value && !streamingReasoning?.value) {
             return messages.value;
         }
 
         const streamedMessage = messageFactory({
             id: -2,
             role: 'assistant',
-            content: streamingContent.value,
+            content: streamingContent?.value || '',
+            reasoning: streamingReasoning?.value || undefined,
         });
 
         return [...messages.value, streamedMessage];

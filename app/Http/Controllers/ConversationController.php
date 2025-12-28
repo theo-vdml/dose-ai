@@ -10,11 +10,10 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use App\Models\Conversation;
 use App\Http\Data\{NewChatRequest, StreamRequest};
 use App\Services\OpenRouter\Facades\OpenRouter;
-use App\Services\OpenRouter\Data\Entities\Message;
 use App\Services\OpenRouter\Data\Stream\AssistantMessageCreatedChunk;
 use App\Services\OpenRouter\Data\Stream\UserMessageCreatedChunk;
+use App\Services\OpenRouter\StreamAccumulator;
 use App\Services\OpenRouter\StreamEmitter;
-use Illuminate\Http\Request;
 
 class ConversationController extends Controller
 {
@@ -59,28 +58,16 @@ class ConversationController extends Controller
         ]);
     }
 
-    public function showAlt(Conversation $conversation): Response
+    public function stream(Conversation $conversation, StreamRequest $request): StreamedResponse
     {
-        $models = OpenRouter::models()->all();
-        $conversation->load('messages');
-
-        return Inertia::render('conversation/ShowAlt', [
-            'conversation' => $conversation,
-            'models' => $models,
-            'model_id' => $conversation->model_id,
+        $userMessage = $conversation->messages()->create([
+            'role' => 'user',
+            'content' => $request->message,
         ]);
-    }
-
-    public function stream(Conversation $conversation, StreamRequest $request, Request $r): StreamedResponse
-    {
-        $userMessageData = Message::user($request->message);
-        $model = $request->model ?? $conversation->model_id;
-
-        $userMessage = $conversation->messages()->create($userMessageData->toArray());
 
         $stream = OpenRouter::completion()
-            ->model($model)
-            ->messages([$userMessageData])
+            ->model($conversation->model_id)
+            ->messages([$userMessage->toOpenRouterEntity()])
             ->maxTokens(0)
             ->stream();
 
@@ -92,10 +79,13 @@ class ConversationController extends Controller
                 StreamEmitter::chunk($chunk);
             }
 
+            /** @var StreamAccumulator $acc */
             $acc = $stream->getAccumulator();
-            $assistantMessageData = Message::assistant($acc->getContent());
+
             $assistantMessage = $conversation->messages()->create([
-                ...$assistantMessageData->toArray(),
+                'role' => 'assistant',
+                'content' => $acc->getContent(),
+                'reasoning' => $acc->getReasoning(),
                 'parent_message_id' => $userMessage->id,
             ]);
 

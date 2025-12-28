@@ -4,13 +4,24 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property int $id
+ * @property int $conversation_id
+ * @property int|null $parent_message_id
+ * @property string $role
+ * @property string $content
+ * @property string|null $reasoning
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ */
 class Message extends Model
 {
     protected $fillable = [
         'conversation_id',
         'parent_message_id',
         'role',
-        'content'
+        'content',
+        'reasoning',
     ];
 
     public function conversation()
@@ -26,5 +37,14 @@ class Message extends Model
     public function childMessages()
     {
         return $this->hasMany(Message::class, 'parent_message_id');
+    }
+
+    public function toOpenRouterEntity(bool $includeReasoning = true): \App\Services\OpenRouter\Data\Entities\Message
+    {
+        return new \App\Services\OpenRouter\Data\Entities\Message(
+            role: $this->role,
+            content: $this->content,
+            reasoning: $includeReasoning ? $this->reasoning : null,
+        );
     }
 }
