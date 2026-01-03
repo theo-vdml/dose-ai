@@ -193,7 +193,6 @@ export function useCompletionStream(options: UseCompletionStreamOptions): UseCom
      * Should be called before starting a new stream.
      */
     const reset = () => {
-        console.log('Resetting completion stream state');
         contentBuffer.value = '';
         reasoningBuffer.value = '';
         isReasoning.value = false;

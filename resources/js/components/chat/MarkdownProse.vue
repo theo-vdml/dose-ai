@@ -7,6 +7,7 @@
     interface MarkdownProseProps {
         content?: string;
         size?: 'sm' | 'md' | 'lg';
+        muted?: boolean;
     }
 
     const props = defineProps<MarkdownProseProps>();
@@ -52,5 +53,6 @@
 </script>
 
 <template>
-    <div :class="['prose max-w-none dark:prose-invert', sizeClass]" v-html="renderedMarkdown"></div>
+    <div :class="['prose max-w-none dark:prose-invert', sizeClass, props.muted ? 'prose-muted' : '']"
+        v-html="renderedMarkdown"></div>
 </template>
