@@ -102,12 +102,15 @@ class ConversationController extends Controller
         // Retrieve the parent user message
         $userMessage = $assistantMessage->parentMessage;
 
-        // Need to handle the case where parent message is not found
+        $messagesChain = $conversation->activeMessageChain(
+            includeReasoning: false,
+            startsFrom: $userMessage->id
+        );
 
         // Start the OpenRouter streaming completion from the user message
         $stream = OpenRouter::completion()
             ->model($conversation->model_id)
-            ->messages([$userMessage->toOpenRouterEntity()])
+            ->messages($messagesChain->all())
             ->maxTokens(0)
             ->stream();
 

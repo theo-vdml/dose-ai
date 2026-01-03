@@ -46,4 +46,18 @@ class Conversation extends Model
     {
         return $this->belongsTo(Message::class, 'current_message_id');
     }
+
+    public function activeMessageChain(bool $includeReasoning = false, ?string $startsFrom = null)
+    {
+        $messages = collect();
+
+        $current = $startsFrom ? $this->messages()->find($startsFrom) : $this->currentMessage;
+
+        while ($current) {
+            $messages->prepend($current->toOpenRouterEntity($includeReasoning));
+            $current = $current->parentMessage;
+        }
+
+        return $messages->values();
+    }
 }
