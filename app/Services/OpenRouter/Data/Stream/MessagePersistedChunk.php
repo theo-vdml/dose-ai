@@ -4,7 +4,7 @@ namespace App\Services\OpenRouter\Data\Stream;
 
 use App\Models\Message;
 
-class AssistantMessageCreatedChunk extends BaseChunk
+class MessagePersistedChunk extends BaseChunk
 {
     public function __construct(
         public Message $message,
@@ -12,6 +12,6 @@ class AssistantMessageCreatedChunk extends BaseChunk
 
     protected function getType(): string
     {
-        return 'assistant_message_created';
+        return 'message_persisted';
     }
 }

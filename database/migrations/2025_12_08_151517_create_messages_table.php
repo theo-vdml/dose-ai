@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('messages', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->timestamps();
-            $table->foreignId('conversation_id')->constrained()->onDelete('cascade');
-            $table->foreignId('parent_message_id')->nullable()->constrained('messages')->onDelete('cascade');
+            $table->foreignUuid('conversation_id')->constrained()->onDelete('cascade');
+            $table->foreignUuid('parent_message_id')->nullable()->constrained('messages')->onDelete('cascade');
             $table->enum('role', ['user', 'assistant', 'system']);
             $table->text('content');
             $table->text('reasoning')->nullable();

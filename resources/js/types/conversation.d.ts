@@ -1,22 +1,24 @@
+type MessageRole = 'user' | 'assistant' | 'system';
+
 type Message = {
-    id: number;
+    id: string;
     created_at: string;
     updated_at: string;
-    conversation_id: number;
-    parent_message_id?: number;
-    role: 'user' | 'assistant' | 'system';
+    conversation_id?: Conversation['id'];
+    parent_message_id: Message['id'] | null;
+    role: MessageRole;
     content: string;
-    reasoning?: string | null;
+    reasoning: string | null;
+    error?: string | null;
 };
 
 type Conversation = {
-    id: number;
+    id: string;
     created_at: string;
     updated_at: string;
     user_id: number;
-    title?: string;
+    title: string | null;
     model_id: string;
-    forked_from_conversation_id?: number;
-    last_message_at?: string;
+    last_message_at: string | null;
     messages: Message[];
 };

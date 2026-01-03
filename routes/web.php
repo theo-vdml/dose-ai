@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
 
+
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canRegister' => Features::enabled(Features::registration()),
@@ -23,6 +24,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('conversations/new', [\App\Http\Controllers\ConversationController::class, 'create'])->name('conversations.new');
     Route::post('conversations/new', [\App\Http\Controllers\ConversationController::class, 'store'])->name('conversations.store');
     Route::get('conversations/{conversation}', [\App\Http\Controllers\ConversationController::class, 'show'])->name('conversations.show');
+    Route::post('conversations/{conversation}/messages', [\App\Http\Controllers\ConversationController::class, 'storeMessage'])->name('conversations.messages.store');
     Route::post('conversations/{conversation}/stream', [\App\Http\Controllers\ConversationController::class, 'stream'])->name('conversations.stream');
 });
 

@@ -20,7 +20,6 @@ class ConversationFactory extends Factory
             'user_id' => \App\Models\User::factory(),
             'title' => fake()->sentence(3),
             'model_id' => null,
-            'forked_from_conversation_id' => null,
             'last_message_at' => null,
         ];
     }

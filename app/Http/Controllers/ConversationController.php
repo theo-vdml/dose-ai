@@ -2,18 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Data\StoreMessageRequest;
 use Inertia\{Inertia, Response};
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Session;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use App\Models\Conversation;
-use App\Http\Data\{NewChatRequest, StreamRequest};
+use App\Http\Data\{MessageData, NewChatRequest, StreamRequest};
 use App\Services\OpenRouter\Facades\OpenRouter;
 use App\Services\OpenRouter\Data\Stream\AssistantMessageCreatedChunk;
+use App\Services\OpenRouter\Data\Stream\MessagePersistedChunk;
 use App\Services\OpenRouter\Data\Stream\UserMessageCreatedChunk;
 use App\Services\OpenRouter\StreamAccumulator;
 use App\Services\OpenRouter\StreamEmitter;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ConversationController extends Controller
 {
@@ -41,9 +46,11 @@ class ConversationController extends Controller
             'user_id' => Auth::user()->id,
         ]);
 
-        Session::flash('initialMessage', $request->message);
-
-        return redirect()->route('conversations.show', $conversation->id);
+        return redirect()->route('conversations.show', [
+            'conversation' => $conversation->id,
+            'q' => base64_encode($request->message),
+            'submit' => true,
+        ]);
     }
 
     public function show(Conversation $conversation): Response
@@ -58,22 +65,43 @@ class ConversationController extends Controller
         ]);
     }
 
-    public function stream(Conversation $conversation, StreamRequest $request): StreamedResponse
+    public function storeMessage(Conversation $conversation, MessageData $messageData): JsonResponse
     {
-        $userMessage = $conversation->messages()->create([
-            'role' => 'user',
-            'content' => $request->message,
+        // Create new message associated with the conversation
+        $message = $conversation->messages()->create([
+            'role' => $messageData->role,
+            'content' => $messageData->content,
+            'parent_message_id' => $messageData->parent_message_id,
         ]);
 
+        return response()->json($message);
+    }
+
+    public function stream(Conversation $conversation, MessageData $messageData): StreamedResponse
+    {
+        Log::debug('Starting stream for conversation ID: ' . $conversation->id);
+
+        Log::debug('Message Data: ' . json_encode($messageData));
+
+        $assistantMessage = $conversation->messages()->create([
+            'role' => $messageData->role,
+            'content' => $messageData->content ?? '',
+            'parent_message_id' => $messageData->parent_message_id,
+        ]);
+
+        // Retrieve the parent user message
+        $userMessage = $assistantMessage->parentMessage;
+
+        // Need to handle the case where parent message is not found
+
+        // Start the OpenRouter streaming completion from the user message
         $stream = OpenRouter::completion()
             ->model($conversation->model_id)
             ->messages([$userMessage->toOpenRouterEntity()])
             ->maxTokens(0)
             ->stream();
 
-        return response()->stream(function () use ($stream, $conversation, $userMessage): void {
-
-            StreamEmitter::chunk(new UserMessageCreatedChunk(message: $userMessage));
+        return response()->stream(function () use ($stream, $assistantMessage): void {
 
             foreach ($stream as $chunk) {
                 StreamEmitter::chunk($chunk);
@@ -82,14 +110,12 @@ class ConversationController extends Controller
             /** @var StreamAccumulator $acc */
             $acc = $stream->getAccumulator();
 
-            $assistantMessage = $conversation->messages()->create([
-                'role' => 'assistant',
+            $assistantMessage->update([
                 'content' => $acc->getContent(),
                 'reasoning' => $acc->getReasoning(),
-                'parent_message_id' => $userMessage->id,
             ]);
 
-            StreamEmitter::chunk(new AssistantMessageCreatedChunk(message: $assistantMessage));
+            StreamEmitter::chunk(new MessagePersistedChunk(message: $assistantMessage));
             StreamEmitter::done();
         }, 200, [
             'Content-Type' => 'text/event-stream',

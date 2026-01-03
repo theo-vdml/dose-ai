@@ -4,14 +4,14 @@
  */
 import conversations from '@/routes/conversations';
 import { useStream } from '@laravel/stream-vue';
-import { readonly, ref, Ref } from 'vue';
+import { readonly, ref, Ref, shallowReactive } from 'vue';
 
 /**
  * Configuration options for the completion stream
  */
 interface UseCompletionStreamOptions {
     /** The ID of the conversation to stream completions for */
-    conversationId: number;
+    conversationId: string;
     /** Callback invoked when the stream completes successfully */
     onComplete?: (data: {
         content: string;
@@ -26,15 +26,15 @@ interface UseCompletionStreamOptions {
     /** Callback invoked when an error occurs during streaming */
     onError?: (error: Error) => void;
     onChunk?: (chunk: SSEChunk) => void;
-    onUserMessageCreated?: (message: Message) => void;
-    onAssistantMessageCreated?: (message: Message) => void;
+    onDelta?: (delta: string, type: 'content' | 'reasoning') => void;
+    onMessagePersisted?: (message: Message) => void;
 }
 
 /**
  * Return type for the useCompletionStream composable
  * Provides reactive state and methods for controlling the completion stream
  */
-interface useCompletionStreamReturn {
+interface UseCompletionStreamReturn {
     /** Raw stream data from the SSE connection */
     data: Readonly<Ref<string>>;
     /** Whether the stream is currently fetching */
@@ -60,7 +60,7 @@ interface useCompletionStreamReturn {
     /** Error object if the stream encounters an error */
     error: Readonly<Ref<Error | null>>;
     /** Send a message to start streaming a completion */
-    send: (message: string) => void;
+    start: (message: Message) => void;
     /** Cancel the active stream */
     cancel: () => void;
     /** Reset all stream state to initial values */
@@ -97,7 +97,7 @@ type SSEChunk =
           };
       }
     | {
-          type: 'assistant_message_created' | 'user_message_created';
+          type: 'message_persisted';
           data: {
               message: Message;
           };
@@ -110,9 +110,7 @@ type SSEChunk =
  * @param options - Configuration options including conversation ID and callbacks
  * @returns Reactive state and control methods for the completion stream
  */
-export function useCompletionStream(
-    options: UseCompletionStreamOptions,
-): useCompletionStreamReturn {
+export function useCompletionStream(options: UseCompletionStreamOptions): UseCompletionStreamReturn {
     // Reactive state for accumulating streamed content
     const contentBuffer = ref('');
     const reasoningBuffer = ref('');
@@ -131,9 +129,7 @@ export function useCompletionStream(
      */
     const onSSEChunk = (rawChunk: string) => {
         // Split by double newline (SSE event separator)
-        const events = rawChunk
-            .split('\n\n')
-            .filter((line) => line.trim().length > 0);
+        const events = rawChunk.split('\n\n').filter((line) => line.trim().length > 0);
 
         for (const event of events) {
             // Remove 'data: ' prefix from SSE event
@@ -155,10 +151,16 @@ export function useCompletionStream(
                     case 'content':
                         // Append content delta to the buffer
                         contentBuffer.value += chunk.data.delta;
+                        if (options.onDelta) {
+                            options.onDelta(chunk.data.delta, 'content');
+                        }
                         break;
                     case 'reasoning':
                         // Append reasoning delta to the buffer
                         reasoningBuffer.value += chunk.data.delta;
+                        if (options.onDelta) {
+                            options.onDelta(chunk.data.delta, 'reasoning');
+                        }
                         break;
                     case 'finish_reason':
                         // Store the model that finished the completion
@@ -172,16 +174,9 @@ export function useCompletionStream(
                             totalTokens: chunk.data.total_tokens,
                         };
                         break;
-                    case 'user_message_created':
-                        if (options.onUserMessageCreated) {
-                            options.onUserMessageCreated(chunk.data.message);
-                        }
-                        break;
-                    case 'assistant_message_created':
-                        if (options.onAssistantMessageCreated) {
-                            options.onAssistantMessageCreated(
-                                chunk.data.message,
-                            );
+                    case 'message_persisted':
+                        if (options.onMessagePersisted) {
+                            options.onMessagePersisted(chunk.data.message);
                         }
                         break;
                 }
@@ -211,13 +206,13 @@ export function useCompletionStream(
     const streamEndpoint = conversations.stream(options.conversationId).url;
 
     // Initialize the underlying stream connection with event handlers
-    const {
-        data,
-        isFetching,
-        isStreaming,
-        send: rawSend,
-        cancel,
-    } = useStream(streamEndpoint, {
+    const { data, isFetching, isStreaming, send, cancel } = useStream(streamEndpoint, {
+        headers: {
+            Accept: 'text/event-stream',
+            'X-Requested-With': 'XMLHttpRequest',
+            'Content-Type': 'application/json',
+        },
+
         // Process each SSE chunk as it arrives
         onData: onSSEChunk,
         // Handle stream completion
@@ -234,10 +229,12 @@ export function useCompletionStream(
         },
         // Handle stream errors
         onError: (e) => {
+            console.error('Completion stream error:', e);
             error.value = e;
             if (options.onError) {
                 options.onError(e);
             }
+            cancel();
         },
     });
 
@@ -245,13 +242,15 @@ export function useCompletionStream(
      * Sends a message to start a new completion stream.
      * Automatically resets state before sending.
      */
-    const send = (message: string) => {
+    const start = (message: Message) => {
         reset();
-        rawSend({ message });
+        send({
+            ...message,
+        });
     };
 
     // Return reactive state and control methods
-    return {
+    return shallowReactive<UseCompletionStreamReturn>({
         data,
         isFetching: isFetching,
         isStreaming: isStreaming,
@@ -261,8 +260,8 @@ export function useCompletionStream(
         finishReason: readonly(finishReason),
         usage: readonly(usage),
         error: readonly(error),
-        send,
+        start,
         cancel,
         reset,
-    };
+    });
 }

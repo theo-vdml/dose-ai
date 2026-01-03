@@ -52,6 +52,8 @@
             "npm run build"
         ],
         "db:studio": [
+            "Composer\\Config::disableProcessTimeout",
+            "@php -r \"echo '🗄️  Starting SQL Studio…\n';\"",
             "sql-studio sqlite database/database.sqlite"
         ],
         "dev": [

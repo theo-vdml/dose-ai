@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @property int $id
- * @property int $conversation_id
- * @property int|null $parent_message_id
+ * @property string $id
+ * @property string $conversation_id
+ * @property string|null $parent_message_id
  * @property string $role
  * @property string $content
  * @property string|null $reasoning
@@ -16,6 +17,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Message extends Model
 {
+    use HasUuids;
+
     protected $fillable = [
         'conversation_id',
         'parent_message_id',

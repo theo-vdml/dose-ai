@@ -2,28 +2,27 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @property int $id
+ * @property string $id
  * @property int $user_id
  * @property string|null $title
  * @property string $model_id
- * @property int|null $forked_from_conversation_id
  * @property \Illuminate\Support\Carbon|null $last_message_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  */
 class Conversation extends Model
 {
-    use HasFactory;
+    use HasFactory, HasUuids;
 
     protected $fillable = [
         'user_id',
         'title',
         'model_id',
-        'forked_from_conversation_id',
         'last_message_at',
     ];
 
@@ -39,15 +38,5 @@ class Conversation extends Model
     public function messages()
     {
         return $this->hasMany(Message::class);
-    }
-
-    public function forkedFromConversation()
-    {
-        return $this->belongsTo(Conversation::class, 'forked_from_conversation_id');
-    }
-
-    public function forkedConversations()
-    {
-        return $this->hasMany(Conversation::class, 'forked_from_conversation_id');
     }
 }
