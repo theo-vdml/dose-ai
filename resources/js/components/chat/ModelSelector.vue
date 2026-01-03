@@ -72,7 +72,7 @@
     <div>
         <input type="hidden" :name="props.nameAttr" :value="modelValue" />
         <button type="button" @click="isOpen = true"
-            class="inline-flex items-center gap-2 rounded-lg bg-secondary px-3 py-1.5 text-sm font-medium text-secondary-foreground transition-colors hover:bg-secondary/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+            class="inline-flex items-center gap-2 rounded-lg bg-secondary px-3 py-1.5 text-sm font-medium text-secondary-foreground transition-colors hover:bg-secondary/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 cursor-pointer">
             <span>{{ getModelDisplay(modelValue) }}</span>
             <ChevronDown class="h-3.5 w-3.5 opacity-50" />
         </button>

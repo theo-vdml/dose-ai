@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-    import PromptForm from '@/components/PromptForm.vue';
+    import { ModelSelector, PromptInput } from '@/components/chat';
     import AppLayout from '@/layouts/AppLayout.vue';
     import conversations from '@/routes/conversations';
     import { Models } from '@/types/generated';
-    import { Form, useForm } from '@inertiajs/vue3';
+    import { useForm } from '@inertiajs/vue3';
 
     const props = defineProps<{
         models: Models;
@@ -13,14 +13,13 @@
     }>()
 
     const form = useForm({
-        model: props.selectedModel ?? '',
-        message: props.message ?? '',
-    })
+        model: props.selectedModel || (props.models.data.length > 0 ? props.models.data[0].id : ''),
+        message: props.message || '',
+    });
 
     const submit = () => {
-        form.post(conversations.store.url())
+        form.post(conversations.store.url());
     }
-
 
 </script>
 
@@ -40,12 +39,9 @@
                     </p>
                 </div>
 
-                <!-- Prompt Form -->
-                <Form @submit.prevent="submit">
-                    <PromptForm :available-models="props.models" v-model:selectedModel="form.model"
-                        v-model:message="form.message" :error="props.error" />
-                    <p>{{ form.errors }}</p>
-                </Form>
+                <PromptInput v-model:message="form.message" @submit="submit">
+                    <ModelSelector :available-models="props.models.data" v-model="form.model" />
+                </PromptInput>
 
             </div>
         </div>
