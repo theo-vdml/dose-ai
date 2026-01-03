@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('title')->nullable();
             $table->string('model_id')->nullable();
             $table->timestamp('last_message_at')->nullable();
+            $table->foreignUuid('current_message_id')->nullable()->constrained('messages');
         });
     }
 

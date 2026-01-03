@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $title
  * @property string $model_id
  * @property \Illuminate\Support\Carbon|null $last_message_at
+ * @property string|null $current_message_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  */
@@ -24,6 +25,7 @@ class Conversation extends Model
         'title',
         'model_id',
         'last_message_at',
+        'current_message_id',
     ];
 
     protected $casts = [
@@ -38,5 +40,10 @@ class Conversation extends Model
     public function messages()
     {
         return $this->hasMany(Message::class);
+    }
+
+    public function currentMessage()
+    {
+        return $this->belongsTo(Message::class, 'current_message_id');
     }
 }

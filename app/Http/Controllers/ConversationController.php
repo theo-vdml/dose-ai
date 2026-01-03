@@ -74,6 +74,11 @@ class ConversationController extends Controller
             'parent_message_id' => $messageData->parent_message_id,
         ]);
 
+        $conversation->update([
+            'last_message_at' => now(),
+            'current_message_id' => $message->id,
+        ]);
+
         return response()->json($message);
     }
 
@@ -87,6 +92,11 @@ class ConversationController extends Controller
             'role' => $messageData->role,
             'content' => $messageData->content ?? '',
             'parent_message_id' => $messageData->parent_message_id,
+        ]);
+
+        $conversation->update([
+            'last_message_at' => now(),
+            'current_message_id' => $assistantMessage->id,
         ]);
 
         // Retrieve the parent user message

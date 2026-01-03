@@ -21,4 +21,5 @@ type Conversation = {
     model_id: string;
     last_message_at: string | null;
     messages: Message[];
+    current_message_id: string | null;
 };

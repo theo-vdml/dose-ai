@@ -14,7 +14,7 @@ interface UseChatReturn {
 }
 
 export default function useChat(conversation: Conversation): UseChatReturn {
-    const currentId = ref<Message['id'] | null>(null);
+    const currentId = ref<Message['id'] | null>(conversation.current_message_id);
     const streamingMessageId = ref<Message['id'] | null>(null);
     const messagesMap = ref<Map<Message['id'], Message>>(new Map());
     const forceBusy = ref(false);
@@ -24,14 +24,6 @@ export default function useChat(conversation: Conversation): UseChatReturn {
 
         for (const message of messages) {
             messagesMap.value.set(message.id, message);
-        }
-
-        if (messages.length > 0) {
-            const childrenSet = new Set(messages.map((m) => m.parent_message_id).filter((id): id is string => id !== null));
-
-            const leafMessage = messages.find((m) => !childrenSet.has(m.id));
-
-            currentId.value = (leafMessage?.id || messages.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())[0].id) ?? null;
         }
     };
 
