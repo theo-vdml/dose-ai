@@ -7,9 +7,10 @@ interface UseChatReturn {
     currentId: Ref<Message['id'] | null>;
     messagesMap: Ref<Map<Message['id'], Message>>;
     messages: Ref<Message[]>;
-    sendMessage: (content: string) => Promise<void>;
     isBusy: Ref<boolean>;
+    isWaitingForFirstToken: Ref<boolean>;
     stream: ReturnType<typeof useCompletionStream>;
+    sendMessage: (content: string) => Promise<void>;
 }
 
 export default function useChat(conversation: Conversation): UseChatReturn {
@@ -183,12 +184,22 @@ export default function useChat(conversation: Conversation): UseChatReturn {
         return forceBusy.value || stream.isFetching.value || stream.isStreaming.value;
     });
 
+    const isWaitingForFirstToken = computed(() => {
+        if (!streamingMessageId.value) return false;
+
+        const assistantMessage = messagesMap.value.get(streamingMessageId.value!);
+        if (!assistantMessage) return false;
+
+        return assistantMessage.content.length === 0 && (assistantMessage.reasoning || '').length === 0 && isBusy.value;
+    });
+
     return shallowReactive({
         currentId,
         messagesMap,
         messages,
         sendMessage,
         isBusy: readonly(isBusy),
+        isWaitingForFirstToken: readonly(isWaitingForFirstToken),
         stream,
     });
 }

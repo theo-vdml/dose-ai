@@ -1,14 +1,19 @@
 <script lang="ts" setup>
+    import { computed } from 'vue';
     import MarkdownProse from './MarkdownProse.vue';
 
     const props = defineProps<{
         message: Message
     }>();
 
+    const shouldDisplay = computed(() => {
+        return !!(props.message.content || props.message.reasoning);
+    });
+
 </script>
 
 <template>
-    <div>
+    <div v-if="shouldDisplay">
         <div v-if="props.message.reasoning">
             <MarkdownProse size="sm" :content="props.message.reasoning" />
             <hr>
