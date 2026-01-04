@@ -12,7 +12,6 @@
         messageValue?: string;
     }>();
 
-
     const chat = useChat(props.conversation);
 
     const promptInput = ref<string>(props.messageValue ?? '');

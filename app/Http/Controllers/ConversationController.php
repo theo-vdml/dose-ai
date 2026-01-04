@@ -17,7 +17,6 @@ use App\OpenRouter\Stream\StreamChunk;
 use App\Services\ConversationContextBuilder;
 use App\Services\SSEEmitterService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Log;
 
 class ConversationController extends Controller
 {
@@ -104,8 +103,6 @@ class ConversationController extends Controller
                 ChatMessage::system($conversation->user->preferences->instruction_prompt),
             ],
         );
-
-        Log::debug('Context Built for Streaming', ['messages' => $messages]);
 
         $request = new ChatRequest(
             model: $conversation->model_id,

@@ -73,9 +73,6 @@ export default function useChat(conversation: Conversation): UseChatReturn {
                 streamingMessageId.value = null;
             }
         },
-        onComplete(data) {
-            console.log('Streaming complete:', data);
-        },
     });
 
     const messages = computed(() => {
