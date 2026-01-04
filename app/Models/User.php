@@ -8,6 +8,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 
+/**
+ * @property-read \App\Models\UserPreference $preferences
+ */
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -48,5 +51,26 @@ class User extends Authenticatable
             'password' => 'hashed',
             'two_factor_confirmed_at' => 'datetime',
         ];
+    }
+
+    public function conversations()
+    {
+        return $this->hasMany(Conversation::class);
+    }
+
+    public function preferences()
+    {
+        return $this->hasOne(UserPreference::class);
+    }
+
+    public function getPreferencesAttribute(): UserPreference
+    {
+        if ($this->relationLoaded('preferences')) {
+            return $this->getRelation('preferences');
+        }
+
+        return $this->preferences()->firstOrCreate([
+            'user_id' => $this->id,
+        ]);
     }
 }
