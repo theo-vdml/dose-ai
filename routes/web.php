@@ -11,6 +11,10 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
+Route::get('/mentions-legales', function () {
+    return Inertia::render('LegalNotice');
+})->name('legal.notice');
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('Dashboard');
