@@ -1,116 +1,122 @@
 <script setup lang="ts">
-/**
- * Auto-resizing textarea component with configurable maximum height.
- *
- * Features:
- * - Automatically expands vertically to fit content
- * - Limits expansion to a maximum number of lines
- * - Supports v-model binding for reactive updates
- */
+    /**
+     * Auto-resizing textarea component with configurable maximum height.
+     *
+     * Features:
+     * - Automatically expands vertically to fit content
+     * - Limits expansion to a maximum number of lines
+     * - Supports v-model binding for reactive updates
+     */
 
-import { ref, watch, onMounted } from 'vue';
-import { useVModel } from '@vueuse/core';
+    import { ref, watch, onMounted, useAttrs, computed } from 'vue';
+    import { useVModel } from '@vueuse/core';
+    import { twMerge } from 'tailwind-merge';
 
-// ============================================================================
-// Types & Interfaces
-// ============================================================================
+    // ============================================================================
+    // Types & Interfaces
+    // ============================================================================
 
-/**
- * Component props definition
- */
-interface TextareaProps {
-    /** Two-way bound value of the textarea */
-    modelValue?: string;
-    /** Placeholder text when textarea is empty */
-    placeholder?: string;
-    /** HTML name attribute for form submission */
-    name?: string;
-    /** HTML id attribute for labeling */
-    id?: string;
-    /** Maximum number of lines before scrolling (default: 10) */
-    maxLines?: number;
-    /** Additional CSS classes to apply */
-    class?: string;
-}
+    /**
+     * Component props definition
+     */
+    interface TextareaProps {
+        /** Two-way bound value of the textarea */
+        modelValue?: string;
+        /** Placeholder text when textarea is empty */
+        placeholder?: string;
+        /** HTML name attribute for form submission */
+        name?: string;
+        /** HTML id attribute for labeling */
+        id?: string;
+        /** Initial number of visible text lines (default: 1) */
+        rows?: number;
+        /** Maximum number of lines before scrolling (default: 10) */
+        maxLines?: number;
+    }
 
-/**
- * Component emits definition
- */
-interface TextareaEmits {
-    'update:modelValue': [value: string];
-}
+    /**
+     * Component emits definition
+     */
+    interface TextareaEmits {
+        'update:modelValue': [value: string];
+    }
 
-// ============================================================================
-// Component Setup
-// ============================================================================
+    // ============================================================================
+    // Component Setup
+    // ============================================================================
 
-const props = withDefaults(defineProps<TextareaProps>(), {
-    modelValue: '',
-    placeholder: '',
-    maxLines: 10,
-    class: '',
-});
+    const props = withDefaults(defineProps<TextareaProps>(), {
+        modelValue: '',
+        placeholder: '',
+        rows: 1,
+        maxLines: 10,
+    });
 
-const emit = defineEmits<TextareaEmits>();
+    const attrs = useAttrs();
 
-// ============================================================================
-// Reactive State
-// ============================================================================
+    const emit = defineEmits<TextareaEmits>();
 
-/** Two-way bound model value using VueUse composable */
-const modelValue = useVModel(props, 'modelValue', emit);
+    const baseClasses =
+        'block w-full resize-none border-0 bg-transparent text-base focus:ring-0 focus:outline-none';
 
-/** Reference to the textarea DOM element */
-const textareaRef = ref<HTMLTextAreaElement | null>(null);
+    const mergedClass = computed(() =>
+        twMerge(
+            baseClasses,
+            attrs.class as string
+        )
+    );
 
-// ============================================================================
-// Methods
-// ============================================================================
+    // ============================================================================
+    // Reactive State
+    // ============================================================================
 
-/**
- * Automatically resizes the textarea based on content height.
- * Respects the maxLines constraint to prevent unlimited expansion.
- */
-const autoResize = () => {
-    const textarea = textareaRef.value;
-    if (!textarea) return;
+    /** Two-way bound model value using VueUse composable */
+    const modelValue = useVModel(props, 'modelValue', emit);
 
-    // Reset height to recalculate scroll height
-    textarea.style.height = 'auto';
+    /** Reference to the textarea DOM element */
+    const textareaRef = ref<HTMLTextAreaElement | null>(null);
 
-    // Calculate maximum allowed height based on line height and maxLines
-    const lineHeight = parseInt(getComputedStyle(textarea).lineHeight);
-    const maxHeight = lineHeight * props.maxLines;
+    // ============================================================================
+    // Methods
+    // ============================================================================
 
-    // Set height to content size, capped at maximum
-    const newHeight = Math.min(textarea.scrollHeight, maxHeight);
-    textarea.style.height = `${newHeight}px`;
-};
+    /**
+     * Automatically resizes the textarea based on content height.
+     * Respects the maxLines constraint to prevent unlimited expansion.
+     */
+    const autoResize = () => {
+        const textarea = textareaRef.value;
+        if (!textarea) return;
 
-// ============================================================================
-// Lifecycle Hooks
-// ============================================================================
+        // Reset height to recalculate scroll height
+        textarea.style.height = 'auto';
 
-/** Initialize textarea height on mount */
-onMounted(() => {
-    autoResize();
-});
+        // Calculate maximum allowed height based on line height and maxLines
+        const lineHeight = parseInt(getComputedStyle(textarea).lineHeight);
+        const maxHeight = lineHeight * props.maxLines;
 
-/** Watch for content changes and resize accordingly */
-watch(modelValue, () => {
-    autoResize();
-});
+        // Set height to content size, capped at maximum
+        const newHeight = Math.min(textarea.scrollHeight, maxHeight);
+        textarea.style.height = `${newHeight}px`;
+    };
+
+    // ============================================================================
+    // Lifecycle Hooks
+    // ============================================================================
+
+    /** Initialize textarea height on mount */
+    onMounted(() => {
+        autoResize();
+    });
+
+    /** Watch for content changes and resize accordingly */
+    watch(modelValue, () => {
+        autoResize();
+    });
+
 </script>
 
 <template>
-    <textarea
-        ref="textareaRef"
-        v-model="modelValue"
-        :id="id"
-        :name="name"
-        :placeholder="placeholder"
-        :class="class"
-        rows="1"
-        class="block w-full resize-none border-0 bg-transparent text-base focus:ring-0 focus:outline-none"
-    />
+    <textarea ref="textareaRef" v-model="modelValue" :id="id" :name="name" :placeholder="placeholder" :rows="rows"
+        v-bind="attrs" :class="mergedClass" />
 </template>

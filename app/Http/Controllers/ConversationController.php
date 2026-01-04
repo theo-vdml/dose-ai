@@ -10,11 +10,14 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use App\Models\Conversation;
 use App\Http\Data\{MessageData, ChatData};
 use App\Jobs\GenerateConversationTitle;
+use App\OpenRouter\Chat\ChatMessage;
 use App\OpenRouter\Facades\OpenRouter;
 use App\OpenRouter\Stream\StreamAccumulator;
 use App\OpenRouter\Stream\StreamChunk;
+use App\Services\ConversationContextBuilder;
 use App\Services\SSEEmitterService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 
 class ConversationController extends Controller
 {
@@ -93,7 +96,16 @@ class ConversationController extends Controller
         // Retrieve the parent user message
         $userMessage = $assistantMessage->parentMessage;
 
-        $messages = $conversation->contextMessages($userMessage?->id);
+        // $messages = $conversation->contextMessages($userMessage?->id);
+        $messages = ConversationContextBuilder::make(
+            $conversation,
+            startsFrom: $userMessage?->id,
+            beforeMessages: [
+                ChatMessage::system($conversation->user->preferences->instruction_prompt),
+            ],
+        );
+
+        Log::debug('Context Built for Streaming', ['messages' => $messages]);
 
         $request = new ChatRequest(
             model: $conversation->model_id,

@@ -8,8 +8,8 @@ class UserPreference extends Model
 {
     protected $fillable = [
         'user_id',
-        'application_theme',
         'last_used_model',
+        'instruction_prompt',
     ];
 
     public function user()

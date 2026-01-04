@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Settings\PasswordController;
+use App\Http\Controllers\Settings\PreferenceController;
 use App\Http\Controllers\Settings\ProfileController;
 use App\Http\Controllers\Settings\TwoFactorAuthenticationController;
 use Illuminate\Support\Facades\Route;
@@ -18,6 +19,9 @@ Route::middleware('auth')->group(function () {
     Route::put('settings/password', [PasswordController::class, 'update'])
         ->middleware('throttle:6,1')
         ->name('user-password.update');
+
+    Route::get('settings/preferences', [PreferenceController::class, 'edit'])->name('preferences.edit');
+    Route::patch('settings/preferences', [PreferenceController::class, 'update'])->name('preferences.update');
 
     Route::get('settings/appearance', function () {
         return Inertia::render('settings/Appearance');

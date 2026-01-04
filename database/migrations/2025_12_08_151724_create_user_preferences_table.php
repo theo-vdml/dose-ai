@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('application_theme')->default('light');
             $table->string('last_used_model')->nullable();
+            $table->text('instruction_prompt')->nullable();
         });
     }
 
