@@ -45,9 +45,8 @@ class ConversationController extends Controller
 
         return redirect()->route('conversations.show', [
             'conversation' => $conversation->id,
-            'q' => base64_encode($chat->message),
             'submit' => true,
-        ]);
+        ])->with('messageValue', $chat->message);
     }
 
     public function show(Conversation $conversation): Response
@@ -57,6 +56,7 @@ class ConversationController extends Controller
         return Inertia::render('conversation/Show', [
             'conversation' => $conversation,
             'model_id' => $conversation->model_id,
+            'messageValue' => session('messageValue'),
         ]);
     }
 

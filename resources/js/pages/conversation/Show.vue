@@ -9,12 +9,13 @@
     const props = defineProps<{
         conversation: Conversation;
         model_id: string;
+        messageValue?: string;
     }>();
 
 
     const chat = useChat(props.conversation);
 
-    const promptInput = ref<string>('');
+    const promptInput = ref<string>(props.messageValue ?? '');
 
     const submit = () => {
         chat.sendMessage(promptInput.value);
@@ -24,28 +25,19 @@
     onMounted(async () => {
 
         const urlParams = new URLSearchParams(window.location.search);
-        const encodedMessage = urlParams.get('q');
         const shouldSubmit = urlParams.get('submit');
 
 
-        if (encodedMessage && shouldSubmit) {
+        if (props.messageValue && shouldSubmit) {
 
-            try {
-                // Decode the base64-encoded message
-                const decodedMessage = atob(encodedMessage);
+            submit();
 
-                // Send the decoded message using the chat composable
-                await chat.sendMessage(decodedMessage);
-
-                // Clean up the URL by removing the query parameters
-                router.replace({
-                    url: window.location.pathname,
-                    preserveState: true,
-                    preserveScroll: true,
-                });
-            } catch (error) {
-                console.error('Failed to decode message from URL parameter:', error);
-            }
+            // Clean up the URL by removing the query parameters
+            router.replace({
+                url: window.location.pathname,
+                preserveState: true,
+                preserveScroll: true,
+            });
 
         }
 
