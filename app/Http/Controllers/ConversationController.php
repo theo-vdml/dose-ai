@@ -6,7 +6,6 @@ use App\OpenRouter\Chat\ChatRequest;
 use Inertia\{Inertia, Response};
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Session;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use App\Models\Conversation;
 use App\Http\Data\{MessageData, ChatData};
@@ -16,7 +15,6 @@ use App\OpenRouter\Stream\StreamAccumulator;
 use App\OpenRouter\Stream\StreamChunk;
 use App\Services\SSEEmitterService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Log;
 
 class ConversationController extends Controller
 {
@@ -81,10 +79,6 @@ class ConversationController extends Controller
 
     public function stream(Conversation $conversation, MessageData $messageData): StreamedResponse
     {
-        Log::debug('Starting stream for conversation ID: ' . $conversation->id);
-
-        Log::debug('Message Data: ' . json_encode($messageData));
-
         $assistantMessage = $conversation->messages()->create([
             'role' => $messageData->role,
             'content' => $messageData->content ?? '',
@@ -99,9 +93,7 @@ class ConversationController extends Controller
         // Retrieve the parent user message
         $userMessage = $assistantMessage->parentMessage;
 
-        $messages = $conversation->activeMessageChain(
-            startsFrom: $userMessage->id
-        );
+        $messages = $conversation->contextMessages($userMessage?->id);
 
         $request = new ChatRequest(
             model: $conversation->model_id,
@@ -124,8 +116,6 @@ class ConversationController extends Controller
                 'content' => $acc->getContent(),
                 'reasoning' => $acc->getReasoning(),
             ]);
-
-            Log::debug('Finish streaming reason: ' . $acc->getFinishReason());
 
             SSEEmitterService::emitJson([
                 'type' => 'message_persisted',
