@@ -2,6 +2,7 @@
     import { dashboard, login, register } from '@/routes';
     import { Head, Link } from '@inertiajs/vue3';
     import { MessageSquare, Sparkles, Users, Zap } from 'lucide-vue-next';
+    import CookieConsent from '@/components/CookieConsent.vue';
 
     withDefaults(
         defineProps<{
@@ -392,17 +393,18 @@
                         Built with Laravel, Inertia.js, and Vue 3
                     </p>
                     <div class="flex items-center gap-6 text-sm">
-                        <a href="#" class="text-zinc-400 hover:text-white transition-colors">
+                        <Link href="/mentions-legales" class="text-zinc-400 hover:text-white transition-colors">
                             Mentions légales
-                        </a>
+                        </Link>
                         <span class="text-zinc-700">|</span>
-                        <a href="#" class="text-zinc-400 hover:text-white transition-colors">
+                        <Link href="/mentions-legales#privacy" class="text-zinc-400 hover:text-white transition-colors">
                             Privacy Policy
-                        </a>
+                        </Link>
                         <span class="text-zinc-700">|</span>
-                        <a href="#" class="text-zinc-400 hover:text-white transition-colors">
-                            Terms of Service
-                        </a>
+                        <Link href="/mentions-legales#ai-compliance"
+                            class="text-zinc-400 hover:text-white transition-colors">
+                            AI Compliance
+                        </Link>
                     </div>
                     <p class="text-xs text-zinc-500">
                         © 2026 DoseAI. All rights reserved.
@@ -410,6 +412,9 @@
                 </div>
             </div>
         </footer>
+
+        <!-- Cookie Consent Banner -->
+        <CookieConsent />
     </div>
 
 </template>

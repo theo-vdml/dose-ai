@@ -1,5 +1,6 @@
 <script lang="ts" setup>
     import { ModelSelector, PromptInput, PersonaSelector } from '@/components/chat';
+    import AIDisclaimer from '@/components/AIDisclaimer.vue';
     import AppLayout from '@/layouts/AppLayout.vue';
     import conversations from '@/routes/conversations';
     import { useForm } from '@inertiajs/vue3';
@@ -36,6 +37,7 @@
 
         <div class="flex h-full items-center justify-center p-4">
             <div class="w-full max-w-2xl space-y-8">
+
                 <!-- Header -->
                 <div class="space-y-2 text-center">
                     <h1 class="text-4xl font-bold tracking-tight text-foreground">
