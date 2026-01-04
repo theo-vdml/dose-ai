@@ -5,6 +5,7 @@ namespace App\Services\OpenRouter;
 use App\Services\OpenRouter\Data\Requests\CompletionRequest;
 use App\Services\OpenRouter\Data\Responses\Completion;
 use Illuminate\Http\Client\Response;
+use Illuminate\Support\Facades\Log;
 
 class CompletionService
 {
@@ -43,11 +44,36 @@ class CompletionService
         return $this;
     }
 
+    public function reasoningEffort(string $effort): self
+    {
+        $this->request->reasoningEffort = $effort;
+        return $this;
+    }
+
     public function create(): Completion
     {
-        $response =  $this->post($this->request->toApiPayload(), options: [
+        $payload = $this->request->toApiPayload();
+
+        $response = $this->post($payload, [
             'timeout' => 300,
-        ])->throw();
+        ]);
+
+        if ($response->failed()) {
+            Log::error('OpenRouter Completion FAILED', [
+                'endpoint' => self::ENDPOINT,
+                'status'   => $response->status(),
+                'headers'  => $response->headers(),
+                'request'  => $payload,
+                'body'     => $response->body(),   // ✅ RAW STRING (NOT TRUNCATED)
+                'json'     => $response->json(),   // ✅ Parsed if possible
+            ]);
+
+            $response->throw(); // throw AFTER logging
+        }
+
+        Log::debug('OpenRouter Completion SUCCESS', [
+            'response' => $response->json(),
+        ]);
 
         return Completion::from($response->json());
     }

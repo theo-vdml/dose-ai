@@ -4,6 +4,7 @@ namespace App\Services\OpenRouter\Data\Responses;
 
 use App\Services\OpenRouter\Data\Entities\{Usage, Choice};
 use Illuminate\Support\Collection;
+use Spatie\LaravelData\Attributes\Validation\Sometimes;
 use Spatie\LaravelData\Data;
 
 class Completion extends Data
@@ -18,7 +19,8 @@ class Completion extends Data
         /** @var Collection<int, Choice> */
         public Collection $choices,
 
-        public Usage $usage,
+        #[Sometimes]
+        public ?Usage $usage = null,
     ) {}
 
     public function content(): string

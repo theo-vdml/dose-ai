@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Session;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use App\Models\Conversation;
 use App\Http\Data\{MessageData, NewChatRequest, StreamRequest};
+use App\Jobs\GenerateConversationTitle;
 use App\Services\OpenRouter\Facades\OpenRouter;
 use App\Services\OpenRouter\Data\Stream\AssistantMessageCreatedChunk;
 use App\Services\OpenRouter\Data\Stream\MessagePersistedChunk;
@@ -107,14 +108,17 @@ class ConversationController extends Controller
             startsFrom: $userMessage->id
         );
 
+        $systemPromptService = app()->make(\App\Services\SystemPromptService::class);
+        $messages = $systemPromptService->prepend($messagesChain->all());
+
         // Start the OpenRouter streaming completion from the user message
         $stream = OpenRouter::completion()
             ->model($conversation->model_id)
-            ->messages($messagesChain->all())
-            ->maxTokens(0)
+            ->messages($messages)
+            ->maxTokens(4096)
             ->stream();
 
-        return response()->stream(function () use ($stream, $assistantMessage): void {
+        return response()->stream(function () use ($stream, $assistantMessage, $conversation): void {
 
             foreach ($stream as $chunk) {
                 StreamEmitter::chunk($chunk);
@@ -130,6 +134,10 @@ class ConversationController extends Controller
 
             StreamEmitter::chunk(new MessagePersistedChunk(message: $assistantMessage));
             StreamEmitter::done();
+
+            if ($conversation->title === null) {
+                GenerateConversationTitle::dispatch($conversation);
+            }
         }, 200, [
             'Content-Type' => 'text/event-stream',
             'Cache-Control' => 'no-cache',

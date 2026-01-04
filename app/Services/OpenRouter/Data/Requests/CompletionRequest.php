@@ -18,13 +18,24 @@ class CompletionRequest extends Data
 
         #[Min(1)]
         #[Max(100000)]
-        public ?int $max_tokens = 1000,
+        public int $max_tokens = 1000,
 
-        public ?bool $stream = null,
+        public bool $stream = false,
+
+        public string $reasoningEffort = 'medium',
     ) {}
 
     public function toApiPayload(): array
     {
-        return array_filter($this->toArray(), fn($value): bool => !is_null($value));
+        return [
+            'model' => $this->model,
+            'messages' => $this->messages,
+            'max_tokens' => $this->max_tokens,
+            'stream' => $this->stream,
+            'reasoning' => [
+                'effort' => $this->reasoningEffort,
+            ]
+        ];
+        // return array_filter($this->toArray(), fn($value): bool => !is_null($value));
     }
 }
