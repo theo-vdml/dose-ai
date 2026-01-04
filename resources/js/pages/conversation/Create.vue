@@ -1,22 +1,27 @@
 <script lang="ts" setup>
-    import { ModelSelector, PromptInput } from '@/components/chat';
+    import { ModelSelector, PromptInput, PersonaSelector } from '@/components/chat';
     import AppLayout from '@/layouts/AppLayout.vue';
     import conversations from '@/routes/conversations';
-    import { Model, Models } from '@/types/generated';
     import { useForm } from '@inertiajs/vue3';
+
+    interface Persona {
+        id: string;
+        name: string;
+        description?: string;
+    }
 
     const props = defineProps<{
         models: Model[];
         selectedModel?: string;
         message?: string;
         error?: string;
+        personas: Persona[];
     }>()
-
-    console.log(props);
 
     const form = useForm({
         model: props.selectedModel || (props.models.length > 0 ? props.models[0].id : ''),
         message: props.message || '',
+        persona: null as string | null,
     });
 
     const submit = () => {
@@ -42,7 +47,10 @@
                 </div>
 
                 <PromptInput v-model:message="form.message" @submit="submit">
-                    <ModelSelector :available-models="props.models ?? []" v-model="form.model" />
+                    <div class="flex items-center gap-2">
+                        <PersonaSelector :available-personas="props.personas" v-model="form.persona" />
+                        <ModelSelector :available-models="props.models ?? []" v-model="form.model" />
+                    </div>
                 </PromptInput>
 
             </div>

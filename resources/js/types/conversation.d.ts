@@ -23,3 +23,9 @@ type Conversation = {
     messages: Message[];
     current_message_id: string | null;
 };
+
+type Model = {
+    id: string;
+    name: string;
+    descriptio: string;
+};

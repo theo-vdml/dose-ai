@@ -1,5 +1,4 @@
 <script setup lang="ts">
-    import NavFooter from '@/components/NavFooter.vue';
     import NavMain from '@/components/NavMain.vue';
     import NavUser from '@/components/NavUser.vue';
     import {
@@ -12,9 +11,9 @@
         SidebarMenuItem,
     } from '@/components/ui/sidebar';
     import { dashboard } from '@/routes';
-    import { Link, usePage } from '@inertiajs/vue3';
+    import { Link } from '@inertiajs/vue3';
     import AppLogo from './AppLogo.vue';
-    import { mainNavigationItems, footerNavigationItems } from '@/navigation';
+    import navigationItems from '@/navigation';
     import NavChats from './NavChats.vue';
 
 </script>
@@ -34,12 +33,11 @@
         </SidebarHeader>
 
         <SidebarContent>
-            <NavMain :items="mainNavigationItems" />
+            <NavMain :items="navigationItems" />
             <NavChats />
         </SidebarContent>
 
         <SidebarFooter>
-            <NavFooter :items="footerNavigationItems" />
             <NavUser />
         </SidebarFooter>
     </Sidebar>

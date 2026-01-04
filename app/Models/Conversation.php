@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $user_id
  * @property string|null $title
  * @property string $model_id
+ * @property string|null $persona_id
  * @property \Illuminate\Support\Carbon|null $last_message_at
  * @property string|null $current_message_id
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -25,6 +26,7 @@ class Conversation extends Model
         'user_id',
         'title',
         'model_id',
+        'persona_id',
         'last_message_at',
         'current_message_id',
     ];

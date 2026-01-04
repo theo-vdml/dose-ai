@@ -10,13 +10,13 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use App\Models\Conversation;
 use App\Http\Data\{MessageData, ChatData};
 use App\Jobs\GenerateConversationTitle;
-use App\OpenRouter\Chat\ChatMessage;
 use App\OpenRouter\Facades\OpenRouter;
 use App\OpenRouter\Stream\StreamAccumulator;
 use App\OpenRouter\Stream\StreamChunk;
-use App\Services\ConversationContextBuilder;
 use App\Services\SSEEmitterService;
+use App\Services\SystemPromptService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 
 class ConversationController extends Controller
 {
@@ -33,8 +33,9 @@ class ConversationController extends Controller
     {
         $models = OpenRouter::models()->list()->toArray();
         $selectedModel = OpenRouter::models()->defaultId();
+        $personas = config('personas.list');
 
-        return Inertia::render('conversation/Create', compact('models', 'selectedModel'));
+        return Inertia::render('conversation/Create', compact('models', 'selectedModel', 'personas'));
     }
 
     public function store(ChatData $chat): RedirectResponse
@@ -42,6 +43,7 @@ class ConversationController extends Controller
         $conversation = Conversation::create([
             'model_id' => $chat->model,
             'user_id' => Auth::user()->id,
+            'persona_id' => $chat->persona,
             'last_message_at' => now(),
         ]);
 
@@ -95,19 +97,18 @@ class ConversationController extends Controller
         // Retrieve the parent user message
         $userMessage = $assistantMessage->parentMessage;
 
-        // $messages = $conversation->contextMessages($userMessage?->id);
-        $messages = ConversationContextBuilder::make(
-            $conversation,
-            startsFrom: $userMessage?->id,
-            beforeMessages: [
-                ChatMessage::system($conversation->user->preferences->instruction_prompt),
+        $request = new ChatRequest(
+            model: $conversation->model_id,
+            messages: [
+                SystemPromptService::persona($conversation->persona_id),
+                SystemPromptService::userInstructions($conversation->user),
+                ...$conversation->contextMessages($userMessage?->id),
             ],
         );
 
-        $request = new ChatRequest(
-            model: $conversation->model_id,
-            messages: $messages,
-        );
+        Log::info('Chat Request', [
+            'request' => $request,
+        ]);
 
         $stream = OpenRouter::chat($request)->stream();
 

@@ -9,5 +9,6 @@ class ChatData extends Data
     public function __construct(
         public string $model,
         public string $message,
+        public ?string $persona = null,
     ) {}
 }
