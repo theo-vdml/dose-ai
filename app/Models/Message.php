@@ -50,13 +50,4 @@ class Message extends Model
             content: $this->content,
         );
     }
-
-    public function toOpenRouterEntity(bool $includeReasoning = true): \App\Services\OpenRouter\Data\Entities\Message
-    {
-        return new \App\Services\OpenRouter\Data\Entities\Message(
-            role: $this->role,
-            content: $this->content,
-            reasoning: $includeReasoning ? $this->reasoning : null,
-        );
-    }
 }
