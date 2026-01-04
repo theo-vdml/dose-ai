@@ -2,23 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Data\StoreMessageRequest;
+use App\OpenRouter\Chat\ChatRequest;
 use Inertia\{Inertia, Response};
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Session;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use App\Models\Conversation;
-use App\Http\Data\{MessageData, NewChatRequest, StreamRequest};
+use App\Http\Data\{MessageData, ChatData};
 use App\Jobs\GenerateConversationTitle;
-use App\Services\OpenRouter\Facades\OpenRouter;
-use App\Services\OpenRouter\Data\Stream\AssistantMessageCreatedChunk;
-use App\Services\OpenRouter\Data\Stream\MessagePersistedChunk;
-use App\Services\OpenRouter\Data\Stream\UserMessageCreatedChunk;
-use App\Services\OpenRouter\StreamAccumulator;
-use App\Services\OpenRouter\StreamEmitter;
+use App\OpenRouter\Facades\OpenRouter;
+use App\OpenRouter\Stream\StreamAccumulator;
+use App\OpenRouter\Stream\StreamChunk;
+use App\Services\SSEEmitterService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class ConversationController extends Controller
@@ -34,34 +31,33 @@ class ConversationController extends Controller
 
     public function create(): Response
     {
-        $models = OpenRouter::models()->all();
-        $selectedModel = OpenRouter::models()->default();
+        $models = OpenRouter::models()->list()->toArray();
+        $selectedModel = OpenRouter::models()->defaultId();
 
         return Inertia::render('conversation/Create', compact('models', 'selectedModel'));
     }
 
-    public function store(NewChatRequest $request): RedirectResponse
+    public function store(ChatData $chat): RedirectResponse
     {
         $conversation = Conversation::create([
-            'model_id' => $request->model,
+            'model_id' => $chat->model,
             'user_id' => Auth::user()->id,
+            'last_message_at' => now(),
         ]);
 
         return redirect()->route('conversations.show', [
             'conversation' => $conversation->id,
-            'q' => base64_encode($request->message),
+            'q' => base64_encode($chat->message),
             'submit' => true,
         ]);
     }
 
     public function show(Conversation $conversation): Response
     {
-        $models = OpenRouter::models()->all();
         $conversation->load('messages');
 
         return Inertia::render('conversation/Show', [
             'conversation' => $conversation,
-            'models' => $models,
             'model_id' => $conversation->model_id,
         ]);
     }
@@ -103,25 +99,22 @@ class ConversationController extends Controller
         // Retrieve the parent user message
         $userMessage = $assistantMessage->parentMessage;
 
-        $messagesChain = $conversation->activeMessageChain(
-            includeReasoning: false,
+        $messages = $conversation->activeMessageChain(
             startsFrom: $userMessage->id
         );
 
-        $systemPromptService = app()->make(\App\Services\SystemPromptService::class);
-        $messages = $systemPromptService->prepend($messagesChain->all());
+        $request = new ChatRequest(
+            model: $conversation->model_id,
+            messages: $messages,
+        );
 
-        // Start the OpenRouter streaming completion from the user message
-        $stream = OpenRouter::completion()
-            ->model($conversation->model_id)
-            ->messages($messages)
-            ->maxTokens(4096)
-            ->stream();
+        $stream = OpenRouter::chat($request)->stream();
 
         return response()->stream(function () use ($stream, $assistantMessage, $conversation): void {
 
+            /** @var StreamChunk $chunk */
             foreach ($stream as $chunk) {
-                StreamEmitter::chunk($chunk);
+                SSEEmitterService::emitJson($chunk->toArray());
             }
 
             /** @var StreamAccumulator $acc */
@@ -132,8 +125,16 @@ class ConversationController extends Controller
                 'reasoning' => $acc->getReasoning(),
             ]);
 
-            StreamEmitter::chunk(new MessagePersistedChunk(message: $assistantMessage));
-            StreamEmitter::done();
+            Log::debug('Finish streaming reason: ' . $acc->getFinishReason());
+
+            SSEEmitterService::emitJson([
+                'type' => 'message_persisted',
+                'data' => [
+                    'message' => $assistantMessage,
+                ],
+            ]);
+
+            SSEEmitterService::done();
 
             if ($conversation->title === null) {
                 GenerateConversationTitle::dispatch($conversation);

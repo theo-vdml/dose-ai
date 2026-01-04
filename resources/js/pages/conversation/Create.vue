@@ -2,18 +2,20 @@
     import { ModelSelector, PromptInput } from '@/components/chat';
     import AppLayout from '@/layouts/AppLayout.vue';
     import conversations from '@/routes/conversations';
-    import { Models } from '@/types/generated';
+    import { Model, Models } from '@/types/generated';
     import { useForm } from '@inertiajs/vue3';
 
     const props = defineProps<{
-        models: Models;
+        models: Model[];
         selectedModel?: string;
         message?: string;
         error?: string;
     }>()
 
+    console.log(props);
+
     const form = useForm({
-        model: props.selectedModel || (props.models.data.length > 0 ? props.models.data[0].id : ''),
+        model: props.selectedModel || (props.models.length > 0 ? props.models[0].id : ''),
         message: props.message || '',
     });
 
@@ -40,7 +42,7 @@
                 </div>
 
                 <PromptInput v-model:message="form.message" @submit="submit">
-                    <ModelSelector :available-models="props.models.data" v-model="form.model" />
+                    <ModelSelector :available-models="props.models ?? []" v-model="form.model" />
                 </PromptInput>
 
             </div>

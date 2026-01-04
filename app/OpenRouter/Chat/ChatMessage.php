@@ -1,16 +1,19 @@
 <?php
 
-namespace App\Services\OpenRouter\Data\Entities;
+namespace App\OpenRouter\Chat;
 
-use Spatie\LaravelData\Data;
-
-class Message extends Data
+class ChatMessage
 {
     public function __construct(
         public string $role,
         public string $content,
         public ?string $reasoning = null,
     ) {}
+
+    public static function system(string $content): self
+    {
+        return new self('system', $content);
+    }
 
     public static function user(string $content): self
     {
@@ -22,8 +25,11 @@ class Message extends Data
         return new self('assistant', $content);
     }
 
-    public static function system(string $content): self
+    public function toArray(): array
     {
-        return new self('system', $content);
+        return [
+            'role' => $this->role,
+            'content' => $this->content,
+        ];
     }
 }

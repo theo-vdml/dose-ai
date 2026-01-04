@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\OpenRouter;
+namespace App\OpenRouter\Stream;
 
 use Illuminate\Http\Client\Response;
 use IteratorAggregate;
@@ -62,7 +62,7 @@ class StreamIterator implements IteratorAggregate
                     $data = json_decode($json, true, flags: JSON_THROW_ON_ERROR);
 
                     if ($data && json_last_error() === JSON_ERROR_NONE) {
-                        $chunks = StreamChunkFactory::create($data);
+                        $chunks = StreamChunkFactory::from($data);
                         $this->accumulator->add($chunks);
                         foreach ($chunks as $chunk) {
                             yield $chunk;
@@ -78,7 +78,7 @@ class StreamIterator implements IteratorAggregate
                 $data = json_decode($json, true, flags: JSON_THROW_ON_ERROR);
 
                 if ($data && json_last_error() === JSON_ERROR_NONE) {
-                    $chunks = StreamChunkFactory::create($data);
+                    $chunks = StreamChunkFactory::from($data);
                     $this->accumulator->add($chunks);
                     foreach ($chunks as $chunk) {
                         yield $chunk;

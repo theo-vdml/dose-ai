@@ -31,12 +31,7 @@ class ConversationTitleGenerated implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('users.' . $this->userId),
+            new PrivateChannel('Users.' . $this->userId),
         ];
-    }
-
-    public function broadcastAs(): string
-    {
-        return 'conversation.title.generated';
     }
 }

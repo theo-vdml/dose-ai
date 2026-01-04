@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\OpenRouter\Chat\ChatMessage;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -47,17 +48,22 @@ class Conversation extends Model
         return $this->belongsTo(Message::class, 'current_message_id');
     }
 
-    public function activeMessageChain(bool $includeReasoning = false, ?string $startsFrom = null)
+    /**
+     * Summary of contextMessages
+     * @param ?string $startsFrom
+     * @return array<ChatMessage>
+     */
+    public function contextMessages(?string $startsFrom = null): array
     {
         $messages = collect();
 
         $current = $startsFrom ? $this->messages()->find($startsFrom) : $this->currentMessage;
 
         while ($current) {
-            $messages->prepend($current->toOpenRouterEntity($includeReasoning));
+            $messages->prepend($current->toChatMessage());
             $current = $current->parentMessage;
         }
 
-        return $messages->values();
+        return $messages->values()->toArray();
     }
 }

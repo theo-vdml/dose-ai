@@ -1,12 +1,6 @@
 <?php
 
-namespace App\Services\OpenRouter;
-
-use App\Services\OpenRouter\Data\Stream\BaseChunk;
-use App\Services\OpenRouter\Data\Stream\ContentChunk;
-use App\Services\OpenRouter\Data\Stream\FinishReasonChunk;
-use App\Services\OpenRouter\Data\Stream\ReasoningChunk;
-use App\Services\OpenRouter\Data\Stream\UsageChunk;
+namespace App\OpenRouter\Stream;
 
 class StreamAccumulator
 {
@@ -16,11 +10,11 @@ class StreamAccumulator
     protected ?string $finishReasonNative = null;
     protected ?array $usage = null;
 
-    public function add(BaseChunk|array $chunk): void
+    public function add(StreamChunk|array $chunk): void
     {
         if (\is_array($chunk)) {
             foreach ($chunk as $singleChunk) {
-                if ($singleChunk instanceof BaseChunk) {
+                if ($singleChunk instanceof StreamChunk) {
                     $this->add($singleChunk);
                 }
             }
@@ -28,28 +22,28 @@ class StreamAccumulator
         }
 
         match (true) {
-            $chunk instanceof ContentChunk => $this->content .= $chunk->delta,
-            $chunk instanceof ReasoningChunk => $this->reasoning .= $chunk->delta,
-            $chunk instanceof FinishReasonChunk => $this->setFinishReason($chunk),
-            $chunk instanceof UsageChunk => $this->setUsage($chunk),
+            $chunk->type() === 'content' => $this->content .= $chunk->get('delta', ''),
+            $chunk->type() === 'reasoning' => $this->reasoning .= $chunk->get('delta', ''),
+            $chunk->type() === 'finish_reason' => $this->setFinishReason($chunk),
+            $chunk->type() === 'usage' => $this->setUsage($chunk),
             default => null,
         };
 
         return;
     }
 
-    protected function setFinishReason(FinishReasonChunk $chunk): void
+    protected function setFinishReason(StreamChunk $chunk): void
     {
-        $this->finishReason = $chunk->router;
-        $this->finishReasonNative = $chunk->model;
+        $this->finishReason = $chunk->get('router', null);
+        $this->finishReasonNative = $chunk->get('model', null);
     }
 
-    protected function setUsage(UsageChunk $chunk): void
+    protected function setUsage(StreamChunk $chunk): void
     {
         $this->usage = [
-            'prompt_tokens' => $chunk->promptTokens,
-            'completion_tokens' => $chunk->completionTokens,
-            'total_tokens' => $chunk->totalTokens,
+            'prompt_tokens' => $chunk->get('prompt_tokens', 0),
+            'completion_tokens' => $chunk->get('completion_tokens', 0),
+            'total_tokens' => $chunk->get('total_tokens', 0),
         ];
     }
 

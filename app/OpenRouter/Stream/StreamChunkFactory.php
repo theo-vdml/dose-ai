@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Services\OpenRouter;
+namespace App\OpenRouter\Stream;
 
 class StreamChunkFactory
 {
-    public static function create(array $data)
+    public static function from(array $data)
     {
         // Accumulator for chunks to return
         $chunks = [];
@@ -29,7 +29,9 @@ class StreamChunkFactory
         if (isset($delta['reasoning'])) {
             $reasoning = $delta['reasoning'];
             if (\is_string($reasoning) && $reasoning !== '') {
-                $chunks[] = new Data\Stream\ReasoningChunk(delta: $reasoning);
+                $chunks[] = StreamChunk::reasoning(
+                    delta: $reasoning
+                );
             }
         }
 
@@ -37,7 +39,9 @@ class StreamChunkFactory
         if (isset($delta['content'])) {
             $content = $delta['content'];
             if (\is_string($content) && $content !== '') {
-                $chunks[] = new Data\Stream\ContentChunk(delta: $content);
+                $chunks[] = StreamChunk::content(
+                    delta: $content
+                );
             }
         }
 
@@ -45,13 +49,16 @@ class StreamChunkFactory
         if (isset($choice['finish_reason'])) {
             $reason = $choice['finish_reason'];
             if (\is_string($reason) && $reason !== '') {
-                $chunks[] = new Data\Stream\FinishReasonChunk(router: $reason, model: $choice['native_finish_reason'] ?? '');
+                $chunks[] = StreamChunk::finishReason(
+                    router: $reason,
+                    model: $choice['native_finish_reason'] ?? ''
+                );
             }
         }
 
         // Create usage chunk if present
         if (isset($data['usage'])) {
-            $chunks[] = new Data\Stream\UsageChunk(
+            $chunks[] = StreamChunk::usage(
                 promptTokens: $data['usage']['prompt_tokens'] ?? 0,
                 completionTokens: $data['usage']['completion_tokens'] ?? 0,
                 totalTokens: $data['usage']['total_tokens'] ?? 0,

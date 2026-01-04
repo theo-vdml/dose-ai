@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\OpenRouter\Chat\ChatMessage;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 
@@ -40,6 +41,14 @@ class Message extends Model
     public function childMessages()
     {
         return $this->hasMany(Message::class, 'parent_message_id');
+    }
+
+    public function toChatMessage(): ChatMessage
+    {
+        return new ChatMessage(
+            role: $this->role,
+            content: $this->content,
+        );
     }
 
     public function toOpenRouterEntity(bool $includeReasoning = true): \App\Services\OpenRouter\Data\Entities\Message
