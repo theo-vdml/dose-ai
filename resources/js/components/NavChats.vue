@@ -35,7 +35,7 @@
                 conversation.title = e.title;
             }
         }
-    )
+    );
 
 </script>
 
