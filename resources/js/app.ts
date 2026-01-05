@@ -11,9 +11,6 @@ configureEcho({
     broadcaster: 'reverb',
 });
 
-console.log('Echo configured:', configureEcho);
-console.log('Echo instance:', (window as any).Echo);
-
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 if (typeof crypto !== 'undefined' && !('randomUUID' in crypto)) {

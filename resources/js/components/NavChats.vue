@@ -20,28 +20,22 @@
         return conversationsRoutes.show(id).url;
     };
 
-    try {
-        console.log('Echo: ', (window as any).Echo);
-        console.log('VITE_REVERB_HOST: ', import.meta.env.VITE_REVERB_HOST);
-        useEcho<{
-            conversationId: string;
-            title: string;
-        }>(
-            'Users.' + page.props.auth.user.id,
-            'ConversationTitleGenerated',
-            (e) => {
-                const conversation = conversations.value.find(
-                    (c) => c.id === e.conversationId
-                );
+    useEcho<{
+        conversationId: string;
+        title: string;
+    }>(
+        'Users.' + page.props.auth.user.id,
+        'ConversationTitleGenerated',
+        (e) => {
+            const conversation = conversations.value.find(
+                (c) => c.id === e.conversationId
+            );
 
-                if (conversation) {
-                    conversation.title = e.title;
-                }
+            if (conversation) {
+                conversation.title = e.title;
             }
-        );
-    } catch (e) {
-        console.error('Error setting up Echo listener:', e);
-    }
+        }
+    );
 
 </script>
 
