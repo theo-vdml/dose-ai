@@ -38,7 +38,7 @@
 
     reverse_proxy @reverb 127.0.0.1:8080 {
         transport http {
-            versions h1
+            versions 1.1
         }
     }
 
