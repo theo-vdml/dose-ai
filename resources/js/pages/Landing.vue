@@ -593,22 +593,22 @@
                         <h3 class="text-sm font-medium text-white mb-4">Entreprise</h3>
                         <ul class="space-y-3 text-sm">
                             <li>
-                                <a href="/about" class="text-gray-400 transition hover:text-white">
+                                <a href="#" class="text-gray-400 transition hover:text-white">
                                     À propos
                                 </a>
                             </li>
                             <li>
-                                <a href="/blog" class="text-gray-400 transition hover:text-white">
+                                <a href="#" class="text-gray-400 transition hover:text-white">
                                     Blog
                                 </a>
                             </li>
                             <li>
-                                <a href="/careers" class="text-gray-400 transition hover:text-white">
+                                <a href="#" class="text-gray-400 transition hover:text-white">
                                     Carrières
                                 </a>
                             </li>
                             <li>
-                                <a href="/contact" class="text-gray-400 transition hover:text-white">
+                                <a href="#" class="text-gray-400 transition hover:text-white">
                                     Contact
                                 </a>
                             </li>
