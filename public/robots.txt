@@ -1,2 +1,5 @@
 User-agent: *
-Disallow:
+Allow: /
+Disallow: /dashboard
+
+Sitemap: https://chat.ifosup.theovdml.dev/sitemap.xml

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { Head, Link } from '@inertiajs/vue3';
+    import { Head, Link, usePage } from '@inertiajs/vue3';
     import { register, login } from '@/routes';
     import {
         MessageSquare,
@@ -172,11 +172,51 @@
                 'Une API REST complète est disponible pour les abonnés Enterprise. Elle permet d\'intégrer PersonAI dans vos applications et workflows existants. Contactez notre équipe commerciale pour plus d\'informations sur les tarifs et les fonctionnalités de l\'API.',
         },
     ];
+
+    const page = usePage();
+
+    const appUrl = page.props.app_url;
+    const appName = page.props.name;
+    const mainImage = `${appUrl}/images/og-image.png`;
+
+    const seo = {
+        title: 'PersonAI - Conversations IA avec des personas uniques',
+        description: 'Dialoguez avec les meilleurs modèles d\'IA via des personas historiques et uniques. Sécurisé et personnalisable. Commencez gratuitement.',
+        keywords: 'IA, OpenRouter, Chatbot, Personas, GPT-4, Claude, Intelligence Artificielle, SaaS, Streaming',
+    };
 </script>
 
 <template>
 
-    <Head title="PersonAI - Conversations IA avec des personas uniques" />
+    <Head>
+        <title>PersonAI - Conversations IA avec des personas uniques</title>
+
+        <title>{{ seo.title }}</title>
+        <meta name="description" :content="seo.description" />
+        <meta name="keywords" :content="seo.keywords" />
+        <meta name="robots" content="index, follow" />
+        <meta name="language" content="French" />
+        <meta name="revisit-after" content="7 days" />
+        <meta name="author" content="PersonAI" />
+        <link rel="canonical" :href="appUrl" />
+        <link rel="alternate" :href="appUrl" hreflang="fr" />
+        <link rel="alternate" :href="appUrl" hreflang="x-default" />
+
+        <meta property="og:type" content="website" />
+        <meta property="og:url" :content="appUrl" />
+        <meta property="og:title" :content="seo.title" />
+        <meta property="og:description" :content="seo.description" />
+        <meta property="og:image" :content="mainImage" />
+        <meta property="og:site_name" :content="appName" />
+        <meta property="og:locale" content="fr_FR" />
+
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:site" content="@personai.app" />
+        <meta property="twitter:url" :content="appUrl" />
+        <meta property="twitter:title" :content="seo.title" />
+        <meta property="twitter:description" :content="seo.description" />
+        <meta property="twitter:image" :content="mainImage" />
+    </Head>
 
     <div class="min-h-screen bg-black text-white relative">
         <!-- Grain texture overlay -->
@@ -224,16 +264,15 @@
         <section class="relative overflow-hidden pt-32 pb-20 sm:pt-40 sm:pb-28">
             <div class="absolute inset-0">
                 <div
-                    class="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-white/[0.03] blur-[120px] rounded-full" />
-                <div class="absolute top-1/2 left-1/4 w-[400px] h-[400px] bg-white/[0.02] blur-[100px] rounded-full" />
-                <div
-                    class="absolute bottom-1/3 right-1/4 w-[500px] h-[500px] bg-white/[0.02] blur-[100px] rounded-full" />
+                    class="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-white/3 blur-[120px] rounded-full" />
+                <div class="absolute top-1/2 left-1/4 w-[400px] h-[400px] bg-white/2 blur-[100px] rounded-full" />
+                <div class="absolute bottom-1/3 right-1/4 w-[500px] h-[500px] bg-white/2 blur-[100px] rounded-full" />
             </div>
 
             <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                <div class="text-center space-y-8">
-                    <div
-                        class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm backdrop-blur-xl">
+                <div class="text-center space-y-16">
+                    <div class=" inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2
+                    text-sm backdrop-blur-xl">
                         <span class="relative flex size-2">
                             <span
                                 class="absolute inline-flex size-full animate-ping rounded-full bg-white opacity-75" />
@@ -309,7 +348,7 @@
         <!-- Pricing Section -->
         <section id="pricing" class="py-20 sm:py-28 relative overflow-hidden">
             <div
-                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-white/[0.02] blur-[120px] rounded-full" />
+                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-white/2 blur-[120px] rounded-full" />
 
             <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div class="text-center space-y-4 mb-16">
@@ -418,7 +457,7 @@
         <!-- FAQ Section -->
         <section id="faq" class="py-20 sm:py-28 relative overflow-hidden">
             <div
-                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-white/[0.02] blur-[120px] rounded-full" />
+                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-white/2 blur-[120px] rounded-full" />
 
             <div class="relative mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
                 <div class="text-center space-y-4 mb-16">
@@ -461,7 +500,7 @@
                 <div
                     class="relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-12 sm:p-16 backdrop-blur-xl">
                     <div
-                        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-white/[0.03] blur-[100px] rounded-full" />
+                        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-white/3 blur-[100px] rounded-full" />
 
                     <div class="relative text-center space-y-6">
                         <h2 class="text-4xl sm:text-5xl font-bold tracking-tight">
