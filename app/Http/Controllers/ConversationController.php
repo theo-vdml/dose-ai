@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\OpenRouter\Chat\ChatRequest;
+use Exception;
 use Inertia\{Inertia, Response};
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
@@ -70,7 +71,7 @@ class ConversationController extends Controller
         $message = $conversation->messages()->create([
             'role' => $messageData->role,
             'content' => $messageData->content,
-            'parent_message_id' => $messageData->parent_message_id,
+            'parent_message_id' => $conversation->current_message_id,
         ]);
 
         $conversation->update([
@@ -81,12 +82,13 @@ class ConversationController extends Controller
         return response()->json($message);
     }
 
-    public function stream(Conversation $conversation, MessageData $messageData): StreamedResponse
+    public function stream(Conversation $conversation): StreamedResponse
     {
+
         $assistantMessage = $conversation->messages()->create([
-            'role' => $messageData->role,
-            'content' => $messageData->content ?? '',
-            'parent_message_id' => $messageData->parent_message_id,
+            'role' => 'assistant',
+            'content' => '',
+            'parent_message_id' => $conversation->current_message_id,
         ]);
 
         $conversation->update([
@@ -114,30 +116,75 @@ class ConversationController extends Controller
 
         return response()->stream(function () use ($stream, $assistantMessage, $conversation): void {
 
-            /** @var StreamChunk $chunk */
-            foreach ($stream as $chunk) {
-                SSEEmitterService::emitJson($chunk->toArray());
-            }
+            try {
+                // Inital emit of the created assistant message to get the ID to the client
+                SSEEmitterService::emitJson([
+                    'type' => 'created',
+                    'data' => [
+                        'message' => $assistantMessage,
+                    ]
+                ]);
 
-            /** @var StreamAccumulator $acc */
-            $acc = $stream->getAccumulator();
+                $acc = $stream->getAccumulator();
 
-            $assistantMessage->update([
-                'content' => $acc->getContent(),
-                'reasoning' => $acc->getReasoning(),
-            ]);
+                $lastSavedAt = microtime(true);
+                $saveInterval = 5.0; // seconds
 
-            SSEEmitterService::emitJson([
-                'type' => 'message_persisted',
-                'data' => [
-                    'message' => $assistantMessage,
-                ],
-            ]);
+                foreach ($stream as $chunk) {
+                    // Accumulate content and reasoning
+                    SSEEmitterService::emitJson($chunk->toArray());
 
-            SSEEmitterService::done();
+                    // Update the database instance every few seconds to ensure progress is saved
+                    $now = microtime(true);
+                    if (($now - $lastSavedAt) >= $saveInterval) {
+                        $assistantMessage->updateQuietly([
+                            'content' => $acc->getContent(),
+                            'reasoning' => $acc->getReasoning(),
+                        ]);
+                        $lastSavedAt = $now;
+                        throw new Exception('Le streaming a été interrompu pour des raisons de test.');
+                    }
+                }
 
-            if ($conversation->title === null) {
-                GenerateConversationTitle::dispatch($conversation);
+                // Final update to ensure all content is saved
+                $assistantMessage->update([
+                    'content' => $acc->getContent(),
+                    'reasoning' => $acc->getReasoning(),
+                ]);
+
+                // Emit completion event
+                SSEEmitterService::emitJson([
+                    'type' => 'completed',
+                    'data' => [
+                        'message' => $assistantMessage,
+                    ],
+                ]);
+
+                // Emit done event to close the stream
+                SSEEmitterService::done();
+
+                // Dispatch job to generate conversation title if it's missing
+                if ($conversation->title === null) {
+                    GenerateConversationTitle::dispatch($conversation);
+                }
+            } catch (\Throwable $e) {
+                Log::error('Error during streaming', [
+                    'error' => $e->getMessage(),
+                    'conversation_id' => $conversation->id,
+                    'message_id' => $assistantMessage->id,
+                ]);
+
+                // Emit error event
+                SSEEmitterService::emitJson([
+                    'type' => 'error',
+                    'data' => [
+                        'message' => $e->getMessage(),
+                        'code' => $e->getCode(),
+                    ],
+                ]);
+
+                // Emit done event to close the stream
+                SSEEmitterService::done();
             }
         }, 200, [
             'Content-Type' => 'text/event-stream',

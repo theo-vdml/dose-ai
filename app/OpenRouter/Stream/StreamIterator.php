@@ -8,6 +8,9 @@ use RuntimeException;
 use Traversable;
 use Generator;
 
+/**
+ * @implements IteratorAggregate<int, StreamChunk>
+ */
 class StreamIterator implements IteratorAggregate
 {
     protected bool $consumed = false;

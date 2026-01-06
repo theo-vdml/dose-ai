@@ -10,6 +10,7 @@ type Message = {
     content: string;
     reasoning: string | null;
     error?: string | null;
+    state?: 'pending' | 'reasoning' | 'answering' | 'failed' | 'completed' | null;
 };
 
 type Conversation = {
