@@ -12,22 +12,14 @@ import { readonly, ref, Ref, shallowReactive } from 'vue';
 interface UseCompletionStreamOptions {
     /** The ID of the conversation to stream completions for */
     conversationId: string;
-    /** Callback invoked when the stream completes successfully */
-    onComplete?: (data: {
-        content: string;
-        reasoning: string;
-        finishReason: string | null;
-        usage: {
-            promptTokens: number;
-            completionTokens: number;
-            totalTokens: number;
-        } | null;
-    }) => void;
+    onResponse?: (response: Response) => void;
     /** Callback invoked when an error occurs during streaming */
     onError?: (error: Error) => void;
     onChunk?: (chunk: SSEChunk) => void;
     onDelta?: (delta: string, type: 'content' | 'reasoning') => void;
-    onMessagePersisted?: (message: Message) => void;
+    onCreated?: (message: Message) => void;
+    onCompleted?: (message: Message) => void;
+    onFinish?: () => void;
 }
 
 /**
@@ -59,8 +51,10 @@ interface UseCompletionStreamReturn {
     >;
     /** Error object if the stream encounters an error */
     error: Readonly<Ref<Error | null>>;
+    /** The raw HTTP response from the stream */
+    response: Readonly<Ref<Response | null>>;
     /** Send a message to start streaming a completion */
-    start: (message: Message) => void;
+    start: (messageId?: string) => void;
     /** Cancel the active stream */
     cancel: () => void;
     /** Reset all stream state to initial values */
@@ -97,9 +91,16 @@ type SSEChunk =
           };
       }
     | {
-          type: 'message_persisted';
+          type: 'created' | 'completed';
           data: {
               message: Message;
+          };
+      }
+    | {
+          type: 'error';
+          data: {
+              message: string;
+              code: number;
           };
       };
 
@@ -122,6 +123,7 @@ export function useCompletionStream(options: UseCompletionStreamOptions): UseCom
         totalTokens: number;
     } | null>(null);
     const error = ref<Error | null>(null);
+    const response = ref<Response | null>(null);
 
     /**
      * Processes raw SSE chunks and updates the appropriate state based on chunk type.
@@ -174,9 +176,20 @@ export function useCompletionStream(options: UseCompletionStreamOptions): UseCom
                             totalTokens: chunk.data.total_tokens,
                         };
                         break;
-                    case 'message_persisted':
-                        if (options.onMessagePersisted) {
-                            options.onMessagePersisted(chunk.data.message);
+                    case 'created':
+                        if (options.onCreated) {
+                            options.onCreated(chunk.data.message);
+                        }
+                        break;
+                    case 'completed':
+                        if (options.onCompleted) {
+                            options.onCompleted(chunk.data.message);
+                        }
+                        break;
+                    case 'error':
+                        console.log('Stream error chunk received:', chunk.data.message);
+                        if (options.onError) {
+                            options.onError(new Error(chunk.data.message));
                         }
                         break;
                 }
@@ -216,22 +229,36 @@ export function useCompletionStream(options: UseCompletionStreamOptions): UseCom
         onData: onSSEChunk,
         // Handle stream completion
         onFinish: () => {
-            if (options.onComplete) {
-                options.onComplete({
-                    content: contentBuffer.value,
-                    reasoning: reasoningBuffer.value,
-                    finishReason: finishReason.value,
-                    usage: usage.value,
-                });
+            if (options.onFinish) {
+                options.onFinish();
             }
             reset();
         },
+        onResponse: (r) => {
+            response.value = r;
+            if (options.onResponse) {
+                options.onResponse(r);
+            }
+        },
         // Handle stream errors
-        onError: (e) => {
-            console.error('Completion stream error:', e);
-            error.value = e;
+        onError: (rawError) => {
+            let cleanMessage = rawError.message;
+
+            try {
+                if (cleanMessage && cleanMessage.trim().startsWith('{')) {
+                    const errorObj = JSON.parse(cleanMessage);
+                    if (errorObj.message) {
+                        cleanMessage = errorObj.message;
+                    }
+                }
+            } catch (e) {
+                // Ignore JSON parsing errors
+            }
+
+            const sanitizedError = new Error(cleanMessage);
+            error.value = sanitizedError;
             if (options.onError) {
-                options.onError(e);
+                options.onError(sanitizedError);
             }
             cancel();
         },
@@ -241,10 +268,10 @@ export function useCompletionStream(options: UseCompletionStreamOptions): UseCom
      * Sends a message to start a new completion stream.
      * Automatically resets state before sending.
      */
-    const start = (message: Message) => {
+    const start = (messageId?: string) => {
         reset();
         send({
-            ...message,
+            message_id: messageId,
         });
     };
 
@@ -259,6 +286,7 @@ export function useCompletionStream(options: UseCompletionStreamOptions): UseCom
         finishReason: readonly(finishReason),
         usage: readonly(usage),
         error: readonly(error),
+        response: readonly(response),
         start,
         cancel,
         reset,

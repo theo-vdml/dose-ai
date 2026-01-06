@@ -49,7 +49,7 @@
         <div class="relative h-[calc(100vh-4rem)]">
             <ScrollLockContainer class="h-full overflow-y-auto pb-48" :starts-at-bottom="true" :smooth-scroll="true"
                 :offset-bottom="25">
-                <Conversation :messages="chat.messages.value" :waiting="chat.isWaitingForFirstToken.value" />
+                <Conversation :messages="chat.messages.value" />
             </ScrollLockContainer>
             <div
                 class="pointer-events-none absolute bottom-0 left-0 right-0 pb-8 pt-32 px-8 bg-linear-to-t from-background/95 via-60% via-background/50 to-transparent">
