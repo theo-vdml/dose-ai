@@ -27,5 +27,5 @@ type Conversation = {
 type Model = {
     id: string;
     name: string;
-    descriptio: string;
+    description: string;
 };
