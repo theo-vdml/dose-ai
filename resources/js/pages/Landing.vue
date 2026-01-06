@@ -225,7 +225,8 @@
         </div>
 
         <!-- Header -->
-        <header class="fixed top-0 left-0 right-0 z-50 border-b border-white/5 backdrop-blur-2xl bg-black/60">
+        <header role="banner"
+            class="fixed top-0 left-0 right-0 z-50 border-b border-white/5 backdrop-blur-2xl bg-black/60">
             <nav class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div class="flex h-16 items-center justify-between">
                     <div class="flex items-center gap-3">
@@ -238,7 +239,7 @@
                         </span>
                     </div>
 
-                    <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-3" role="navigation">
                         <template v-if="$page.props.auth.user">
                             <Link href="/dashboard"
                                 class="rounded-lg bg-white text-black px-6 py-2.5 text-sm font-medium transition hover:bg-white/90">
@@ -261,269 +262,272 @@
         </header>
 
         <!-- Hero Section -->
-        <section class="relative overflow-hidden pt-32 pb-20 sm:pt-40 sm:pb-28">
-            <div class="absolute inset-0">
-                <div
-                    class="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-white/3 blur-[120px] rounded-full" />
-                <div class="absolute top-1/2 left-1/4 w-[400px] h-[400px] bg-white/2 blur-[100px] rounded-full" />
-                <div class="absolute bottom-1/3 right-1/4 w-[500px] h-[500px] bg-white/2 blur-[100px] rounded-full" />
-            </div>
+        <main role="main">
+            <section class="relative overflow-hidden pt-32 pb-20 sm:pt-40 sm:pb-28">
+                <div class="absolute inset-0">
+                    <div
+                        class="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-white/3 blur-[120px] rounded-full" />
+                    <div class="absolute top-1/2 left-1/4 w-[400px] h-[400px] bg-white/2 blur-[100px] rounded-full" />
+                    <div
+                        class="absolute bottom-1/3 right-1/4 w-[500px] h-[500px] bg-white/2 blur-[100px] rounded-full" />
+                </div>
 
-            <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                <div class="text-center space-y-16">
-                    <div class=" inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2
+                <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <div class="text-center space-y-16">
+                        <div class=" inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2
                     text-sm backdrop-blur-xl">
-                        <span class="relative flex size-2">
-                            <span
-                                class="absolute inline-flex size-full animate-ping rounded-full bg-white opacity-75" />
-                            <span class="relative inline-flex size-2 rounded-full bg-white" />
-                        </span>
-                        <span class="text-gray-400">Propulsé par OpenRouter</span>
-                    </div>
-
-                    <h1 class="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1]">
-                        L'IA conversationnelle
-                        <br />
-                        <span class="text-white">
-                            réinventée
-                        </span>
-                    </h1>
-
-                    <p class="mx-auto max-w-2xl text-lg sm:text-xl text-gray-400 leading-relaxed">
-                        Dialoguez avec les meilleurs modèles d'IA à travers des personas historiques et fictifs.
-                        Streaming temps réel, historique complet, expérience premium.
-                    </p>
-
-                    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-                        <Link :href="register()"
-                            class="group inline-flex items-center gap-2 rounded-lg bg-white text-black px-8 py-4 text-base font-medium transition hover:bg-white/90">
-                            <MessageSquare class="size-5" />
-                            <span>Commencer gratuitement</span>
-                        </Link>
-                        <a href="#features"
-                            class="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-8 py-4 text-base font-medium text-gray-300 backdrop-blur-xl transition hover:bg-white/10">
-                            <span>Découvrir les fonctionnalités</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Features Section -->
-        <section id="features" class="py-20 sm:py-28 relative">
-            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                <div class="text-center space-y-4 mb-16">
-                    <div
-                        class="inline-block rounded-lg border border-white/10 bg-white/5 px-4 py-1.5 text-sm font-medium text-gray-400 backdrop-blur-xl">
-                        Fonctionnalités
-                    </div>
-                    <h2 class="text-4xl sm:text-5xl font-bold tracking-tight">
-                        Tout ce dont vous avez besoin
-                        <br />
-                        <span class="text-white">
-                            pour vos conversations IA
-                        </span>
-                    </h2>
-                    <p class="mx-auto max-w-2xl text-lg text-gray-400">
-                        Des fonctionnalités puissantes pour une expérience conversationnelle inégalée
-                    </p>
-                </div>
-
-                <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                    <div v-for="(feature, index) in features" :key="index"
-                        class="group relative rounded-xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl transition hover:bg-white/[0.07]">
-                        <div
-                            class="flex size-12 items-center justify-center rounded-lg bg-white/10 border border-white/10 transition group-hover:bg-white/20">
-                            <component :is="feature.icon" class="size-6 text-white" />
+                            <span class="relative flex size-2">
+                                <span
+                                    class="absolute inline-flex size-full animate-ping rounded-full bg-white opacity-75" />
+                                <span class="relative inline-flex size-2 rounded-full bg-white" />
+                            </span>
+                            <span class="text-gray-400">Propulsé par OpenRouter</span>
                         </div>
-                        <h3 class="mt-6 text-xl font-semibold text-white">{{ feature.title }}</h3>
-                        <p class="mt-3 text-gray-400 leading-relaxed">
-                            {{ feature.description }}
+
+                        <h1 class="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1]">
+                            L'IA conversationnelle
+                            <br />
+                            <span class="text-white">
+                                réinventée
+                            </span>
+                        </h1>
+
+                        <p class="mx-auto max-w-2xl text-lg sm:text-xl text-gray-400 leading-relaxed">
+                            Dialoguez avec les meilleurs modèles d'IA à travers des personas historiques et fictifs.
+                            Streaming temps réel, historique complet, expérience premium.
                         </p>
-                    </div>
-                </div>
-            </div>
-        </section>
 
-        <!-- Pricing Section -->
-        <section id="pricing" class="py-20 sm:py-28 relative overflow-hidden">
-            <div
-                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-white/2 blur-[120px] rounded-full" />
-
-            <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                <div class="text-center space-y-4 mb-16">
-                    <div
-                        class="inline-block rounded-lg border border-white/10 bg-white/5 px-4 py-1.5 text-sm font-medium text-gray-400 backdrop-blur-xl">
-                        Tarifs
-                    </div>
-                    <h2 class="text-4xl sm:text-5xl font-bold tracking-tight">
-                        Un plan pour chaque besoin
-                    </h2>
-                    <p class="mx-auto max-w-2xl text-lg text-gray-400">
-                        Choisissez l'offre qui correspond à votre utilisation
-                    </p>
-                </div>
-
-                <div class="grid gap-6 lg:grid-cols-3">
-                    <div v-for="(plan, index) in plans" :key="index" :class="[
-                        'relative rounded-xl p-8 backdrop-blur-xl transition',
-                        plan.highlighted
-                            ? 'border-2 border-white/20 bg-white/10 lg:scale-105'
-                            : 'border border-white/10 bg-white/5',
-                    ]">
-                        <div v-if="plan.highlighted"
-                            class="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-white text-black px-4 py-1 text-xs font-medium">
-                            Le plus populaire
-                        </div>
-
-                        <div class="space-y-6">
-                            <div>
-                                <h3 class="text-2xl font-bold text-white">{{ plan.name }}</h3>
-                                <p class="mt-2 text-sm text-gray-400">{{ plan.description }}</p>
-                            </div>
-
-                            <div class="flex items-baseline gap-2">
-                                <span class="text-5xl font-bold text-white">{{ plan.price }}</span>
-                                <span class="text-gray-400">{{ plan.period }}</span>
-                            </div>
-
-                            <ul class="space-y-3">
-                                <li v-for="(feature, fIndex) in plan.features" :key="fIndex"
-                                    class="flex items-start gap-3">
-                                    <CheckCircle2 class="size-5 shrink-0 text-gray-400 mt-0.5" />
-                                    <span class="text-gray-300">{{ feature }}</span>
-                                </li>
-                            </ul>
-
-                            <Link :href="register()" :class="[
-                                'block w-full rounded-lg px-6 py-3 text-center font-medium transition',
-                                plan.highlighted
-                                    ? 'bg-white text-black hover:bg-white/90'
-                                    : 'border border-white/10 bg-white/5 text-gray-300 hover:bg-white/10',
-                            ]">
-                                {{ plan.cta }}
+                        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+                            <Link :href="register()"
+                                class="group inline-flex items-center gap-2 rounded-lg bg-white text-black px-8 py-4 text-base font-medium transition hover:bg-white/90">
+                                <MessageSquare class="size-5" />
+                                <span>Commencer gratuitement</span>
                             </Link>
+                            <a href="#features"
+                                class="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-8 py-4 text-base font-medium text-gray-300 backdrop-blur-xl transition hover:bg-white/10">
+                                <span>Découvrir les fonctionnalités</span>
+                            </a>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <!-- Testimonials Section -->
-        <section id="testimonials" class="py-20 sm:py-28">
-            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                <div class="text-center space-y-4 mb-16">
-                    <div
-                        class="inline-block rounded-lg border border-white/10 bg-white/5 px-4 py-1.5 text-sm font-medium text-gray-400 backdrop-blur-xl">
-                        Témoignages
-                    </div>
-                    <h2 class="text-4xl sm:text-5xl font-bold tracking-tight">
-                        Ils nous font confiance
-                    </h2>
-                    <p class="mx-auto max-w-2xl text-lg text-gray-400">
-                        Découvrez ce que nos utilisateurs disent de PersonAI
-                    </p>
-                </div>
-
-                <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                    <div v-for="(testimonial, index) in testimonials" :key="index"
-                        class="relative rounded-xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl transition hover:bg-white/[0.07]">
-                        <div class="flex gap-1 mb-4">
-                            <Star v-for="star in testimonial.rating" :key="star"
-                                class="size-4 fill-gray-400 text-gray-400" />
+            <!-- Features Section -->
+            <section id="features" class="py-20 sm:py-28 relative">
+                <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <div class="text-center space-y-4 mb-16">
+                        <div
+                            class="inline-block rounded-lg border border-white/10 bg-white/5 px-4 py-1.5 text-sm font-medium text-gray-400 backdrop-blur-xl">
+                            Fonctionnalités
                         </div>
-
-                        <p class="text-gray-300 leading-relaxed mb-6">
-                            "{{ testimonial.content }}"
+                        <h2 class="text-4xl sm:text-5xl font-bold tracking-tight">
+                            Tout ce dont vous avez besoin
+                            <br />
+                            <span class="text-white">
+                                pour vos conversations IA
+                            </span>
+                        </h2>
+                        <p class="mx-auto max-w-2xl text-lg text-gray-400">
+                            Des fonctionnalités puissantes pour une expérience conversationnelle inégalée
                         </p>
+                    </div>
 
-                        <div class="flex items-center gap-3">
+                    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                        <div v-for="(feature, index) in features" :key="index"
+                            class="group relative rounded-xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl transition hover:bg-white/[0.07]">
                             <div
-                                class="flex size-10 items-center justify-center rounded-full bg-white/10 border border-white/10 font-medium text-white text-sm">
-                                {{ testimonial.name.charAt(0) }}
+                                class="flex size-12 items-center justify-center rounded-lg bg-white/10 border border-white/10 transition group-hover:bg-white/20">
+                                <component :is="feature.icon" class="size-6 text-white" />
                             </div>
-                            <div>
-                                <div class="font-medium text-white">{{ testimonial.name }}</div>
-                                <div class="text-sm text-gray-400">
-                                    {{ testimonial.role }} · {{ testimonial.company }}
+                            <h3 class="mt-6 text-xl font-semibold text-white">{{ feature.title }}</h3>
+                            <p class="mt-3 text-gray-400 leading-relaxed">
+                                {{ feature.description }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pricing Section -->
+            <section id="pricing" class="py-20 sm:py-28 relative overflow-hidden">
+                <div
+                    class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-white/2 blur-[120px] rounded-full" />
+
+                <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <div class="text-center space-y-4 mb-16">
+                        <div
+                            class="inline-block rounded-lg border border-white/10 bg-white/5 px-4 py-1.5 text-sm font-medium text-gray-400 backdrop-blur-xl">
+                            Tarifs
+                        </div>
+                        <h2 class="text-4xl sm:text-5xl font-bold tracking-tight">
+                            Un plan pour chaque besoin
+                        </h2>
+                        <p class="mx-auto max-w-2xl text-lg text-gray-400">
+                            Choisissez l'offre qui correspond à votre utilisation
+                        </p>
+                    </div>
+
+                    <div class="grid gap-6 lg:grid-cols-3">
+                        <div v-for="(plan, index) in plans" :key="index" :class="[
+                            'relative rounded-xl p-8 backdrop-blur-xl transition',
+                            plan.highlighted
+                                ? 'border-2 border-white/20 bg-white/10 lg:scale-105'
+                                : 'border border-white/10 bg-white/5',
+                        ]">
+                            <div v-if="plan.highlighted"
+                                class="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-white text-black px-4 py-1 text-xs font-medium">
+                                Le plus populaire
+                            </div>
+
+                            <div class="space-y-6">
+                                <div>
+                                    <h3 class="text-2xl font-bold text-white">{{ plan.name }}</h3>
+                                    <p class="mt-2 text-sm text-gray-400">{{ plan.description }}</p>
+                                </div>
+
+                                <div class="flex items-baseline gap-2">
+                                    <span class="text-5xl font-bold text-white">{{ plan.price }}</span>
+                                    <span class="text-gray-400">{{ plan.period }}</span>
+                                </div>
+
+                                <ul class="space-y-3">
+                                    <li v-for="(feature, fIndex) in plan.features" :key="fIndex"
+                                        class="flex items-start gap-3">
+                                        <CheckCircle2 class="size-5 shrink-0 text-gray-400 mt-0.5" />
+                                        <span class="text-gray-300">{{ feature }}</span>
+                                    </li>
+                                </ul>
+
+                                <Link :href="register()" :class="[
+                                    'block w-full rounded-lg px-6 py-3 text-center font-medium transition',
+                                    plan.highlighted
+                                        ? 'bg-white text-black hover:bg-white/90'
+                                        : 'border border-white/10 bg-white/5 text-gray-300 hover:bg-white/10',
+                                ]">
+                                    {{ plan.cta }}
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Testimonials Section -->
+            <section id="testimonials" class="py-20 sm:py-28">
+                <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <div class="text-center space-y-4 mb-16">
+                        <div
+                            class="inline-block rounded-lg border border-white/10 bg-white/5 px-4 py-1.5 text-sm font-medium text-gray-400 backdrop-blur-xl">
+                            Témoignages
+                        </div>
+                        <h2 class="text-4xl sm:text-5xl font-bold tracking-tight">
+                            Ils nous font confiance
+                        </h2>
+                        <p class="mx-auto max-w-2xl text-lg text-gray-400">
+                            Découvrez ce que nos utilisateurs disent de PersonAI
+                        </p>
+                    </div>
+
+                    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                        <div v-for="(testimonial, index) in testimonials" :key="index"
+                            class="relative rounded-xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl transition hover:bg-white/[0.07]">
+                            <div class="flex gap-1 mb-4">
+                                <Star v-for="star in testimonial.rating" :key="star"
+                                    class="size-4 fill-gray-400 text-gray-400" />
+                            </div>
+
+                            <p class="text-gray-300 leading-relaxed mb-6">
+                                "{{ testimonial.content }}"
+                            </p>
+
+                            <div class="flex items-center gap-3">
+                                <div
+                                    class="flex size-10 items-center justify-center rounded-full bg-white/10 border border-white/10 font-medium text-white text-sm">
+                                    {{ testimonial.name.charAt(0) }}
+                                </div>
+                                <div>
+                                    <div class="font-medium text-white">{{ testimonial.name }}</div>
+                                    <div class="text-sm text-gray-400">
+                                        {{ testimonial.role }} · {{ testimonial.company }}
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <!-- FAQ Section -->
-        <section id="faq" class="py-20 sm:py-28 relative overflow-hidden">
-            <div
-                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-white/2 blur-[120px] rounded-full" />
-
-            <div class="relative mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-                <div class="text-center space-y-4 mb-16">
-                    <div
-                        class="inline-block rounded-lg border border-white/10 bg-white/5 px-4 py-1.5 text-sm font-medium text-gray-400 backdrop-blur-xl">
-                        FAQ
-                    </div>
-                    <h2 class="text-4xl sm:text-5xl font-bold tracking-tight">
-                        Questions fréquentes
-                    </h2>
-                    <p class="text-lg text-gray-400">
-                        Tout ce que vous devez savoir sur PersonAI
-                    </p>
-                </div>
-
-                <div class="space-y-3">
-                    <div v-for="(faq, index) in faqs" :key="index"
-                        class="rounded-xl border border-white/10 bg-white/5 backdrop-blur-xl overflow-hidden transition hover:bg-white/[0.07]">
-                        <button @click="toggleFaq(index)"
-                            class="flex w-full items-center justify-between p-6 text-left transition">
-                            <span class="text-lg font-medium text-white pr-8">
-                                {{ faq.question }}
-                            </span>
-                            <ChevronDown :class="[
-                                'size-5 shrink-0 text-gray-400 transition-transform',
-                                openFaq === index ? 'rotate-180' : '',
-                            ]" />
-                        </button>
-                        <div v-show="openFaq === index" class="px-6 pb-6 text-gray-400 leading-relaxed">
-                            {{ faq.answer }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- CTA Section -->
-        <section class="py-20 sm:py-28">
-            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <!-- FAQ Section -->
+            <section id="faq" class="py-20 sm:py-28 relative overflow-hidden">
                 <div
-                    class="relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-12 sm:p-16 backdrop-blur-xl">
-                    <div
-                        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-white/3 blur-[100px] rounded-full" />
+                    class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-white/2 blur-[120px] rounded-full" />
 
-                    <div class="relative text-center space-y-6">
+                <div class="relative mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+                    <div class="text-center space-y-4 mb-16">
+                        <div
+                            class="inline-block rounded-lg border border-white/10 bg-white/5 px-4 py-1.5 text-sm font-medium text-gray-400 backdrop-blur-xl">
+                            FAQ
+                        </div>
                         <h2 class="text-4xl sm:text-5xl font-bold tracking-tight">
-                            Prêt à commencer ?
+                            Questions fréquentes
                         </h2>
-                        <p class="mx-auto max-w-2xl text-lg text-gray-400">
-                            Rejoignez des milliers d'utilisateurs qui transforment leur façon de converser avec l'IA
+                        <p class="text-lg text-gray-400">
+                            Tout ce que vous devez savoir sur PersonAI
                         </p>
-                        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-                            <Link :href="register()"
-                                class="inline-flex items-center gap-2 rounded-lg bg-white px-8 py-4 text-base font-medium text-black transition hover:bg-white/90">
-                                <MessageSquare class="size-5" />
-                                <span>Commencer gratuitement</span>
-                            </Link>
-                            <a href="#pricing"
-                                class="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-8 py-4 text-base font-medium text-gray-300 backdrop-blur-xl transition hover:bg-white/10">
-                                <span>Voir les tarifs</span>
-                            </a>
+                    </div>
+
+                    <div class="space-y-3">
+                        <div v-for="(faq, index) in faqs" :key="index"
+                            class="rounded-xl border border-white/10 bg-white/5 backdrop-blur-xl overflow-hidden transition hover:bg-white/[0.07]">
+                            <button @click="toggleFaq(index)"
+                                class="flex w-full items-center justify-between p-6 text-left transition">
+                                <span class="text-lg font-medium text-white pr-8">
+                                    {{ faq.question }}
+                                </span>
+                                <ChevronDown :class="[
+                                    'size-5 shrink-0 text-gray-400 transition-transform',
+                                    openFaq === index ? 'rotate-180' : '',
+                                ]" />
+                            </button>
+                            <div v-show="openFaq === index" class="px-6 pb-6 text-gray-400 leading-relaxed">
+                                {{ faq.answer }}
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
+
+            <!-- CTA Section -->
+            <section class="py-20 sm:py-28">
+                <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <div
+                        class="relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-12 sm:p-16 backdrop-blur-xl">
+                        <div
+                            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-white/3 blur-[100px] rounded-full" />
+
+                        <div class="relative text-center space-y-6">
+                            <h2 class="text-4xl sm:text-5xl font-bold tracking-tight">
+                                Prêt à commencer ?
+                            </h2>
+                            <p class="mx-auto max-w-2xl text-lg text-gray-400">
+                                Rejoignez des milliers d'utilisateurs qui transforment leur façon de converser avec l'IA
+                            </p>
+                            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+                                <Link :href="register()"
+                                    class="inline-flex items-center gap-2 rounded-lg bg-white px-8 py-4 text-base font-medium text-black transition hover:bg-white/90">
+                                    <MessageSquare class="size-5" />
+                                    <span>Commencer gratuitement</span>
+                                </Link>
+                                <a href="#pricing"
+                                    class="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-8 py-4 text-base font-medium text-gray-300 backdrop-blur-xl transition hover:bg-white/10">
+                                    <span>Voir les tarifs</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
 
         <!-- Footer -->
         <footer class="border-t border-white/5 py-12">
@@ -542,15 +546,15 @@
                             La plateforme de conversation IA nouvelle génération. Propulsée par OpenRouter.
                         </p>
                         <div class="flex gap-2">
-                            <a href="https://twitter.com" target="_blank"
+                            <a href="https://twitter.com" target="_blank" aria-label="Suivez-nous sur Twitter"
                                 class="flex size-9 items-center justify-center rounded-lg border border-white/10 bg-white/5 transition hover:bg-white/10">
                                 <Twitter class="size-4 text-gray-400" />
                             </a>
-                            <a href="https://github.com" target="_blank"
+                            <a href="https://github.com" target="_blank" aria-label="Visitez notre GitHub"
                                 class="flex size-9 items-center justify-center rounded-lg border border-white/10 bg-white/5 transition hover:bg-white/10">
                                 <Github class="size-4 text-gray-400" />
                             </a>
-                            <a href="https://linkedin.com" target="_blank"
+                            <a href="https://linkedin.com" target="_blank" aria-label="Rejoignez-nous sur LinkedIn"
                                 class="flex size-9 items-center justify-center rounded-lg border border-white/10 bg-white/5 transition hover:bg-white/10">
                                 <Linkedin class="size-4 text-gray-400" />
                             </a>
@@ -643,12 +647,12 @@
 
                 <div class="mt-12 pt-8 border-t border-white/5">
                     <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
-                        <p class="text-sm text-gray-500">
+                        <p class="text-sm text-gray-300">
                             © 2026 PersonAI. Tous droits réservés.
                         </p>
-                        <div class="flex items-center gap-2 text-sm text-gray-500">
+                        <div class="flex items-center gap-2 text-sm text-gray-300">
                             <Mail class="size-4" />
-                            <a href="mailto:contact@PersonAI.com" class="hover:text-gray-400 transition">
+                            <a href="mailto:contact@PersonAI.com" class="hover:text-white transition">
                                 contact@PersonAI.com
                             </a>
                         </div>
