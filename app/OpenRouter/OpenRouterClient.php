@@ -10,6 +10,7 @@ use Illuminate\Http\Client\PendingRequest;
 
 class OpenRouterClient
 {
+    protected bool $isFake = false;
 
     public function __construct(
         protected string $apiKey,

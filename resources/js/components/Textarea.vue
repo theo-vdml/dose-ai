@@ -22,14 +22,6 @@
     interface TextareaProps {
         /** Two-way bound value of the textarea */
         modelValue?: string;
-        /** Placeholder text when textarea is empty */
-        placeholder?: string;
-        /** HTML name attribute for form submission */
-        name?: string;
-        /** HTML id attribute for labeling */
-        id?: string;
-        /** Initial number of visible text lines (default: 1) */
-        rows?: number;
         /** Maximum number of lines before scrolling (default: 10) */
         maxLines?: number;
     }
@@ -45,10 +37,13 @@
     // Component Setup
     // ============================================================================
 
+    defineOptions({
+        // Disable attribute inheritance to manage attributes manually
+        inheritAttrs: false,
+    })
+
     const props = withDefaults(defineProps<TextareaProps>(), {
         modelValue: '',
-        placeholder: '',
-        rows: 1,
         maxLines: 10,
     });
 
@@ -65,6 +60,11 @@
             attrs.class as string
         )
     );
+
+    const bindableAttrs = computed(() => {
+        const { class: _, ...otherAttrs } = attrs;
+        return otherAttrs;
+    });
 
     // ============================================================================
     // Reactive State
@@ -110,13 +110,10 @@
     });
 
     /** Watch for content changes and resize accordingly */
-    watch(modelValue, () => {
-        autoResize();
-    });
+    watch(modelValue, autoResize);
 
 </script>
 
 <template>
-    <textarea ref="textareaRef" v-model="modelValue" :id="id" :name="name" :placeholder="placeholder" :rows="rows"
-        v-bind="attrs" :class="mergedClass" />
+    <textarea ref="textareaRef" v-model="modelValue" rows="1" v-bind="bindableAttrs" :class="mergedClass" />
 </template>
