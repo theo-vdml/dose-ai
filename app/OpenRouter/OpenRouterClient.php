@@ -5,12 +5,13 @@ namespace App\OpenRouter;
 use App\OpenRouter\Chat\ChatManager;
 use App\OpenRouter\Chat\ChatRequest;
 use App\OpenRouter\Models\ModelManager;
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Client\PendingRequest;
 
 class OpenRouterClient
 {
-    protected bool $isFake = false;
+    protected ModelManager $modelManager;
 
     public function __construct(
         protected string $apiKey,
@@ -19,7 +20,11 @@ class OpenRouterClient
 
     public function models(): ModelManager
     {
-        return new ModelManager($this);
+        if (!isset($this->modelManager)) {
+            $this->modelManager = new ModelManager($this);
+        }
+
+        return $this->modelManager;
     }
 
     public function chat(ChatRequest $request): ChatManager

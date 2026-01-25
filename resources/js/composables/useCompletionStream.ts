@@ -196,7 +196,6 @@ export function useCompletionStream(options: UseCompletionStreamOptions): UseCom
             } catch (e) {
                 // Log parsing errors and continue processing remaining events
                 console.error('Failed to parse SSE event:', e, jsonString);
-                continue;
             }
         }
     };

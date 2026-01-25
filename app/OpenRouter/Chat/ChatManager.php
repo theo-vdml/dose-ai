@@ -4,6 +4,8 @@ namespace App\OpenRouter\Chat;
 
 use App\OpenRouter\OpenRouterClient;
 use App\OpenRouter\Stream\StreamIterator;
+use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Http\Client\RequestException;
 
 class ChatManager
 {
@@ -12,6 +14,11 @@ class ChatManager
         protected ChatRequest $request,
     ) {}
 
+    /**
+     * Creates a chat completion request.
+     * @return ChatResponse
+     * @throws RequestException|ConnectionException
+     */
     public function create(): ChatResponse
     {
         $payload = $this->request->toPayload();
@@ -24,6 +31,11 @@ class ChatManager
         return new ChatResponse($response);
     }
 
+    /**
+     * Creates a streaming chat completion request.
+     * @return StreamIterator
+     * @throws RequestException|ConnectionException
+     */
     public function stream(): StreamIterator
     {
         $payload = $this->request->toPayload();
@@ -31,7 +43,8 @@ class ChatManager
 
         $response = $this->client->http()
             ->withOptions(['stream' => true])
-            ->post('/chat/completions', $payload);
+            ->post('/chat/completions', $payload)
+            ->throw();
 
         return new StreamIterator($response);
     }

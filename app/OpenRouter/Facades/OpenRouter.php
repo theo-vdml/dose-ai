@@ -6,7 +6,7 @@ use App\OpenRouter\Chat\ChatManager;
 use App\OpenRouter\Chat\ChatRequest;
 use App\OpenRouter\Models\ModelManager;
 use App\OpenRouter\OpenRouterClient;
-use App\OpenRouter\Testing\OpenRouterFake;
+use App\OpenRouter\Testing\OpenRouterClientFake;
 use Illuminate\Support\Facades\Facade;
 
 /**
@@ -20,9 +20,9 @@ class OpenRouter extends Facade
         return OpenRouterClient::class;
     }
 
-    public static function fake(): OpenRouterFake
+    public static function fake(): OpenRouterClientFake
     {
-        return tap(new OpenRouterFake(), function (OpenRouterFake $fake) {
+        return tap(new OpenRouterClientFake(), function (OpenRouterClientFake $fake) {
             static::swap($fake);
         });
     }
