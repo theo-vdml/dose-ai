@@ -14,8 +14,11 @@ use App\Services\SSEEmitterService;
 use App\Services\SystemPromptService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 use Inertia\{Inertia, Response};
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -29,6 +32,8 @@ class ConversationController extends Controller
 
     public function index(): Response
     {
+        Gate::authorize('list', Conversation::class);
+
         $conversations = Auth::user()->conversations;
 
         return Inertia::render('conversation/Index', [
@@ -38,6 +43,8 @@ class ConversationController extends Controller
 
     public function create(): Response
     {
+        Gate::authorize('create', Conversation::class);
+
         $models = $this->conversationService->getAvailableModels();
         $selectedModel = $this->conversationService->getDefaultModelId();
         $personas = config('personas.list');
@@ -47,6 +54,8 @@ class ConversationController extends Controller
 
     public function store(ConversationData $data): RedirectResponse
     {
+        Gate::authorize('create', Conversation::class);
+
         $conversation = $this->conversationService
             ->createConversation($data);
 
@@ -58,6 +67,8 @@ class ConversationController extends Controller
 
     public function show(Conversation $conversation): Response
     {
+        Gate::authorize('view', $conversation);
+
         $conversation->load('messages');
 
         return Inertia::render('conversation/Show', [
@@ -69,6 +80,8 @@ class ConversationController extends Controller
 
     public function storeMessage(Conversation $conversation, MessageData $messageData): JsonResponse
     {
+        Gate::authorize('update', $conversation);
+
         $message = $this->conversationService
             ->createMessage($conversation, $messageData);
 
@@ -77,6 +90,8 @@ class ConversationController extends Controller
 
     public function stream(Conversation $conversation): StreamedResponse | string
     {
+        Gate::authorize('update', $conversation);
+
         $assistantMessage = $this->conversationService->createMessage($conversation, new MessageData(
             role: 'assistant',
             content: ''
@@ -85,7 +100,7 @@ class ConversationController extends Controller
         $stream = $this->conversationService
             ->createStreamedResponse($conversation, $assistantMessage);
 
-        if (Cache::get('disable_streaming')) {
+        if (App::environment('testing') && Cache::get('disable_streaming')) {
             return $this->fakeStream($stream);
         }
 
