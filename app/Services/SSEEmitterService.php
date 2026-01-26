@@ -4,9 +4,14 @@ namespace App\Services;
 
 class SSEEmitterService
 {
+    public static function formatData(string $data)
+    {
+        return 'data: ' . $data . "\n\n";
+    }
+
     public static function emit(string $data)
     {
-        echo 'data: ' . $data . "\n\n";
+        echo static::formatData($data);
         ob_flush();
         flush();
     }
@@ -25,7 +30,7 @@ class SSEEmitterService
 
     public static function done(): void
     {
-        echo "data: [DONE]\n\n";
+        echo static::formatData('[DONE]');
         ob_flush();
         flush();
     }

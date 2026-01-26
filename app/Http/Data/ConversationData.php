@@ -4,7 +4,7 @@ namespace App\Http\Data;
 
 use Spatie\LaravelData\Data;
 
-class ChatData extends Data
+class ConversationData extends Data
 {
     public function __construct(
         public string $model,

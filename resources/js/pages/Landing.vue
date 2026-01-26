@@ -227,7 +227,7 @@
         <!-- Header -->
         <header role="banner"
             class="fixed top-0 left-0 right-0 z-50 border-b border-white/5 backdrop-blur-2xl bg-black/60">
-            <nav class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <nav class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8" role="navigation" aria-label="Main navigation">
                 <div class="flex h-16 items-center justify-between">
                     <div class="flex items-center gap-3">
                         <div
@@ -239,7 +239,7 @@
                         </span>
                     </div>
 
-                    <div class="flex items-center gap-3" role="navigation">
+                    <div class="flex items-center gap-3">
                         <template v-if="$page.props.auth.user">
                             <Link href="/dashboard"
                                 class="rounded-lg bg-white text-black px-6 py-2.5 text-sm font-medium transition hover:bg-white/90">

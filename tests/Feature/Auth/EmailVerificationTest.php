@@ -5,15 +5,20 @@ use Illuminate\Auth\Events\Verified;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\URL;
 
+use function Pest\Laravel\actingAs;
+
 test('email verification screen can be rendered', function () {
+    /** @var \App\Models\User $user */
     $user = User::factory()->unverified()->create();
 
-    $response = $this->actingAs($user)->get(route('verification.notice'));
+    $response = actingAs($user)->get(route('verification.notice'));
 
     $response->assertStatus(200);
 });
 
 test('email can be verified', function () {
+
+    /** @var \App\Models\User $user */
     $user = User::factory()->unverified()->create();
 
     Event::fake();
@@ -24,14 +29,15 @@ test('email can be verified', function () {
         ['id' => $user->id, 'hash' => sha1($user->email)]
     );
 
-    $response = $this->actingAs($user)->get($verificationUrl);
+    $response = actingAs($user)->get($verificationUrl);
 
     Event::assertDispatched(Verified::class);
     expect($user->fresh()->hasVerifiedEmail())->toBeTrue();
-    $response->assertRedirect(route('dashboard', absolute: false).'?verified=1');
+    $response->assertRedirect(route('dashboard', absolute: false) . '?verified=1');
 });
 
 test('email is not verified with invalid hash', function () {
+    /** @var \App\Models\User $user */
     $user = User::factory()->unverified()->create();
 
     Event::fake();
@@ -42,13 +48,14 @@ test('email is not verified with invalid hash', function () {
         ['id' => $user->id, 'hash' => sha1('wrong-email')]
     );
 
-    $this->actingAs($user)->get($verificationUrl);
+    actingAs($user)->get($verificationUrl);
 
     Event::assertNotDispatched(Verified::class);
     expect($user->fresh()->hasVerifiedEmail())->toBeFalse();
 });
 
 test('email is not verified with invalid user id', function () {
+    /** @var \App\Models\User $user */
     $user = User::factory()->unverified()->create();
 
     Event::fake();
@@ -59,24 +66,26 @@ test('email is not verified with invalid user id', function () {
         ['id' => 123, 'hash' => sha1($user->email)]
     );
 
-    $this->actingAs($user)->get($verificationUrl);
+    actingAs($user)->get($verificationUrl);
 
     Event::assertNotDispatched(Verified::class);
     expect($user->fresh()->hasVerifiedEmail())->toBeFalse();
 });
 
 test('verified user is redirected to dashboard from verification prompt', function () {
+    /** @var \App\Models\User $user */
     $user = User::factory()->create();
 
     Event::fake();
 
-    $response = $this->actingAs($user)->get(route('verification.notice'));
+    $response = actingAs($user)->get(route('verification.notice'));
 
     Event::assertNotDispatched(Verified::class);
     $response->assertRedirect(route('dashboard', absolute: false));
 });
 
 test('already verified user visiting verification link is redirected without firing event again', function () {
+    /** @var \App\Models\User $user */
     $user = User::factory()->create();
 
     Event::fake();
@@ -87,8 +96,8 @@ test('already verified user visiting verification link is redirected without fir
         ['id' => $user->id, 'hash' => sha1($user->email)]
     );
 
-    $this->actingAs($user)->get($verificationUrl)
-        ->assertRedirect(route('dashboard', absolute: false).'?verified=1');
+    actingAs($user)->get($verificationUrl)
+        ->assertRedirect(route('dashboard', absolute: false) . '?verified=1');
 
     Event::assertNotDispatched(Verified::class);
     expect($user->fresh()->hasVerifiedEmail())->toBeTrue();
