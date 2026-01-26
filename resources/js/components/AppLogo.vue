@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { Sparkles } from 'lucide-vue-next';
+import { Sparkles } from 'lucide-vue-next';
 </script>
 
 <template>
@@ -10,4 +10,3 @@
         <span class="mb-0.5 truncate leading-tight font-semibold">PersonAI</span>
     </div>
 </template>
-

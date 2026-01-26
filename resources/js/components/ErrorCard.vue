@@ -1,24 +1,20 @@
 <script lang="ts" setup>
+import { AlertCircle } from 'lucide-vue-next';
 
-    import { AlertCircle } from 'lucide-vue-next';
-
-    const props = defineProps<{
-        message: string;
-        title?: string;
-    }>();
-
+const props = defineProps<{
+    message: string;
+    title?: string;
+}>();
 </script>
 
 <template>
     <div class="group">
-        <div
-            class="relative px-4 py-4 bg-red-50 dark:bg-red-950/30 rounded-lg border border-red-200 dark:border-red-900/50 shadow-sm">
+        <div class="relative rounded-lg border border-red-200 bg-red-50 px-4 py-4 shadow-sm dark:border-red-900/50 dark:bg-red-950/30">
             <div class="flex gap-3">
-                <AlertCircle :size="20" class="shrink-0 text-red-600 dark:text-red-400 mt-0.5" />
-                <div class="flex-1 min-w-0">
-                    <h4 class="text-sm font-semibold text-red-900 dark:text-red-200 mb-1">{{ props.title || 'Error' }}
-                    </h4>
-                    <p class="text-sm text-red-700 dark:text-red-300 leading-relaxed">
+                <AlertCircle :size="20" class="mt-0.5 shrink-0 text-red-600 dark:text-red-400" />
+                <div class="min-w-0 flex-1">
+                    <h4 class="mb-1 text-sm font-semibold text-red-900 dark:text-red-200">{{ props.title || 'Error' }}</h4>
+                    <p class="text-sm leading-relaxed text-red-700 dark:text-red-300">
                         {{ props.message }}
                     </p>
                 </div>

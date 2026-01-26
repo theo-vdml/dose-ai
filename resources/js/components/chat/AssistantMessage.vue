@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
-import MarkdownProse from './MarkdownProse.vue';
-import { Brain, ChevronDown, ChevronRight, Copy } from 'lucide-vue-next';
-import PendingIndicator from '../PendingIndicator.vue';
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue';
+import { Brain, ChevronDown, ChevronRight, Copy } from 'lucide-vue-next';
+import { ref } from 'vue';
 import ErrorCard from '../ErrorCard.vue';
+import PendingIndicator from '../PendingIndicator.vue';
+import MarkdownProse from './MarkdownProse.vue';
 
 const props = defineProps<{
     message: Message;

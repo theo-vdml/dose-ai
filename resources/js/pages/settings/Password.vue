@@ -26,10 +26,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
 
         <SettingsLayout>
             <div class="space-y-6">
-                <HeadingSmall
-                    title="Update password"
-                    description="Ensure your account is using a long, random password to stay secure"
-                />
+                <HeadingSmall title="Update password" description="Ensure your account is using a long, random password to stay secure" />
 
                 <Form
                     v-bind="PasswordController.update.form()"
@@ -37,11 +34,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                         preserveScroll: true,
                     }"
                     reset-on-success
-                    :reset-on-error="[
-                        'password',
-                        'password_confirmation',
-                        'current_password',
-                    ]"
+                    :reset-on-error="['password', 'password_confirmation', 'current_password']"
                     class="space-y-6"
                     v-slot="{ errors, processing, recentlySuccessful }"
                 >
@@ -60,21 +53,12 @@ const breadcrumbItems: BreadcrumbItem[] = [
 
                     <div class="grid gap-2">
                         <Label for="password">New password</Label>
-                        <Input
-                            id="password"
-                            name="password"
-                            type="password"
-                            class="mt-1 block w-full"
-                            autocomplete="new-password"
-                            placeholder="New password"
-                        />
+                        <Input id="password" name="password" type="password" class="mt-1 block w-full" autocomplete="new-password" placeholder="New password" />
                         <InputError :message="errors.password" />
                     </div>
 
                     <div class="grid gap-2">
-                        <Label for="password_confirmation"
-                            >Confirm password</Label
-                        >
+                        <Label for="password_confirmation">Confirm password</Label>
                         <Input
                             id="password_confirmation"
                             name="password_confirmation"
@@ -87,11 +71,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                     </div>
 
                     <div class="flex items-center gap-4">
-                        <Button
-                            :disabled="processing"
-                            data-test="update-password-button"
-                            >Save password</Button
-                        >
+                        <Button :disabled="processing" data-test="update-password-button">Save password</Button>
 
                         <Transition
                             enter-active-class="transition ease-in-out"
@@ -99,12 +79,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
                             leave-active-class="transition ease-in-out"
                             leave-to-class="opacity-0"
                         >
-                            <p
-                                v-show="recentlySuccessful"
-                                class="text-sm text-neutral-600"
-                            >
-                                Saved.
-                            </p>
+                            <p v-show="recentlySuccessful" class="text-sm text-neutral-600">Saved.</p>
                         </Transition>
                     </div>
                 </Form>

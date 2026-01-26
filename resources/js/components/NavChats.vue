@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
+import { getPersonaIcon } from '@/lib/personaIcons';
 import { urlIsActive } from '@/lib/utils';
 import conversationsRoutes from '@/routes/conversations';
 import { Link, usePage } from '@inertiajs/vue3';
 import { useEcho } from '@laravel/echo-vue';
-import { ref } from 'vue';
-import { getPersonaIcon } from '@/lib/personaIcons';
 import { MessageCircle } from 'lucide-vue-next';
+import { ref } from 'vue';
 
 const page = usePage();
 

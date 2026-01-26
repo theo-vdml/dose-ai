@@ -12,6 +12,6 @@ export const personaIconsMap: Record<string, Component> = {
 };
 
 // 2. The Helper Function (Handles the fallback logic centrally)
-export const getPersonaIcon = (personaId: string|null, defaultIcon: Component): Component => {
+export const getPersonaIcon = (personaId: string | null, defaultIcon: Component): Component => {
     return personaIconsMap[personaId || ''] || defaultIcon;
 };

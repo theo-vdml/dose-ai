@@ -1,11 +1,9 @@
 <script lang="ts" setup>
+interface ModelIndicatorProps {
+    label: string;
+}
 
-    interface ModelIndicatorProps {
-        label: string;
-    }
-
-    defineProps<ModelIndicatorProps>();
-
+defineProps<ModelIndicatorProps>();
 </script>
 
 <template>
