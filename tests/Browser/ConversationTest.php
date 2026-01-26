@@ -130,7 +130,7 @@ it('can navigate between conversations in from the sidebar', function () {
 
     // Navigate to each conversation and assert the title
     foreach ($conversations as $conversation) {
-        $browser->click($conversation->title)
+        $browser = $browser->click($conversation->title)
             ->assertSee($conversation->messages->first()->content);
     }
 });
