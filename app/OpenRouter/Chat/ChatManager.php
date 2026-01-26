@@ -16,7 +16,7 @@ class ChatManager
 
     /**
      * Creates a chat completion request.
-     * @return ChatResponse
+     *
      * @throws RequestException|ConnectionException
      */
     public function create(): ChatResponse
@@ -33,7 +33,7 @@ class ChatManager
 
     /**
      * Creates a streaming chat completion request.
-     * @return StreamIterator
+     *
      * @throws RequestException|ConnectionException
      */
     public function stream(): StreamIterator

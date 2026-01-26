@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Models\User;
 use App\OpenRouter\Chat\ChatMessage;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 
 class SystemPromptService

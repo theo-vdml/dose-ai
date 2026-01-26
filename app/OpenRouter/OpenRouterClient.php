@@ -5,9 +5,8 @@ namespace App\OpenRouter;
 use App\OpenRouter\Chat\ChatManager;
 use App\OpenRouter\Chat\ChatRequest;
 use App\OpenRouter\Models\ModelManager;
-use Illuminate\Http\Client\ConnectionException;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Client\PendingRequest;
+use Illuminate\Support\Facades\Http;
 
 class OpenRouterClient
 {
@@ -20,7 +19,7 @@ class OpenRouterClient
 
     public function models(): ModelManager
     {
-        if (!isset($this->modelManager)) {
+        if (! isset($this->modelManager)) {
             $this->modelManager = new ModelManager($this);
         }
 
@@ -35,10 +34,10 @@ class OpenRouterClient
     public function http(): PendingRequest
     {
         return Http::withHeaders([
-            'Authorization' => 'Bearer ' . $this->apiKey,
+            'Authorization' => 'Bearer '.$this->apiKey,
             'Content-Type' => 'application/json',
             'HTTP-Referer' => config('app.url'),
             'X-Title' => config('app.name'),
-        ])->baseUrl(rtrim($this->baseUrl, '/') . '/');
+        ])->baseUrl(rtrim($this->baseUrl, '/').'/');
     }
 }

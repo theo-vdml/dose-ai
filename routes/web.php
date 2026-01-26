@@ -27,4 +27,4 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('conversations.stream');
 });
 
-require __DIR__ . '/settings.php';
+require __DIR__.'/settings.php';

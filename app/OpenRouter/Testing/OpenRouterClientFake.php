@@ -4,28 +4,23 @@ namespace App\OpenRouter\Testing;
 
 use App\OpenRouter\Chat\ChatManager;
 use App\OpenRouter\Chat\ChatRequest;
-use App\OpenRouter\Chat\ChatResponse;
 use App\OpenRouter\DTO\ModelData;
-use App\OpenRouter\Models\ModelList;
 use App\OpenRouter\Models\ModelManager;
 use App\OpenRouter\OpenRouterClient;
-use App\OpenRouter\Stream\StreamAccumulator;
-use App\OpenRouter\Stream\StreamChunkFactory;
-use App\OpenRouter\Stream\StreamIterator;
-use Exception;
-use GuzzleHttp\Exception\RequestException;
-use Illuminate\Http\Client\ConnectionException;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Testing\Fakes\Fake;
 use Closure;
-use JetBrains\PhpStorm\Pure;
+use Exception;
+use Illuminate\Support\Testing\Fakes\Fake;
 
 class OpenRouterClientFake extends OpenRouterClient implements Fake
 {
     protected Closure|string|null $contentFactory = null;
+
     protected Closure|string|null $reasoningFactory = null;
+
     protected array $responseOptions = [];
-    protected Exception|null $exception = null;
+
+    protected ?Exception $exception = null;
+
     protected array $recordedRequests = [];
 
     public function __construct()
@@ -40,45 +35,46 @@ class OpenRouterClientFake extends OpenRouterClient implements Fake
 
     /**
      * Set the models to be returned by the fake ModelManager.
-     * @param array<int, ModelData> $models
-     * @return static
+     *
+     * @param  array<int, ModelData>  $models
      */
     public function withModels(array $models): static
     {
         $this->models()->withModels($models);
+
         return $this;
     }
 
     /**
      * Set an exception to be thrown by the fake ModelManager.
-     * @param Exception $exception
-     * @return static
      */
     public function modelsShouldThrow(Exception $exception): static
     {
         $this->models()->shouldThrow($exception);
+
         return $this;
     }
 
     /**
      * Access the fake ModelManager instance.
+     *
      * @return ModelManagerFake
      */
     public function models(): ModelManager
     {
-        if (!isset($this->modelManager)) {
+        if (! isset($this->modelManager)) {
             $this->modelManager = new ModelManagerFake($this);
         }
+
         return $this->modelManager;
     }
 
     /**
      * Configure the fake chat response.
      *
-     * @param Closure|string|null $contentFactory A closure or string to generate the response content.
-     * @param Closure|string|null $reasoningFactory A closure or string to generate the reasoning.
-     * @param array $options Additional response options like 'finish_reason' and 'usage'.
-     * @return static
+     * @param  Closure|string|null  $contentFactory  A closure or string to generate the response content.
+     * @param  Closure|string|null  $reasoningFactory  A closure or string to generate the reasoning.
+     * @param  array  $options  Additional response options like 'finish_reason' and 'usage'.
      */
     public function respondWith(
         Closure|string|null $contentFactory = null,
@@ -88,24 +84,22 @@ class OpenRouterClientFake extends OpenRouterClient implements Fake
         $this->contentFactory = $contentFactory;
         $this->reasoningFactory = $reasoningFactory;
         $this->responseOptions = array_merge($this->responseOptions, $options);
+
         return $this;
     }
 
     /**
      * Set an exception to be thrown during chat requests.
-     * @param Exception $exception
-     * @return static
      */
     public function shouldThrow(Exception $exception): static
     {
         $this->exception = $exception;
+
         return $this;
     }
 
     /**
      * Resolve the content for the fake chat response.
-     * @param ChatRequest $request
-     * @return string
      */
     protected function resolveContent(ChatRequest $request): string
     {
@@ -120,8 +114,6 @@ class OpenRouterClientFake extends OpenRouterClient implements Fake
 
     /**
      * Resolve the reasoning for the fake chat response.
-     * @param ChatRequest $request
-     * @return string|null
      */
     protected function resolveReasoning(ChatRequest $request): ?string
     {
@@ -142,8 +134,9 @@ class OpenRouterClientFake extends OpenRouterClient implements Fake
         $this->record($request);
         $content = $this->resolveContent($request);
         $reasoning = $this->resolveReasoning($request);
-        $finishReason = $this->responseOptions['finish_reason'] ?? "stop";
+        $finishReason = $this->responseOptions['finish_reason'] ?? 'stop';
         $usage = $this->responseOptions['usage'] ?? [];
+
         return new ChatManagerFake(
             $this,
             $request,

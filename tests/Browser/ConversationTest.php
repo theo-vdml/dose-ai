@@ -160,7 +160,7 @@ it('can handle an error', function () {
     $this->disableStreaming();
 
     OpenRouter::fake()
-        ->shouldThrow(new ConnectionException("Something went wrong"));
+        ->shouldThrow(new ConnectionException('Something went wrong'));
 
     $this->signIn();
 

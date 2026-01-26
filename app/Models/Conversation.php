@@ -52,7 +52,7 @@ class Conversation extends Model
 
     /**
      * Summary of contextMessages
-     * @param ?string $startsFrom
+     *
      * @return array<ChatMessage>
      */
     public function contextMessages(?string $startsFrom = null): array

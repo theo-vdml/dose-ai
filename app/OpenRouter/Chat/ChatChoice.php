@@ -10,7 +10,7 @@ class ChatChoice
 
     public function message(): ?ChatMessage
     {
-        if (!isset($this->payload['message'])) {
+        if (! isset($this->payload['message'])) {
             return null;
         }
 

@@ -4,7 +4,6 @@ namespace App\Jobs;
 
 use App\Events\ConversationTitleGenerated;
 use App\Models\Conversation;
-use App\OpenRouter\Chat\ChatMessage;
 use App\OpenRouter\Chat\ChatRequest;
 use App\OpenRouter\Facades\OpenRouter;
 use App\Services\ConversationContextBuilder;
@@ -18,7 +17,7 @@ use Throwable;
 
 class GenerateConversationTitle implements ShouldQueue
 {
-    use Queueable, SerializesModels, Dispatchable, InteractsWithQueue;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
      * Create a new job instance.
@@ -44,6 +43,7 @@ class GenerateConversationTitle implements ShouldQueue
                 Log::warning('Failed to generate title: empty response', [
                     'conversation_id' => $this->conversation->id,
                 ]);
+
                 return;
             }
 
@@ -57,7 +57,7 @@ class GenerateConversationTitle implements ShouldQueue
                 title: $title
             ));
         } catch (Throwable $e) {
-            Log::error('Failed to generate conversation title: ' . $e->getMessage(), [
+            Log::error('Failed to generate conversation title: '.$e->getMessage(), [
                 'conversation_id' => $this->conversation->id,
                 'exception' => $e,
             ]);
@@ -93,7 +93,7 @@ class GenerateConversationTitle implements ShouldQueue
         }
 
         if (mb_strlen($title) > 64) {
-            $title = mb_substr($title, 0, 61) . '...';
+            $title = mb_substr($title, 0, 61).'...';
         }
 
         return $title;

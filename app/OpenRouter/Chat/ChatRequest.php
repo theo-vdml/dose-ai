@@ -6,12 +6,8 @@ class ChatRequest
 {
     /**
      * Summary of __construct
-     * @param array<ChatMessage> $messages
-     * @param ?string $model
-     * @param float $temperature
-     * @param int $maxTokens
-     * @param ?string $reasoningEffort
-     * @param bool $excludeReasoning
+     *
+     * @param  array<ChatMessage>  $messages
      */
     public function __construct(
         public readonly array $messages,
@@ -26,7 +22,7 @@ class ChatRequest
     {
         $payload = [
             'model' => $this->model ?? config('openrouter.default_model', 'openai/gpt-5-mini'),
-            'messages' => array_map(fn(ChatMessage $msg): array => $msg->toArray(), $this->messages),
+            'messages' => array_map(fn (ChatMessage $msg): array => $msg->toArray(), $this->messages),
             'temperature' => $this->temperature,
             'max_tokens' => $this->maxTokens,
         ];

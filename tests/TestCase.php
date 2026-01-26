@@ -10,20 +10,22 @@ abstract class TestCase extends BaseTestCase
 {
     /**
      * Create a user and start acting as this user
-     * @param ?User $user the user to login as (optional)
+     *
+     * @param  ?User  $user  the user to login as (optional)
      * @return User the user logged in
      */
     protected function signIn(?User $user = null): User
     {
         $user = $user ?? User::factory()->createOne();
         $this->actingAs($user);
+
         return $user;
     }
 
     /**
      * Put a flag in the cache that the controller will use to disable streaming
-     * @param bool $disable whether to disable the streaming or not
-     * @return void
+     *
+     * @param  bool  $disable  whether to disable the streaming or not
      */
     protected function disableStreaming(bool $disable = true): void
     {

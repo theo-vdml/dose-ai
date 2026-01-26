@@ -22,7 +22,7 @@ class OpenRouter extends Facade
 
     public static function fake(): OpenRouterClientFake
     {
-        return tap(new OpenRouterClientFake(), function (OpenRouterClientFake $fake) {
+        return tap(new OpenRouterClientFake, function (OpenRouterClientFake $fake) {
             static::swap($fake);
         });
     }

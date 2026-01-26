@@ -22,5 +22,5 @@ class PricingData extends Data
         public ?string $input_cache_read = null,
         public ?string $input_cache_write = null,
         public ?int $discount = null,
-    ){}
+    ) {}
 }
