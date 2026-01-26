@@ -38,7 +38,6 @@ class GenerateConversationTitle implements ShouldQueue
         }
 
         try {
-
             $title = $this->generateTitle();
 
             if ($title === null) {
@@ -58,17 +57,14 @@ class GenerateConversationTitle implements ShouldQueue
                 title: $title
             ));
         } catch (Throwable $e) {
-
             Log::error('Failed to generate conversation title: ' . $e->getMessage(), [
                 'conversation_id' => $this->conversation->id,
                 'exception' => $e,
             ]);
-
-            throw $e;
         }
     }
 
-    private function generateTitle()
+    private function generateTitle(): ?string
     {
         // Build context messages with the prompt at the end
         $messages = ConversationContextBuilder::make(
@@ -80,8 +76,8 @@ class GenerateConversationTitle implements ShouldQueue
 
         // Create the chat request
         $request = new ChatRequest(
-            model: $this->conversation->model_id,
             messages: $messages,
+            model: $this->conversation->model_id,
             temperature: 0.0,
             reasoningEffort: 'low',
             excludeReasoning: true,
