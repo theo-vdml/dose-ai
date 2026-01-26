@@ -250,7 +250,7 @@ export function useCompletionStream(options: UseCompletionStreamOptions): UseCom
                         cleanMessage = errorObj.message;
                     }
                 }
-            } catch (e) {
+            } catch {
                 // Ignore JSON parsing errors
             }
 

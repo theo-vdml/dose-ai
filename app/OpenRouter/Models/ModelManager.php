@@ -24,8 +24,6 @@ class ModelManager
 
     /**
      * Create a new ModelManager instance.
-     *
-     * @param OpenRouterClient $client
      */
     public function __construct(
         protected OpenRouterClient $client
@@ -38,13 +36,13 @@ class ModelManager
      * within the same request lifecycle.
      *
      * @return Collection<int, ModelData>
+     *
      * @throws ConnectionException
      * @throws RequestException
      */
     public function list(): Collection
     {
-        if ($this->cachedModels === null)
-        {
+        if ($this->cachedModels === null) {
             $this->cachedModels = $this->fetchModels();
         }
 
@@ -54,8 +52,6 @@ class ModelManager
     /**
      * Find a specific model by its unique identifier.
      *
-     * @param string $id
-     * @return ModelData|null
      * @throws ConnectionException
      * @throws RequestException
      */
@@ -69,6 +65,7 @@ class ModelManager
      * Fetch the latest models directly from the OpenRouter API.
      *
      * @return Collection<int, ModelData>
+     *
      * @throws ConnectionException
      * @throws RequestException
      */

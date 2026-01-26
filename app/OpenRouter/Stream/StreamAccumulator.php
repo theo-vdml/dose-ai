@@ -5,9 +5,13 @@ namespace App\OpenRouter\Stream;
 class StreamAccumulator
 {
     protected string $content = '';
+
     protected string $reasoning = '';
+
     protected ?string $finishReason = null;
+
     protected ?string $finishReasonNative = null;
+
     protected ?array $usage = null;
 
     public function add(StreamChunk|array $chunk): void
@@ -18,6 +22,7 @@ class StreamAccumulator
                     $this->add($singleChunk);
                 }
             }
+
             return;
         }
 
@@ -29,7 +34,6 @@ class StreamAccumulator
             default => null,
         };
 
-        return;
     }
 
     protected function setFinishReason(StreamChunk $chunk): void

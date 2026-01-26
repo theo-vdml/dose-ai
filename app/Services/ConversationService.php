@@ -14,7 +14,6 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use RuntimeException;
-use Symfony\Component\HttpFoundation\ServerEvent;
 use Throwable;
 
 class ConversationService
@@ -34,7 +33,6 @@ class ConversationService
     /**
      * Get the default model ID, falling back to the first available model if the configured one is not found.
      *
-     * @return string
      * @throws RuntimeException
      */
     public function getDefaultModelId(): string
@@ -52,7 +50,7 @@ class ConversationService
         Log::warning("Configured default model [$preferredModelId] is no longer available on OpenRouter. Falling back to first available model.");
 
         if ($availableModels->isEmpty()) {
-            throw new RuntimeException("No available models found from OpenRouter.");
+            throw new RuntimeException('No available models found from OpenRouter.');
         }
 
         return $availableModels->first()->id;
@@ -60,9 +58,6 @@ class ConversationService
 
     /**
      * Create a new conversation for the authenticated user.
-     *
-     * @param ConversationData $data
-     * @return Conversation
      */
     public function createConversation(ConversationData $data): Conversation
     {
@@ -100,7 +95,7 @@ class ConversationService
         try {
             yield [
                 'type' => 'created',
-                'data' => ['message' => $assistantMessage]
+                'data' => ['message' => $assistantMessage],
             ];
 
             $request = new ChatRequest(
@@ -135,7 +130,7 @@ class ConversationService
 
             yield [
                 'type' => 'completed',
-                'data' => ['message' => $assistantMessage]
+                'data' => ['message' => $assistantMessage],
             ];
 
             if ($conversation->title === null) {
@@ -148,11 +143,10 @@ class ConversationService
                 'type' => 'error',
                 'data' => [
                     'code' => 'STREAM_ERROR',
-                    'message' => $exception->getMessage()
-                ]
+                    'message' => $exception->getMessage(),
+                ],
             ];
 
         }
     }
-
 }

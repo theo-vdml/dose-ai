@@ -9,7 +9,6 @@ use function Pest\Laravel\actingAs;
 test('sends verification notification', function () {
     Notification::fake();
 
-
     /** @var \App\Models\User $user */
     $user = User::factory()->unverified()->create();
 

@@ -9,7 +9,7 @@ class ModelList
     public function __construct(array $models)
     {
         $this->models = array_map(
-            fn(array $modelData) => new ModelInfo($modelData),
+            fn (array $modelData) => new ModelInfo($modelData),
             $models
         );
     }
@@ -41,7 +41,7 @@ class ModelList
     public function toArray(): array
     {
         return array_map(
-            fn(ModelInfo $model) => $model->toArray(),
+            fn (ModelInfo $model) => $model->toArray(),
             $this->models
         );
     }

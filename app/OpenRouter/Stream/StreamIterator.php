@@ -2,11 +2,11 @@
 
 namespace App\OpenRouter\Stream;
 
+use Generator;
 use Illuminate\Http\Client\Response;
 use IteratorAggregate;
 use RuntimeException;
 use Traversable;
-use Generator;
 
 /**
  * @implements IteratorAggregate<int, StreamChunk>
@@ -17,7 +17,7 @@ class StreamIterator implements IteratorAggregate
 
     public function __construct(
         protected Response $response,
-        protected StreamAccumulator $accumulator = new StreamAccumulator(),
+        protected StreamAccumulator $accumulator = new StreamAccumulator,
     ) {}
 
     public function getAccumulator(): StreamAccumulator
@@ -32,6 +32,7 @@ class StreamIterator implements IteratorAggregate
         }
 
         $this->consumed = true;
+
         return $this->parseStream();
     }
 

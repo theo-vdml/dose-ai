@@ -10,7 +10,7 @@ class StreamChunkFactory
         $chunks = [];
 
         // Validate presence of choices
-        if (!isset($data['choices'][0])) {
+        if (! isset($data['choices'][0])) {
             return $chunks;
         }
 
@@ -18,7 +18,7 @@ class StreamChunkFactory
         $choice = $data['choices'][0];
 
         // Validate choice structure
-        if (!$choice || $choice === null || !is_array($choice)) {
+        if (! $choice || $choice === null || ! is_array($choice)) {
             return $chunks;
         }
 

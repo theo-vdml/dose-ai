@@ -2,33 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\ConversationService;
-use App\Http\Data\{ConversationData, MessageData};
-use App\Jobs\GenerateConversationTitle;
+use App\Http\Data\ConversationData;
+use App\Http\Data\MessageData;
 use App\Models\Conversation;
-use App\Models\Message;
-use App\OpenRouter\Chat\ChatRequest;
-use App\OpenRouter\Facades\OpenRouter;
-use App\OpenRouter\Stream\StreamIterator;
+use App\Services\ConversationService;
 use App\Services\SSEEmitterService;
-use App\Services\SystemPromptService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Log;
-use Inertia\{Inertia, Response};
+use Inertia\Inertia;
+use Inertia\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-use Throwable;
 
 class ConversationController extends Controller
 {
     public function __construct(
         protected ConversationService $conversationService,
-    ){}
+    ) {}
 
     public function index(): Response
     {
@@ -88,7 +81,7 @@ class ConversationController extends Controller
         return response()->json($message);
     }
 
-    public function stream(Conversation $conversation): StreamedResponse | string
+    public function stream(Conversation $conversation): StreamedResponse|string
     {
         Gate::authorize('update', $conversation);
 
@@ -124,6 +117,7 @@ class ConversationController extends Controller
             $body .= SSEEmitterService::formatData(json_encode($chunk));
         }
         $body .= SSEEmitterService::formatData('[DONE]');
+
         return $body;
     }
 }

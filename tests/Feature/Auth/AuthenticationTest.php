@@ -81,7 +81,7 @@ test('users are rate limited', function () {
     /** @var \App\Models\User $user */
     $user = User::factory()->create();
 
-    RateLimiter::increment(md5('login' . implode('|', [$user->email, '127.0.0.1'])), amount: 5);
+    RateLimiter::increment(md5('login'.implode('|', [$user->email, '127.0.0.1'])), amount: 5);
 
     $response = post(route('login.store'), [
         'email' => $user->email,

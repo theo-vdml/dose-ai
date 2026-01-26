@@ -4,18 +4,15 @@ namespace App\Services;
 
 use App\Models\Conversation;
 use App\OpenRouter\Chat\ChatMessage;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\View;
 
 class ConversationContextBuilder
 {
-
     /**
      * Build the context messages for a conversation.
-     * @param Conversation $conversation
-     * @param array<int, ChatMessage|string> $beforeMessages
-     * @param array<int, ChatMessage|string> $afterMessages
-     * @param ?string $startsFrom
+     *
+     * @param  array<int, ChatMessage|string>  $beforeMessages
+     * @param  array<int, ChatMessage|string>  $afterMessages
      * @return array<ChatMessage>
      */
     public static function make(
@@ -53,18 +50,20 @@ class ConversationContextBuilder
 
             if ($msg instanceof ChatMessage) {
                 $normalized[] = $msg;
+
                 continue;
             }
 
             if (is_string($msg)) {
-                if (!View::exists($msg)) {
+                if (! View::exists($msg)) {
                     $normalized[] = ChatMessage::system($msg);
+
                     continue;
                 }
 
                 $content = trim(View::make($msg)->render());
 
-                if (!empty($content)) {
+                if (! empty($content)) {
                     $normalized[] = ChatMessage::system($content);
                 }
 

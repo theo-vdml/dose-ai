@@ -20,5 +20,5 @@ class DefaultParametersData extends Data
 
         #[Numeric, Min(-2), Max((2))]
         public ?float $frequency_penalty = null,
-    ){}
+    ) {}
 }

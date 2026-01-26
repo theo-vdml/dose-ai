@@ -13,7 +13,7 @@ interface PersonaSelectorProps {
     availablePersonas: Persona[];
 }
 
-const modelValue = defineModel<string|null>({ required: true });
+const modelValue = defineModel<string | null>({ required: true });
 
 const props = defineProps<PersonaSelectorProps>();
 

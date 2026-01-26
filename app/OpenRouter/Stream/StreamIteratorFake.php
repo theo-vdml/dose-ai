@@ -2,7 +2,6 @@
 
 namespace App\OpenRouter\Stream;
 
-use App\OpenRouter\Stream\StreamIterator;
 use GuzzleHttp\Psr7\Response as PsrResponse;
 use Illuminate\Http\Client\Response;
 

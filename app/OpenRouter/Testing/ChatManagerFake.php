@@ -15,23 +15,22 @@ class ChatManagerFake extends ChatManager
     protected string $responseId;
 
     public function __construct(
-        OpenRouterClient     $client,
-        ChatRequest          $request,
-        protected string     $content = 'This is a fake response.',
-        protected ?string    $reasoning = null,
-        protected string     $finishReason = "stop",
-        protected array      $usage = [],
+        OpenRouterClient $client,
+        ChatRequest $request,
+        protected string $content = 'This is a fake response.',
+        protected ?string $reasoning = null,
+        protected string $finishReason = 'stop',
+        protected array $usage = [],
         protected ?Exception $exception = null,
-    )
-    {
-        $this->responseId = 'fake-id-' . uniqid();
+    ) {
+        $this->responseId = 'fake-id-'.uniqid();
         parent::__construct($client, $request);
     }
 
     /**
      * Mock creating a chat completion request.
+     *
      * @throws Exception
-     * @return ChatResponse
      */
     public function create(): ChatResponse
     {
@@ -51,8 +50,8 @@ class ChatManagerFake extends ChatManager
                     ],
                     'finish_reason' => $this->finishReason,
                     'index' => 0,
-                ]
-            ]
+                ],
+            ],
         ];
 
         return new ChatResponse($response);
@@ -60,8 +59,8 @@ class ChatManagerFake extends ChatManager
 
     /**
      * Mock creating a streaming chat completion request.
+     *
      * @throws Exception
-     * @return StreamIterator
      */
     public function stream(): StreamIterator
     {
@@ -89,10 +88,6 @@ class ChatManagerFake extends ChatManager
 
     /**
      * Create a fake stream chunk.
-     * @param string $key
-     * @param string $value
-     * @param string|null $finishReason
-     * @return array
      */
     protected function makeStreamChunk(string $key = 'content', string $value = '', ?string $finishReason = null): array
     {
@@ -103,8 +98,8 @@ class ChatManagerFake extends ChatManager
                 [
                     'delta' => [$key => $value],
                     'index' => 0,
-                ]
-            ]
+                ],
+            ],
         ];
 
         if ($finishReason !== null) {

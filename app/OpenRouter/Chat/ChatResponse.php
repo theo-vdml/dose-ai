@@ -10,12 +10,13 @@ class ChatResponse
 
     /**
      * Summary of choices
+     *
      * @return array<ChatChoice>
      */
     public function choices(): array
     {
         return array_map(
-            fn(array $choicePayload): ChatChoice => new ChatChoice($choicePayload),
+            fn (array $choicePayload): ChatChoice => new ChatChoice($choicePayload),
             $this->payload['choices'] ?? []
         );
     }

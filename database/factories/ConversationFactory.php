@@ -29,14 +29,14 @@ class ConversationFactory extends Factory
 
     public function forUser(User $user): static
     {
-        return $this->state(fn(array $attributes): array => [
+        return $this->state(fn (array $attributes): array => [
             'user_id' => $user->id,
         ]);
     }
 
     public function withTitle(?string $title = null): static
     {
-        return $this->state(fn(array $attributes): array => [
+        return $this->state(fn (array $attributes): array => [
             'title' => $title ?? $this->faker->sentence(),
         ]);
     }

@@ -2,12 +2,11 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use App\OpenRouter\OpenRouterClient;
+use Illuminate\Support\ServiceProvider;
 
 class OpenRouterServiceProvider extends ServiceProvider
 {
-
     public function register()
     {
         $this->app->singleton(OpenRouterClient::class, function () {

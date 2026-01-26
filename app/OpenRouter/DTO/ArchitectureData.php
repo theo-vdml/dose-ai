@@ -31,5 +31,5 @@ class ArchitectureData extends Data
 
         /** Instruction format type */
         public ?InstructType $instruct_type = null,
-    ){}
+    ) {}
 }

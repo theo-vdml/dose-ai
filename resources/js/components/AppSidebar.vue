@@ -1,21 +1,12 @@
 <script setup lang="ts">
-    import NavMain from '@/components/NavMain.vue';
-    import NavUser from '@/components/NavUser.vue';
-    import {
-        Sidebar,
-        SidebarContent,
-        SidebarFooter,
-        SidebarHeader,
-        SidebarMenu,
-        SidebarMenuButton,
-        SidebarMenuItem,
-    } from '@/components/ui/sidebar';
-    import { newMethod } from '@/routes/conversations';
-    import { Link } from '@inertiajs/vue3';
-    import AppLogo from './AppLogo.vue';
-    import navigationItems from '@/navigation';
-    import NavChats from './NavChats.vue';
-
+import NavMain from '@/components/NavMain.vue';
+import NavUser from '@/components/NavUser.vue';
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
+import navigationItems from '@/navigation';
+import { newMethod } from '@/routes/conversations';
+import { Link } from '@inertiajs/vue3';
+import AppLogo from './AppLogo.vue';
+import NavChats from './NavChats.vue';
 </script>
 
 <template>
@@ -32,11 +23,11 @@
             </SidebarMenu>
         </SidebarHeader>
 
-        <hr>
+        <hr />
 
         <SidebarContent class="pt-4">
             <NavMain :items="navigationItems" />
-            <hr class="my-2">
+            <hr class="my-2" />
             <NavChats />
         </SidebarContent>
 

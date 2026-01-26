@@ -6,7 +6,7 @@ class SSEEmitterService
 {
     public static function formatData(string $data)
     {
-        return 'data: ' . $data . "\n\n";
+        return 'data: '.$data."\n\n";
     }
 
     public static function emit(string $data)

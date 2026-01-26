@@ -32,7 +32,7 @@ class ModelData extends Data
         public PricingData $pricing,
 
         /** Maximum context length in tokens */
-        public ?int $context_length = null,
+        public ?int $context_length,
 
         /** Model architecture information */
         public ArchitectureData $architecture,
@@ -45,6 +45,7 @@ class ModelData extends Data
 
         /**
          * List of supported parameters for this model
+         *
          * @var array<int, Parameter>
          */
         public array $supported_parameters = [],
@@ -57,20 +58,19 @@ class ModelData extends Data
 
         /** Description of the model */
         public ?string $description = null,
-    ){}
+    ) {}
 
     /**
      * Generate a fake model instance for testing or seeding purposes.
      * This factory method ensures all DTO constraints are met with
      * realistic, randomized data.
      *
-     * @param string|null $id The unique model identifier.
-     * @param string|null $name Optional name override.
-     * @return self
+     * @param  string|null  $id  The unique model identifier.
+     * @param  string|null  $name  Optional name override.
      */
     public static function fake(?string $id = null, ?string $name = null): self
     {
-        $id = $id ?? 'fake-model-' . Str::random(8);
+        $id = $id ?? 'fake-model-'.Str::random(8);
         $contextLength = rand(4096, 128000);
         $maxCompletionTokens = rand(256, 4096);
 
@@ -108,7 +108,7 @@ class ModelData extends Data
                 'top_p' => 1.0,
                 'frequency_penalty' => 0.0,
             ]),
-            hugging_face_id: $id . '-hf',
+            hugging_face_id: $id.'-hf',
             description: "A fake description for the model $id.",
         );
     }

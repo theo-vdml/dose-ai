@@ -17,5 +17,5 @@ class TopProviderData extends Data
 
         /** Maximum completion tokens from the top provider */
         public ?int $max_completion_tokens = null,
-    ){}
+    ) {}
 }
