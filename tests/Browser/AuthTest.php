@@ -6,8 +6,8 @@ use function Pest\Laravel\actingAs;
 use function Pest\Laravel\assertAuthenticated;
 
 it('redirects to login when accessing dashboard as guest', function () {
-    visit('/dashboard')
-        ->assertPathIs('/login');
+    visit(route('conversations.new'))
+        ->assertRoute('login');
 });
 
 it('can register from the landing page', function () {
@@ -15,17 +15,17 @@ it('can register from the landing page', function () {
     $user = User::where('email', 'test@user.com')->first();
     expect($user)->toBeNull();
 
-    visit('/')
+    visit(route('home'))
         ->assertSee('Commencer')
         ->click('Commencer')
-        ->assertPathIs('/register')
+        ->assertRoute('register')
         ->assertSee('Create an account')
         ->fill('name', 'Test User')
         ->fill('email', 'test@user.com')
         ->fill('password', 'password')
         ->fill('password_confirmation', 'password')
         ->click('Create account')
-        ->assertPathIs('/dashboard');
+        ->assertRoute('conversations.new');
 
     assertAuthenticated();
 
@@ -37,15 +37,15 @@ it('can login from the landing page', function () {
     /** @var \App\Models\User $user */
     $user = User::factory()->withoutTwoFactor()->create();
 
-    visit('/')
+    visit(route('home'))
         ->assertSee('Se connecter')
         ->click('Se connecter')
-        ->assertPathIs('/login')
+        ->assertRoute('login')
         ->assertSee('Log in to your account')
         ->fill('email', $user->email)
         ->fill('password', 'password')
         ->click('Log in')
-        ->assertPathIs('/dashboard');
+        ->assertRoute('conversations.new');
 
     assertAuthenticated();
 });
@@ -56,8 +56,8 @@ it('allow authenticated users to access the dashboard', function () {
 
     actingAs($user);
 
-    visit('/')
+    visit(route('home'))
         ->assertSee("Ouvrir l'App")
         ->click("Ouvrir l'App")
-        ->assertPathIs('/dashboard');
+        ->assertRoute('conversations.new');
 });

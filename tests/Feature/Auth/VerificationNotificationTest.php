@@ -28,7 +28,7 @@ test('does not send verification notification if email is verified', function ()
 
     actingAs($user)
         ->post(route('verification.send'))
-        ->assertRedirect(route('dashboard', absolute: false));
+        ->assertRedirect(route('conversations.new', absolute: false));
 
     Notification::assertNothingSent();
 });

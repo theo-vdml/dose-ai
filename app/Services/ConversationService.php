@@ -105,6 +105,7 @@ class ConversationService
 
             $request = new ChatRequest(
                 messages: [
+                    SystemPromptService::mainSystemPrompt($conversation->user),
                     SystemPromptService::persona($conversation->persona_id),
                     SystemPromptService::userInstructions($conversation->user),
                     ...$conversation->contextMessages($assistantMessage->parent_message_id),

@@ -19,5 +19,5 @@ test('new users can register', function () {
     ]);
 
     assertAuthenticated();
-    $response->assertRedirect(route('dashboard', absolute: false));
+    $response->assertRedirect(route('conversations.new', absolute: false));
 });

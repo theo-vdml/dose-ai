@@ -39,7 +39,7 @@ class HandleInertiaRequests extends Middleware
         [$message, $author] = str(Inspiring::quotes()->random())->explode('-');
 
         $conversations = $request->user() ?
-            $request->user()->conversations()->select('id', 'title', 'last_message_at')->latest('last_message_at')->get() :
+            $request->user()->conversations()->select('id', 'title', 'last_message_at', 'persona_id')->latest('last_message_at')->get() :
             [];
 
         return [
