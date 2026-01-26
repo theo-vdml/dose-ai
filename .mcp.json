@@ -4,7 +4,7 @@
             "command": "wsl.exe",
             "args": [
                 "/usr/bin/php8.4",
-                "/home/theo/404/webdy/iaquisedrogue/artisan",
+                "/home/theo/404/webdy/doseai/artisan",
                 "boost:mcp"
             ]
         }
