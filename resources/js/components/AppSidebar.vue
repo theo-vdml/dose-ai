@@ -10,7 +10,7 @@
         SidebarMenuButton,
         SidebarMenuItem,
     } from '@/components/ui/sidebar';
-    import { dashboard } from '@/routes';
+    import { newMethod } from '@/routes/conversations';
     import { Link } from '@inertiajs/vue3';
     import AppLogo from './AppLogo.vue';
     import navigationItems from '@/navigation';
@@ -24,7 +24,7 @@
             <SidebarMenu>
                 <SidebarMenuItem>
                     <SidebarMenuButton size="lg" as-child>
-                        <Link :href="dashboard()">
+                        <Link :href="newMethod()">
                             <AppLogo />
                         </Link>
                     </SidebarMenuButton>
@@ -32,8 +32,11 @@
             </SidebarMenu>
         </SidebarHeader>
 
-        <SidebarContent>
+        <hr>
+
+        <SidebarContent class="pt-4">
             <NavMain :items="navigationItems" />
+            <hr class="my-2">
             <NavChats />
         </SidebarContent>
 
