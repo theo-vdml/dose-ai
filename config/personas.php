@@ -3,6 +3,12 @@
 return [
     'list' => [
         [
+            'id' => null,
+            'name' => 'No Persona',
+            'icon' => 'user-circle', // Represents a generic user
+            'description' => 'A standard AI assistant without a specific persona. Best for: General use cases where no specialized approach is needed.',
+        ],
+        [
             'id' => 'socrates',
             'name' => 'Socrates',
             'icon' => 'message-circle-question', // Represents dialogue and questioning
