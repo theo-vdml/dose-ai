@@ -1,6 +1,7 @@
 <script setup lang="ts">
     import { Head, Link, usePage } from '@inertiajs/vue3';
     import { register, login } from '@/routes';
+    import { newMethod } from '@/routes/conversations';
     import {
         MessageSquare,
         Sparkles,
@@ -241,7 +242,7 @@
 
                     <div class="flex items-center gap-3">
                         <template v-if="$page.props.auth.user">
-                            <Link href="/dashboard"
+                            <Link :href="newMethod()"
                                 class="rounded-lg bg-white text-black px-6 py-2.5 text-sm font-medium transition hover:bg-white/90">
                                 Ouvrir l'App
                             </Link>
