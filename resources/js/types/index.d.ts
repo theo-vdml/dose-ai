@@ -7,6 +7,7 @@ export interface Auth {
         id: string;
         title: string;
         last_message_at: string | null;
+        persona_id: string | null;
     }>;
 }
 

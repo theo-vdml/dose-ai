@@ -1,6 +1,5 @@
 <script lang="ts" setup>
     import { ModelSelector, PromptInput, PersonaSelector } from '@/components/chat';
-    import AIDisclaimer from '@/components/AIDisclaimer.vue';
     import AppLayout from '@/layouts/AppLayout.vue';
     import conversations from '@/routes/conversations';
     import { useForm } from '@inertiajs/vue3';

@@ -1,5 +1,4 @@
 import * as lucid from 'lucide-vue-next';
-import { dashboard } from './routes';
 import conversations from './routes/conversations';
 import { NavItem } from './types';
 

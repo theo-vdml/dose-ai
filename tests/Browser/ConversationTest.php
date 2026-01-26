@@ -126,7 +126,7 @@ it('can navigate between conversations in from the sidebar', function () {
         ->create();
 
     // Visit the dashboard
-    $browser = visit('/dashboard');
+    $browser = visit(route('conversations.new'));
 
     // Navigate to each conversation and assert the title
     foreach ($conversations as $conversation) {
@@ -149,7 +149,6 @@ it('can login and send a message in a row', function () {
         ->fill('email', $user->email)
         ->fill('password', 'password')
         ->click('Log in')
-        ->click('New Conversation')
         ->fill('message', 'Test message for Fake Model Two')
         ->click('[aria-label="Send message"]')
         ->assertSee('Test message for Fake Model Two')

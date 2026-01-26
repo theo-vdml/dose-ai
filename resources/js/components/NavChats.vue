@@ -1,43 +1,31 @@
 <script setup lang="ts">
-    import {
-        SidebarGroup,
-        SidebarGroupLabel,
-        SidebarMenu,
-        SidebarMenuButton,
-        SidebarMenuItem,
-    } from '@/components/ui/sidebar';
-    import { urlIsActive } from '@/lib/utils';
-    import conversationsRoutes from '@/routes/conversations';
-    import { Link, usePage } from '@inertiajs/vue3';
-    import { useEcho } from '@laravel/echo-vue';
-    import { ref } from 'vue';
-    import { MessageCircle } from 'lucide-vue-next';
+import { SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
+import { urlIsActive } from '@/lib/utils';
+import conversationsRoutes from '@/routes/conversations';
+import { Link, usePage } from '@inertiajs/vue3';
+import { useEcho } from '@laravel/echo-vue';
+import { ref } from 'vue';
+import { getPersonaIcon } from '@/lib/personaIcons';
+import { MessageCircle } from 'lucide-vue-next';
 
-    const page = usePage();
+const page = usePage();
 
-    const conversations = ref(page.props.auth.conversations);
+const conversations = ref(page.props.auth.conversations);
 
-    const getConversationUrl = (id: string) => {
-        return conversationsRoutes.show(id).url;
-    };
+const getConversationUrl = (id: string) => {
+    return conversationsRoutes.show(id).url;
+};
 
-    useEcho<{
-        conversationId: string;
-        title: string;
-    }>(
-        'Users.' + page.props.auth.user.id,
-        'ConversationTitleGenerated',
-        (e) => {
-            const conversation = conversations.value.find(
-                (c) => c.id === e.conversationId
-            );
+useEcho<{
+    conversationId: string;
+    title: string;
+}>('Users.' + page.props.auth.user.id, 'ConversationTitleGenerated', (e) => {
+    const conversation = conversations.value.find((c) => c.id === e.conversationId);
 
-            if (conversation) {
-                conversation.title = e.title;
-            }
-        }
-    );
-
+    if (conversation) {
+        conversation.title = e.title;
+    }
+});
 </script>
 
 <template>
@@ -45,10 +33,9 @@
         <SidebarGroupLabel>Conversations</SidebarGroupLabel>
         <SidebarMenu>
             <SidebarMenuItem v-for="c in conversations" :key="c.id">
-                <SidebarMenuButton as-child :is-active="urlIsActive(getConversationUrl(c.id), page.url)"
-                    :tooltip="c.title ?? 'Untitled'">
+                <SidebarMenuButton as-child :is-active="urlIsActive(getConversationUrl(c.id), page.url)" :tooltip="c.title ?? 'Untitled'">
                     <Link :href="getConversationUrl(c.id)">
-                        <MessageCircle />
+                        <component :is="getPersonaIcon(c.persona_id, MessageCircle)" />
                         <span>{{ c.title ?? 'Untitled' }}</span>
                     </Link>
                 </SidebarMenuButton>
