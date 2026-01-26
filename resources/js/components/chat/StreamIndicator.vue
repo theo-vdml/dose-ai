@@ -5,7 +5,7 @@
         isStreaming?: boolean;
     }
 
-    const props = defineProps<StreamIndicatorProps>();
+    defineProps<StreamIndicatorProps>();
 
 </script>
 

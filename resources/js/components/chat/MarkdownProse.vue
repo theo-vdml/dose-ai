@@ -29,7 +29,7 @@
             if (lang && hljs.getLanguage(lang)) {
                 try {
                     return hljs.highlight(str, { language: lang }).value;
-                } catch (__) { }
+                } catch { }
             }
             return ''; // use external default escaping
         },

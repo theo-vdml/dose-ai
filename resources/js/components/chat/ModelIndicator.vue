@@ -4,7 +4,7 @@
         label: string;
     }
 
-    const props = defineProps<ModelIndicatorProps>();
+    defineProps<ModelIndicatorProps>();
 
 </script>
 

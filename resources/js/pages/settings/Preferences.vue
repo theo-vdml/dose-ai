@@ -1,6 +1,5 @@
 <script setup lang="ts">
     import PreferenceController from '@/actions/App/Http/Controllers/Settings/PreferenceController';
-    import { ModelSelector } from '@/components/chat';
     import HeadingSmall from '@/components/HeadingSmall.vue';
     import InputError from '@/components/InputError.vue';
     import Textarea from '@/components/Textarea.vue';

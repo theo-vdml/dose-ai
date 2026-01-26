@@ -62,6 +62,7 @@
     );
 
     const bindableAttrs = computed(() => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { class: _, ...otherAttrs } = attrs;
         return otherAttrs;
     });
