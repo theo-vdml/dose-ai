@@ -11,6 +11,7 @@
     import { Link, usePage } from '@inertiajs/vue3';
     import { useEcho } from '@laravel/echo-vue';
     import { ref } from 'vue';
+    import { MessageCircle } from 'lucide-vue-next';
 
     const page = usePage();
 
@@ -45,9 +46,9 @@
         <SidebarMenu>
             <SidebarMenuItem v-for="c in conversations" :key="c.id">
                 <SidebarMenuButton as-child :is-active="urlIsActive(getConversationUrl(c.id), page.url)"
-                    :tooltip="c.title">
+                    :tooltip="c.title ?? 'Untitled'">
                     <Link :href="getConversationUrl(c.id)">
-                        <!-- <component :is="c.icon" /> -->
+                        <MessageCircle />
                         <span>{{ c.title ?? 'Untitled' }}</span>
                     </Link>
                 </SidebarMenuButton>

@@ -5,18 +5,8 @@ import { NavItem } from './types';
 
 export default [
     {
-        title: 'Dashboard',
-        href: dashboard(),
-        icon: lucid.LayoutGrid,
-    },
-    {
-        title: 'Conversations',
-        href: conversations.index(),
-        icon: lucid.MessageCircle,
-    },
-    {
-        title: 'New Conversation',
+        title: 'New Chat',
         href: conversations.new(),
-        icon: lucid.PlusCircle,
+        icon: lucid.MessageCirclePlus,
     },
 ] as NavItem[];
