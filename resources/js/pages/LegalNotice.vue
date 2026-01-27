@@ -25,7 +25,10 @@ const sections = [
         <header class="sticky top-0 z-50 border-b border-zinc-800 bg-zinc-950/95 backdrop-blur-sm">
             <div class="mx-auto max-w-5xl px-6 py-4">
                 <div class="flex items-center gap-4">
-                    <Link href="/" class="inline-flex items-center gap-2 text-zinc-400 transition-colors hover:text-white">
+                    <Link
+                        href="/"
+                        class="inline-flex items-center gap-2 text-zinc-400 transition-colors outline-none hover:text-white focus:ring-2 focus:ring-white focus:ring-offset-3 focus:ring-offset-black"
+                    >
                         <ArrowLeft class="size-4" />
                         <span>Retour</span>
                     </Link>
@@ -44,7 +47,7 @@ const sections = [
                         v-for="section in sections"
                         :key="section.id"
                         :href="`#${section.id}`"
-                        class="rounded-lg border border-zinc-800 bg-zinc-900 p-4 transition-all hover:border-zinc-700 hover:bg-zinc-800"
+                        class="rounded-lg border border-zinc-800 bg-zinc-900 p-4 transition-all outline-none hover:border-zinc-700 hover:bg-zinc-800 focus:ring-2 focus:ring-white focus:ring-offset-3 focus:ring-offset-black"
                     >
                         <span class="text-sm font-medium text-white">{{ section.title }}</span>
                     </a>
@@ -71,7 +74,7 @@ const sections = [
                             <p><strong class="text-white">TVA intracommunautaire :</strong> FR 12 123456789</p>
                             <p>
                                 <strong class="text-white">Email :</strong>
-                                <a href="mailto:contact@doseai.fr" class="text-blue-400 hover:text-blue-300">contact@doseai.fr</a>
+                                <a href="mailto:contact@doseai.fr" class="text-blue-400 hover:text-blue-300 focus:ring-white focus:ring-offset-4 focus:ring-offset-black focus:ring-2 outline-none">contact@doseai.fr</a>
                             </p>
                             <p><strong class="text-white">Téléphone :</strong> +33 1 23 45 67 89</p>
                         </div>
@@ -85,7 +88,7 @@ const sections = [
                             <p><strong class="text-white">Fonction :</strong> Président de DoseAI SAS</p>
                             <p>
                                 <strong class="text-white">Contact :</strong>
-                                <a href="mailto:direction@doseai.fr" class="text-blue-400 hover:text-blue-300">direction@doseai.fr</a>
+                                <a href="mailto:direction@doseai.fr" class="text-blue-400 hover:text-blue-300 focus:ring-white focus:ring-offset-4 focus:ring-offset-black focus:ring-2 outline-none">direction@doseai.fr</a>
                             </p>
                         </div>
                     </div>
@@ -98,7 +101,7 @@ const sections = [
                             <p><strong class="text-white">Adresse :</strong> 61 Lordou Vironos Street, 6023 Larnaca, Chypre</p>
                             <p>
                                 <strong class="text-white">Site web :</strong>
-                                <a href="https://www.hostinger.fr" target="_blank" class="text-blue-400 hover:text-blue-300">www.hostinger.fr</a>
+                                <a href="https://www.hostinger.fr" target="_blank" class="text-blue-400 hover:text-blue-300 focus:ring-white focus:ring-offset-4 focus:ring-offset-black focus:ring-2 outline-none">www.hostinger.fr</a>
                             </p>
                         </div>
                     </div>
@@ -129,7 +132,7 @@ const sections = [
                         <p class="mb-4 text-zinc-300">DoseAI SAS est le responsable du traitement de vos données personnelles.</p>
                         <p class="text-zinc-300">
                             <strong class="text-white">DPO (Délégué à la Protection des Données) :</strong><br />
-                            Email : <a href="mailto:dpo@doseai.fr" class="text-blue-400 hover:text-blue-300">dpo@doseai.fr</a><br />
+                            Email : <a href="mailto:dpo@doseai.fr" class="text-blue-400 hover:text-blue-300 focus:ring-white focus:ring-offset-4 focus:ring-offset-black focus:ring-2 outline-none">dpo@doseai.fr</a><br />
                             Adresse : 42 Avenue de l'Innovation, 75001 Paris, France
                         </p>
                     </div>
@@ -256,7 +259,7 @@ const sections = [
                             </p>
                             <p class="text-sm">
                                 Pour plus d'informations sur les garanties mises en place, contactez notre DPO :
-                                <a href="mailto:dpo@doseai.fr" class="text-blue-400 hover:text-blue-300">dpo@doseai.fr</a>
+                                <a href="mailto:dpo@doseai.fr" class="text-blue-400 hover:text-blue-300 focus:ring-white focus:ring-offset-4 focus:ring-offset-black focus:ring-2 outline-none">dpo@doseai.fr</a>
                             </p>
                         </div>
                     </div>
@@ -294,14 +297,14 @@ const sections = [
                             </div>
                             <p class="mt-6">
                                 <strong class="text-white">Comment exercer vos droits ?</strong><br />
-                                Contactez notre DPO par email : <a href="mailto:dpo@doseai.fr" class="text-blue-400 hover:text-blue-300">dpo@doseai.fr</a><br />
+                                Contactez notre DPO par email : <a href="mailto:dpo@doseai.fr" class="text-blue-400 hover:text-blue-300 focus:ring-white focus:ring-offset-4 focus:ring-offset-black focus:ring-2 outline-none">dpo@doseai.fr</a><br />
                                 Réponse garantie sous 30 jours.
                             </p>
                             <p class="text-sm italic">
                                 Si vous estimez que vos droits ne sont pas respectés, vous pouvez introduire une réclamation auprès de la CNIL (<a
                                     href="https://www.cnil.fr"
                                     target="_blank"
-                                    class="text-blue-400 hover:text-blue-300"
+                                    class="text-blue-400 hover:text-blue-300 focus:ring-white focus:ring-offset-4 focus:ring-offset-black focus:ring-2 outline-none"
                                     >www.cnil.fr</a
                                 >).
                             </p>
@@ -406,17 +409,17 @@ const sections = [
                             </p>
                             <ul class="ml-4 list-inside list-disc space-y-1 text-sm">
                                 <li>
-                                    <a href="https://openrouter.ai/privacy" target="_blank" class="text-blue-400 hover:text-blue-300"
+                                    <a href="https://openrouter.ai/privacy" target="_blank" class="text-blue-400 hover:text-blue-300 focus:ring-white focus:ring-offset-4 focus:ring-offset-black focus:ring-2 outline-none"
                                         >OpenRouter Privacy Policy</a
                                     >
                                 </li>
                                 <li>
-                                    <a href="https://openai.com/policies/privacy-policy" target="_blank" class="text-blue-400 hover:text-blue-300"
+                                    <a href="https://openai.com/policies/privacy-policy" target="_blank" class="text-blue-400 hover:text-blue-300 focus:ring-white focus:ring-offset-4 focus:ring-offset-black focus:ring-2 outline-none"
                                         >OpenAI Privacy Policy</a
                                     >
                                 </li>
                                 <li>
-                                    <a href="https://www.anthropic.com/privacy" target="_blank" class="text-blue-400 hover:text-blue-300"
+                                    <a href="https://www.anthropic.com/privacy" target="_blank" class="text-blue-400 hover:text-blue-300 focus:ring-white focus:ring-offset-4 focus:ring-offset-black focus:ring-2 outline-none"
                                         >Anthropic Privacy Policy</a
                                     >
                                 </li>
@@ -476,7 +479,7 @@ const sections = [
 
                         <p class="mt-4 text-sm">
                             Vous pouvez modifier vos préférences de cookies à tout moment via les paramètres de votre navigateur ou en nous contactant à
-                            <a href="mailto:dpo@doseai.fr" class="text-blue-400 hover:text-blue-300">dpo@doseai.fr</a>.
+                            <a href="mailto:dpo@doseai.fr" class="text-blue-400 hover:text-blue-300 focus:ring-white focus:ring-offset-4 focus:ring-offset-black focus:ring-2 outline-none">dpo@doseai.fr</a>.
                         </p>
                     </div>
                 </div>
