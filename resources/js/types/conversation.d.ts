@@ -20,6 +20,7 @@ type Conversation = {
     user_id: number;
     title: string | null;
     model_id: string;
+    persona_id: string | null;
     last_message_at: string | null;
     messages: Message[];
     current_message_id: string | null;

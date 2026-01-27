@@ -21,6 +21,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('conversations.store');
     Route::get('conversations/{conversation}', [ConversationController::class, 'show'])
         ->name('conversations.show');
+    Route::put('conversations/{conversation}', [ConversationController::class, 'update'])
+        ->name('conversations.update');
+    Route::delete('conversations/{conversation}', [ConversationController::class, 'destroy'])
+        ->name('conversations.destroy');
     Route::post('conversations/{conversation}/messages', [ConversationController::class, 'storeMessage'])
         ->name('conversations.messages.store');
     Route::post('conversations/{conversation}/stream', [ConversationController::class, 'stream'])

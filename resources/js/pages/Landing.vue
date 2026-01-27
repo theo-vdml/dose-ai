@@ -203,7 +203,7 @@ const seo = {
                         <template v-if="$page.props.auth.user">
                             <Link
                                 :href="newMethod()"
-                                class="rounded-lg bg-white px-6 py-2.5 text-sm font-medium text-black transition hover:bg-white/90 focus:ring-2 focus:ring-white focus:ring-offset-3 focus:ring-offset-black outline-none"
+                                class="rounded-lg bg-white px-6 py-2.5 text-sm font-medium text-black transition outline-none hover:bg-white/90 focus:ring-2 focus:ring-white focus:ring-offset-3 focus:ring-offset-black"
                             >
                                 Ouvrir l'App
                             </Link>
@@ -211,13 +211,13 @@ const seo = {
                         <template v-else>
                             <Link
                                 :href="login()"
-                                class="rounded-lg px-4 py-2 text-sm font-medium text-gray-400 transition hover:text-white focus:ring-2 focus:ring-white focus:ring-offset-3 focus:ring-offset-black outline-none"
+                                class="rounded-lg px-4 py-2 text-sm font-medium text-gray-400 transition outline-none hover:text-white focus:ring-2 focus:ring-white focus:ring-offset-3 focus:ring-offset-black"
                             >
                                 Se connecter
                             </Link>
                             <Link
                                 :href="register()"
-                                class="rounded-lg bg-white px-6 py-2.5 text-sm font-medium text-black transition hover:bg-white/90 focus:ring-2 focus:ring-white focus:ring-offset-3 focus:ring-offset-black outline-none"
+                                class="rounded-lg bg-white px-6 py-2.5 text-sm font-medium text-black transition outline-none hover:bg-white/90 focus:ring-2 focus:ring-white focus:ring-offset-3 focus:ring-offset-black"
                             >
                                 Commencer
                             </Link>
@@ -260,14 +260,14 @@ const seo = {
                         <div class="flex flex-col items-center justify-center gap-4 pt-4 sm:flex-row">
                             <Link
                                 :href="register()"
-                                class="group inline-flex items-center gap-2 rounded-lg bg-white px-8 py-4 text-base font-medium text-black transition hover:bg-white/90 focus:ring-2 focus:ring-white focus:ring-offset-3 focus:ring-offset-black outline-none"
+                                class="group inline-flex items-center gap-2 rounded-lg bg-white px-8 py-4 text-base font-medium text-black transition outline-none hover:bg-white/90 focus:ring-2 focus:ring-white focus:ring-offset-3 focus:ring-offset-black"
                             >
                                 <MessageSquare class="size-5" />
                                 <span>Commencer gratuitement</span>
                             </Link>
                             <a
                                 href="#features"
-                                class="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-8 py-4 text-base font-medium text-gray-300 backdrop-blur-xl transition hover:bg-white/10 focus:ring-2 focus:ring-white focus:ring-offset-3 focus:ring-offset-black outline-none"
+                                class="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-8 py-4 text-base font-medium text-gray-300 backdrop-blur-xl transition outline-none hover:bg-white/10 focus:ring-2 focus:ring-white focus:ring-offset-3 focus:ring-offset-black"
                             >
                                 <span>Découvrir les fonctionnalités</span>
                             </a>
@@ -361,7 +361,7 @@ const seo = {
                                 <Link
                                     :href="register()"
                                     :class="[
-                                        'block w-full rounded-lg px-6 py-3 text-center font-medium transition focus:ring-2 focus:ring-white focus:ring-offset-3 focus:ring-offset-black outline-none',
+                                        'block w-full rounded-lg px-6 py-3 text-center font-medium transition outline-none focus:ring-2 focus:ring-white focus:ring-offset-3 focus:ring-offset-black',
                                         plan.highlighted
                                             ? 'bg-white text-black hover:bg-white/90'
                                             : 'border border-white/10 bg-white/5 text-gray-300 hover:bg-white/10',
@@ -461,14 +461,14 @@ const seo = {
                             <div class="flex flex-col items-center justify-center gap-4 pt-4 sm:flex-row">
                                 <Link
                                     :href="register()"
-                                    class="inline-flex items-center gap-2 rounded-lg bg-white px-8 py-4 text-base font-medium text-black transition hover:bg-white/90 focus:ring-2 focus:ring-white focus:ring-offset-3 focus:ring-offset-black outline-none"
+                                    class="inline-flex items-center gap-2 rounded-lg bg-white px-8 py-4 text-base font-medium text-black transition outline-none hover:bg-white/90 focus:ring-2 focus:ring-white focus:ring-offset-3 focus:ring-offset-black"
                                 >
                                     <MessageSquare class="size-5" />
                                     <span>Commencer gratuitement</span>
                                 </Link>
                                 <a
                                     href="#pricing"
-                                    class="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-8 py-4 text-base font-medium text-gray-300 backdrop-blur-xl transition hover:bg-white/10 focus:ring-2 focus:ring-white focus:ring-offset-3 focus:ring-offset-black outline-none"
+                                    class="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-8 py-4 text-base font-medium text-gray-300 backdrop-blur-xl transition outline-none hover:bg-white/10 focus:ring-2 focus:ring-white focus:ring-offset-3 focus:ring-offset-black"
                                 >
                                     <span>Voir les tarifs</span>
                                 </a>
@@ -497,7 +497,7 @@ const seo = {
                                 href="https://twitter.com"
                                 target="_blank"
                                 aria-label="Suivez-nous sur Twitter"
-                                class="flex size-9 items-center justify-center rounded-lg border border-white/10 bg-white/5 ring-white/50 transition hover:bg-white/10 focus:ring-2 outline-none"
+                                class="flex size-9 items-center justify-center rounded-lg border border-white/10 bg-white/5 ring-white/50 transition outline-none hover:bg-white/10 focus:ring-2"
                             >
                                 <Twitter class="size-4 text-gray-400" />
                             </a>
@@ -505,7 +505,7 @@ const seo = {
                                 href="https://github.com"
                                 target="_blank"
                                 aria-label="Visitez notre GitHub"
-                                class="flex size-9 items-center justify-center rounded-lg border border-white/10 bg-white/5 ring-white/50 transition hover:bg-white/10 focus:ring-2 outline-none"
+                                class="flex size-9 items-center justify-center rounded-lg border border-white/10 bg-white/5 ring-white/50 transition outline-none hover:bg-white/10 focus:ring-2"
                             >
                                 <Github class="size-4 text-gray-400" />
                             </a>
@@ -513,7 +513,7 @@ const seo = {
                                 href="https://linkedin.com"
                                 target="_blank"
                                 aria-label="Rejoignez-nous sur LinkedIn"
-                                class="flex size-9 items-center justify-center rounded-lg border border-white/10 bg-white/5 ring-white/50 transition hover:bg-white/10 focus:ring-2 outline-none"
+                                class="flex size-9 items-center justify-center rounded-lg border border-white/10 bg-white/5 ring-white/50 transition outline-none hover:bg-white/10 focus:ring-2"
                             >
                                 <Linkedin class="size-4 text-gray-400" />
                             </a>
@@ -527,7 +527,7 @@ const seo = {
                             <li>
                                 <a
                                     href="#features"
-                                    class="rounded-xs text-gray-400 ring-white ring-offset-4 ring-offset-black transition hover:text-white focus:ring-2 outline-none"
+                                    class="rounded-xs text-gray-400 ring-white ring-offset-4 ring-offset-black transition outline-none hover:text-white focus:ring-2"
                                 >
                                     Fonctionnalités
                                 </a>
@@ -535,7 +535,7 @@ const seo = {
                             <li>
                                 <a
                                     href="#pricing"
-                                    class="rounded-xs text-gray-400 ring-white ring-offset-4 ring-offset-black transition hover:text-white focus:ring-2 outline-none"
+                                    class="rounded-xs text-gray-400 ring-white ring-offset-4 ring-offset-black transition outline-none hover:text-white focus:ring-2"
                                 >
                                     Tarifs
                                 </a>
@@ -543,7 +543,7 @@ const seo = {
                             <li>
                                 <a
                                     href="#testimonials"
-                                    class="rounded-xs text-gray-400 ring-white ring-offset-4 ring-offset-black transition hover:text-white focus:ring-2 outline-none"
+                                    class="rounded-xs text-gray-400 ring-white ring-offset-4 ring-offset-black transition outline-none hover:text-white focus:ring-2"
                                 >
                                     Témoignages
                                 </a>
@@ -551,7 +551,7 @@ const seo = {
                             <li>
                                 <a
                                     href="#faq"
-                                    class="rounded-xs text-gray-400 ring-white ring-offset-4 ring-offset-black transition hover:text-white focus:ring-2 outline-none"
+                                    class="rounded-xs text-gray-400 ring-white ring-offset-4 ring-offset-black transition outline-none hover:text-white focus:ring-2"
                                 >
                                     FAQ
                                 </a>
@@ -566,7 +566,7 @@ const seo = {
                             <li>
                                 <a
                                     href="#"
-                                    class="rounded-xs text-gray-400 ring-white ring-offset-4 ring-offset-black transition hover:text-white focus:ring-2 outline-none"
+                                    class="rounded-xs text-gray-400 ring-white ring-offset-4 ring-offset-black transition outline-none hover:text-white focus:ring-2"
                                 >
                                     À propos
                                 </a>
@@ -574,7 +574,7 @@ const seo = {
                             <li>
                                 <a
                                     href="#"
-                                    class="rounded-xs text-gray-400 ring-white ring-offset-4 ring-offset-black transition hover:text-white focus:ring-2 outline-none"
+                                    class="rounded-xs text-gray-400 ring-white ring-offset-4 ring-offset-black transition outline-none hover:text-white focus:ring-2"
                                 >
                                     Blog
                                 </a>
@@ -582,7 +582,7 @@ const seo = {
                             <li>
                                 <a
                                     href="#"
-                                    class="rounded-xs text-gray-400 ring-white ring-offset-4 ring-offset-black transition hover:text-white focus:ring-2 outline-none"
+                                    class="rounded-xs text-gray-400 ring-white ring-offset-4 ring-offset-black transition outline-none hover:text-white focus:ring-2"
                                 >
                                     Carrières
                                 </a>
@@ -590,7 +590,7 @@ const seo = {
                             <li>
                                 <a
                                     href="#"
-                                    class="rounded-xs text-gray-400 ring-white ring-offset-4 ring-offset-black transition hover:text-white focus:ring-2 outline-none"
+                                    class="rounded-xs text-gray-400 ring-white ring-offset-4 ring-offset-black transition outline-none hover:text-white focus:ring-2"
                                 >
                                     Contact
                                 </a>
@@ -605,7 +605,7 @@ const seo = {
                             <li>
                                 <Link
                                     href="/mentions-legales"
-                                    class="rounded-xs text-gray-400 ring-white ring-offset-4 ring-offset-black transition hover:text-white focus:ring-2 outline-none"
+                                    class="rounded-xs text-gray-400 ring-white ring-offset-4 ring-offset-black transition outline-none hover:text-white focus:ring-2"
                                 >
                                     Mentions légales
                                 </Link>
@@ -613,7 +613,7 @@ const seo = {
                             <li>
                                 <Link
                                     href="/mentions-legales#privacy"
-                                    class="rounded-xs text-gray-400 ring-white ring-offset-4 ring-offset-black transition hover:text-white focus:ring-2 outline-none"
+                                    class="rounded-xs text-gray-400 ring-white ring-offset-4 ring-offset-black transition outline-none hover:text-white focus:ring-2"
                                 >
                                     Politique de confidentialité
                                 </Link>
@@ -621,7 +621,7 @@ const seo = {
                             <li>
                                 <Link
                                     href="/mentions-legales#terms"
-                                    class="rounded-xs text-gray-400 ring-white ring-offset-4 ring-offset-black transition hover:text-white focus:ring-2 outline-none"
+                                    class="rounded-xs text-gray-400 ring-white ring-offset-4 ring-offset-black transition outline-none hover:text-white focus:ring-2"
                                 >
                                     Conditions d'utilisation
                                 </Link>
@@ -629,7 +629,7 @@ const seo = {
                             <li>
                                 <Link
                                     href="/mentions-legales#cookies"
-                                    class="rounded-xs text-gray-400 ring-white ring-offset-4 ring-offset-black transition hover:text-white focus:ring-2 outline-none"
+                                    class="rounded-xs text-gray-400 ring-white ring-offset-4 ring-offset-black transition outline-none hover:text-white focus:ring-2"
                                 >
                                     Politique des cookies
                                 </Link>
@@ -645,7 +645,7 @@ const seo = {
                             <Mail class="size-4" />
                             <a
                                 href="mailto:contact@PersonAI.com"
-                                class="rounded-xs ring-white ring-offset-4 ring-offset-black transition hover:text-white focus:ring-2 outline-none"
+                                class="rounded-xs ring-white ring-offset-4 ring-offset-black transition outline-none hover:text-white focus:ring-2"
                             >
                                 contact@PersonAI.com
                             </a>

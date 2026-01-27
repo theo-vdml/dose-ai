@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Events\ConversationTitleGenerated;
+use App\Events\ConversationTitleUpdated;
 use App\Models\Conversation;
 use App\OpenRouter\Chat\ChatRequest;
 use App\OpenRouter\Facades\OpenRouter;
@@ -51,7 +51,7 @@ class GenerateConversationTitle implements ShouldQueue
                 'title' => $title,
             ]);
 
-            broadcast(new ConversationTitleGenerated(
+            broadcast(new ConversationTitleUpdated(
                 userId: $this->conversation->user_id,
                 conversationId: $this->conversation->id,
                 title: $title

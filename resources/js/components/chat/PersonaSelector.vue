@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AdvancedSelector from '@/components/chat/AdvancedSelector.vue';
-import { getPersonaIcon } from '@/lib/personaIcons';
+import { getPersonaIcon } from '@/lib/personaHelpers';
 import { CircleDashed } from 'lucide-vue-next';
 
 interface Persona {

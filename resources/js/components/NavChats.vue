@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
-import { getPersonaIcon } from '@/lib/personaIcons';
+import { getPersonaIcon } from '@/lib/personaHelpers';
 import { urlIsActive } from '@/lib/utils';
 import conversationsRoutes from '@/routes/conversations';
 import { Link, usePage } from '@inertiajs/vue3';
@@ -19,7 +19,7 @@ const getConversationUrl = (id: string) => {
 useEcho<{
     conversationId: string;
     title: string;
-}>('Users.' + page.props.auth.user.id, 'ConversationTitleGenerated', (e) => {
+}>('Users.' + page.props.auth.user.id, 'ConversationTitleUpdated', (e) => {
     const conversation = conversations.value.find((c) => c.id === e.conversationId);
 
     if (conversation) {

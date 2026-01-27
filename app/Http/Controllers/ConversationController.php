@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ConversationTitleUpdated;
 use App\Http\Data\ConversationData;
 use App\Http\Data\MessageData;
 use App\Models\Conversation;
@@ -9,6 +10,7 @@ use App\Services\ConversationService;
 use App\Services\SSEEmitterService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
@@ -69,6 +71,38 @@ class ConversationController extends Controller
             'model_id' => $conversation->model_id,
             'messageValue' => session('messageValue'),
         ]);
+    }
+
+    public function update(Conversation $conversation, Request $request): RedirectResponse
+    {
+        Gate::authorize('update', $conversation);
+
+        // 1. Validate the input (security best practice)
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+        ]);
+
+        // 2. Update and Save
+        $conversation->update([
+            'title' => $validated['title'],
+        ]);
+
+        broadcast(new ConversationTitleUpdated(
+            userId: $conversation->user_id,
+            conversationId: $conversation->id,
+            title: $validated['title'],
+        ));
+
+        return back();
+    }
+
+    public function destroy(Conversation $conversation): RedirectResponse
+    {
+        Gate::authorize('delete', $conversation);
+
+        $conversation->delete();
+
+        return redirect()->route('conversations.new');
     }
 
     public function storeMessage(Conversation $conversation, MessageData $messageData): JsonResponse
