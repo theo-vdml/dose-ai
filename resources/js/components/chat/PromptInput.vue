@@ -11,6 +11,7 @@ interface PromptInputProps {
     maxLines?: number;
     placeholder?: string;
     label?: string;
+    disclaimer?: string;
 }
 
 interface PromptInputEmits {
@@ -26,6 +27,7 @@ const props = withDefaults(defineProps<PromptInputProps>(), {
     maxLines: 10,
     placeholder: 'Type your message here...',
     label: 'Message Input',
+    disclaimer: '',
 });
 
 const emit = defineEmits<PromptInputEmits>();
@@ -92,5 +94,9 @@ const onAction = () => {
                 </button>
             </div>
         </div>
+        <!-- Disclaimer -->
+        <p v-if="props.disclaimer" class="mt-4 text-center text-sm text-muted-foreground">
+            {{ props.disclaimer }}
+        </p>
     </div>
 </template>

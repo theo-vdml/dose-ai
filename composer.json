@@ -18,7 +18,8 @@
         "laravel/wayfinder": "^0.1.9",
         "spatie/laravel-data": "^4.18",
         "spatie/laravel-sitemap": "^7.3",
-        "spatie/laravel-typescript-transformer": "^2.5"
+        "spatie/laravel-typescript-transformer": "^2.5",
+        "whitecube/laravel-cookie-consent": "^1.3"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

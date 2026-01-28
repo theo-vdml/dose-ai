@@ -43,10 +43,14 @@
 
     @vite(['resources/js/app.ts', "resources/js/pages/{$page['component']}.vue"])
     @inertiaHead
+    @cookieconsentscripts
 </head>
 
 <body class="font-sans antialiased">
     @inertia
+    @unless(app()->environment('testing'))
+        @cookieconsentview
+    @endunless
 </body>
 
 </html>
