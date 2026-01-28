@@ -48,7 +48,7 @@ const scrollTo = (id: string) => {
                     <div class="flex size-10 items-center justify-center rounded-lg border border-white/10 bg-white/5">
                         <Sparkles class="size-5 text-white" />
                     </div>
-                    <span class="text-xl font-semibold tracking-tight text-white"> PeronAI </span>
+                    <span class="text-xl font-semibold tracking-tight text-white"> PersonAI </span>
                 </div>
 
                 <Link href="/" class="text-sm font-medium text-gray-400 transition-colors hover:text-white"> ← Retour à l'accueil </Link>
