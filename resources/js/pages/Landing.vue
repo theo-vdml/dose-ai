@@ -197,7 +197,7 @@ const seo = {
                         <div class="flex size-10 items-center justify-center rounded-lg border border-white/10 bg-white/5">
                             <Sparkles class="size-5 text-white" />
                         </div>
-                        <span class="text-xl font-semibold tracking-tight text-white"> PeronAI </span>
+                        <span class="text-xl font-semibold tracking-tight text-white"> PersonAI </span>
                     </div>
 
                     <div class="flex items-center gap-3">
