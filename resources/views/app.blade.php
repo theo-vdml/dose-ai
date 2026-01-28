@@ -48,7 +48,9 @@
 
 <body class="font-sans antialiased">
     @inertia
-    @cookieconsentview
+    @unless(app()->environment('testing'))
+        @cookieconsentview
+    @endunless
 </body>
 
 </html>

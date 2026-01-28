@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ConversationController;
+use App\Http\Controllers\LegalController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -8,9 +9,7 @@ Route::get('/', function () {
     return Inertia::render('Landing');
 })->name('home');
 
-Route::get('/mentions-legales', function () {
-    return Inertia::render('LegalNotice');
-})->name('legal.notice');
+Route::get('/legal', [LegalController::class, 'index'])->name('legal');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('conversations', [ConversationController::class, 'index'])

@@ -5,5 +5,5 @@ return [
     App\Providers\FortifyServiceProvider::class,
     App\Providers\TelescopeServiceProvider::class,
     App\Providers\OpenRouterServiceProvider::class,
-    App\Providers\CookiesServiceProvider::class
+    App\Providers\CookiesServiceProvider::class,
 ];
