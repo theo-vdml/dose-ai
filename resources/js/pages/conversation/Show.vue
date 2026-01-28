@@ -143,7 +143,13 @@ onMounted(async () => {
                 class="pointer-events-none absolute right-0 bottom-0 left-0 bg-linear-to-t from-background/95 via-background/50 via-60% to-transparent px-8 pt-32 pb-8"
             >
                 <div class="pointer-events-auto mx-auto w-full max-w-5xl">
-                    <PromptInput v-model:message="promptInput" @submit="submit" :disabled="chat.isBusy.value" :cancelable="chat.isBusy.value" disclaimer="AI can hallucinate or make mistakes. Do not share sensitive information.">
+                    <PromptInput
+                        v-model:message="promptInput"
+                        @submit="submit"
+                        :disabled="chat.isBusy.value"
+                        :cancelable="chat.isBusy.value"
+                        disclaimer="AI can hallucinate or make mistakes. Do not share sensitive information."
+                    >
                         <ModelIndicator :label="model_id" />
                         <StreamIndicator :isFetching="chat.stream.isFetching.value" :isStreaming="chat.stream.isStreaming.value" />
                     </PromptInput>

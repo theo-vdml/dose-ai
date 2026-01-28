@@ -95,7 +95,7 @@ const onAction = () => {
             </div>
         </div>
         <!-- Disclaimer -->
-        <p v-if="props.disclaimer" class="mt-4 text-sm text-muted-foreground text-center">
+        <p v-if="props.disclaimer" class="mt-4 text-center text-sm text-muted-foreground">
             {{ props.disclaimer }}
         </p>
     </div>
